@@ -29,9 +29,9 @@ st.title("Classi AI")
 st.markdown("*Engineering the Future of Language Conversion and Mastery with Deep-Tech AI*")
 st.write("---")
 
-st.write("**Classi AI** is redefining how the world conducts language conversion. Unlike leading apps that merely estimate what you are saying, we understand the actual context of your conversation. Our Universal Fluency Layer enhances voice-to-text systems in realistic situations where voice input contaminated with noise, accents, idioms, and code-switching causes leading language conversion apps to suffer from a deep slump in conversion accuracy by as much as 30 to 45%.")
+st.write("**Classi AI is redefining how the world bridges language barriers. While leading applications merely guess at your words, we comprehend the true context of your conversation. Powered by our proprietary Universal Fluency Layer, our voice-to-text engine thrives in the real world—mastering complex environments where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.")
 
-st.write("For language mastery, Classi's revolutionary SaaS language learning platform fulfills the genuine needs of 1B+ non-native learners globally. By offering interactive learning with corrective feedback across all four English skills, real-time coaching with an interactive AI tutor, pronunciation correction and guidance, and personalized drills, our comprehensive language mastery platform effectively dethrones legacy dictionaries and translation apps.")
+st.write("Beyond transcription, Classi’s revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.")
 
 st.markdown("---")
 st.subheader("🎬 VIP Invitation")
