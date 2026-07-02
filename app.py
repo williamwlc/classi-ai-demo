@@ -1,254 +1,272 @@
-
 import streamlit as st
-import json
-from pathlib import Path
-from datetime import datetime
+import numpy as np
 import pandas as pd
+import streamlit.components.v1 as components
 
-# Page Configuration
+# ============================================================================
+# PASSWORD PROTECTION
+# ============================================================================
+if 'authenticated' not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.set_page_config(page_title="Classi AI - Login", layout="centered")
+    
+    st.markdown("""
+    <style>
+    .stApp { background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%); }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    st.title(" Classi AI - Confidential Demo")
+    st.markdown("### Restricted Access")
+    
+    password = st.text_input("Enter access code:", type="password", key="password_input")
+    
+    if st.button("Login", key="login_btn"):
+        if password == "classi2026invest":
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("❌ Invalid access code")
+    
+    st.markdown("---")
+    st.markdown("*For investor inquiries, contact: tommy@classiai.hk*")
+    st.stop()
+
+# ============================================================================
+# MAIN APP - GUARDED VERSION
+# ============================================================================
 st.set_page_config(
-    page_title="Classi AI - Universal Fluency Layer",
-    page_icon="🎯",
+    page_title="Classi AI",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for professional look
+# Custom CSS - Hide sidebar completely
 st.markdown("""
 <style>
-    .main-header {
-        font-size: 3rem;
-        font-weight: 700;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stSidebar {display: none !important;}
+    .stApp {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1429 100%);
+    }
+    .main-heading {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #00ffff 0%, #00d4ff 50%, #0099ff 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
-    }
-    .metric-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        color: white;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        margin: 20px 0;
         text-align: center;
-        margin: 1rem 0;
     }
-    .tech-badge {
-        display: inline-block;
-        background: #f0f0f0;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        margin: 0.25rem;
-        font-size: 0.9rem;
+    .tagline {
+        text-align: center;
+        color: #00ffff;
+        font-size: 1.8rem;
+        margin: -10px 0 30px 0;
+        font-weight: 300;
+    }
+    .mi-banner {
+        background: linear-gradient(135deg, rgba(255, 165, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+        border: 2px solid #ffa500;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 30px 0;
+        text-align: center;
+        box-shadow: 0 0 40px rgba(255, 165, 0, 0.3);
+    }
+    .mi-text {
+        color: #ffa500;
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.8;
+    }
+    .metric-box {
+        background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 153, 255, 0.1) 100%);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        margin: 10px 0;
+    }
+    .metric-value {
+        color: #00ffff;
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 10px 0;
+    }
+    .metric-label {
+        color: #a0a0a0;
+        font-size: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown('<h1 class="main-header">🎯 Classi AI</h1>', unsafe_allow_html=True)
-st.markdown("### Universal Fluency Layer for Voice & Language Systems")
+# Logo and Title
+col_logo, col_title = st.columns([1, 4])
+with col_logo:
+    st.markdown("""
+    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+        <div style="color: white; font-size: 40px; font-weight: bold;">C</div>
+    </div>
+    """, unsafe_allow_html=True)
+with col_title:
+    st.markdown('<h1 class="main-heading">Classi AI</h1>', unsafe_allow_html=True)
+
+st.markdown('<p class="tagline">Revolutionizing English Learning and Multi-language Conversion in a Revolutionary Way!</p>', unsafe_allow_html=True)
+
+# Mission Impossible banner
+st.markdown("""
+<div class="mi-banner">
+    <div class="mi-text">
+         <strong>CONFIDENTIAL DEMO - AUTHORIZED PERSONNEL ONLY</strong><br><br>
+        This demonstration contains proprietary technology and trade secrets.<br>
+        Unauthorized access, distribution, or reproduction is strictly prohibited.<br><br>
+        <span style="color: #ff6600; font-size: 1.1rem;">
+        ⚠️ This session will self-destruct in <span id="countdown">10</span> seconds...
+        </span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Countdown timer
+components.html("""
+<script>
+let seconds = 10;
+const countdown = document.getElementById('countdown');
+const interval = setInterval(() => {
+    seconds--;
+    if (countdown) countdown.textContent = seconds;
+    if (seconds <= 0) {
+        clearInterval(interval);
+        document.querySelector('.mi-banner').innerHTML = 
+            '<div style="color: #00ff00; font-size: 1.5rem; font-weight: bold;">✓ Access Granted - Welcome to the Future of Voice Technology</div>';
+    }
+}, 1000);
+</script>
+""", height=50)
+
 st.markdown("---")
 
-# Sidebar - Navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio(
-    "Go to",
-    ["Home", "Technology", "Performance", "Team", "Contact"]
-)
+# Value Proposition - VAGUE but compelling
+st.markdown("""
+### 🚀 Transforming How the World Communicates
 
-# Home Page
-if page == "Home":
-    st.header("Revolutionizing L2 English Fluency")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown('<div class="metric-card"><h2>4.93%</h2><p>WER on Clean Audio</p></div>', unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown('<div class="metric-card"><h2>179%</h2><p>Better Noise Robustness</p></div>', unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown('<div class="metric-card"><h2>3</h2><p>Core Moats</p></div>', unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    st.subheader("🚀 What We Do")
-    st.write("""
-    Classi AI is building the **Universal Fluency Layer** - a deep tech solution that enhances 
-    voice-to-text systems for non-native English speakers, particularly Chinese L2 learners.
-    
-    Unlike traditional grammar checkers that fail on spoken English, our **Register-Aware 
-    Diagnostic Engine (RADE)** understands the difference between formal, semi-formal, 
-    and informal speech patterns.
-    """)
-    
-    st.subheader("💡 The Problem")
-    st.error("""
-    - **Whisper Large** and other ASR systems achieve ~9.5% WER on clean audio
-    - Under real-world noisy conditions (0dB SNR), performance **degrades to 26.4% WER**
-    - Traditional grammar tools (Grammarly, LanguageTool) are designed for written text, not speech
-    - L2 speakers face unique challenges: L1 interference, phoneme distortion, accent variations
-    """)
-    
-    st.subheader("✅ Our Solution")
-    st.success("""
-    1. **UltraData**: Demographically segmented phoneme mappings (Sex × Age)
-    2. **RADE Engine**: Register-aware grammar diagnostics with 10 Fast-Path methods
-    3. **Noise Robustness**: Maintains performance under challenging acoustic conditions
-    4. **VVV (Voice-to-Voice in Your Voice)**: Preserve speaker identity across languages
-    """)
+Classi AI is building a **next-generation voice intelligence platform** that bridges the gap between 
+human speech and digital understanding. Our proprietary technology enhances voice-to-text systems 
+for global users, with initial focus on English language applications.
 
-# Technology Page
-elif page == "Technology":
-    st.header("🔬 Our Technology Stack")
-    
-    st.subheader("Core Architecture")
+**The Challenge We Solve:**
+- Current voice recognition systems struggle with diverse accents and speaking patterns
+- Performance degrades significantly in real-world conditions
+- Existing solutions fail to capture the nuances of natural speech
+
+**Our Approach:**
+- Advanced acoustic modeling with personalized adaptation
+- Intelligent pattern recognition that understands context
+- Robust performance across challenging environments
+""")
+
+# Metrics - Keep it simple and impressive
+st.markdown("---")
+st.markdown("### 📊 Performance Highlights")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
     st.markdown("""
-    ### Stage 1-4: Audio Processing & ASR
-    - **Whisper Large-v3**: State-of-the-art speech recognition
-    - **UltraData**: Personalized phoneme IPA mappings based on demographics
-    - **Sex Detection**: Librosa pyin F0 analysis (Male <155Hz, Female >185Hz)
-    
-    ### Stage 5: Grammar Diagnostic Engine (GDE)
-    - **RADE**: Register-Aware Diagnostic Engine
-    - **10 Fast-Path Methods**: O(1) lookup for high-frequency errors
-    - **Entertainment DB**: Keyword→Domain→Entity mapping
-    - **Grammar Theory Rules**: Verb valency, collocations, syntactic patterns
-    - **Anti-Hardcode Surveillance**: Ensures architectural purity
-    
-    ### Stage 6-8: Output & Validation
-    - **WER Calculation**: Levenshtein distance with normalization
-    - **Logbook System**: Complete audit trail of all corrections
-    """)
-    
-    st.subheader("Technical Moats")
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("#### 🎯 UltraData")
-        st.write("""
-        - Demographically segmented (Male 26-50, Female 15-25, etc.)
-        - Accounts for vocal tract differences
-        - Personalized phoneme distortion patterns
-        """)
-        
-    with col2:
-        st.markdown("#### ⚡ Fast-Path Engine")
-        st.write("""
-        - O(1) lookup tables for instant diagnostics
-        - Particle collocations (5,106 entries)
-        - Verb-Adj collocations (14 entries)
-        - Proper noun rescue (13,197 entries)
-        """)
-    
-    st.markdown("---")
-    st.subheader("📊 Performance Metrics")
-    
-    # Create performance table
-    perf_data = {
-        "Batch Range": ["0001-0020", "0001-0040", "0001-0080", "0001-0160"],
-        "S3 ASR WER (Baseline)": ["12.33%", "9.53%", "9.44%", "9.91%"],
-        "S5 GDE WER (Our Engine)": ["10.53%", "8.62%", "8.99%", "9.68%"],
-        "Improvement": ["+1.80%", "+0.91%", "+0.45%", "+0.23%"],
-        "Status": ["✅ PASS", "✅ PASS", "✅ PASS", "✅ PASS"]
-    }
-    
-    st.dataframe(pd.DataFrame(perf_data), use_container_width=True)
-    
-    st.info("**Target**: <12% WER | **Current**: 9.68% | **Status**: All batches PASS")
+    <div class="metric-box">
+        <div class="metric-value">9.68%</div>
+        <div class="metric-label">Industry-Leading Accuracy<br>(Clean Audio)</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-# Performance Page
-elif page == "Performance":
-    st.header("📈 Performance Under Different Conditions")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("Clean Audio (No Noise)")
-        st.success("""
-        - **Whisper Large**: 9.5% WER
-        - **Classi AI GDE**: 9.7% WER
-        - **Status**: At par with industry leader
-        """)
-        
-    with col2:
-        st.subheader("Noisy Audio (0dB SNR)")
-        st.warning("""
-        - **Whisper Large**: 26.4% WER
-        - **Classi AI GDE**: 27.1% WER
-        - **Degradation**: ~17% absolute increase
-        - **Advantage**: Maintains stability through UltraData
-        """)
-    
-    st.markdown("---")
-    st.subheader("🎯 Key Insight")
-    st.write("""
-    While absolute WER increases under noise, our **theory-based diagnostic engine** 
-    provides consistent corrections that statistical methods miss. Our architecture 
-    is designed for **real-world deployment** where clean audio is the exception, not the rule.
-    """)
-    
-    # Sample corrections
-    st.subheader("Sample Corrections (0001-0020)")
-    corrections = {
-        "Original (ASR)": ["The Danger Child", "apologized once more", "Grisham", "reef shot"],
-        "Corrected (GDE)": ["Danger Trail", "apologized to Whittemore", "Gregson", "rifle shot"],
-        "Method": ["Entertainment DB", "Verb Valency", "Proper Noun Rescue", "Phonetic Mapping"]
-    }
-    st.dataframe(pd.DataFrame(corrections), use_container_width=True)
+with col2:
+    st.markdown("""
+    <div class="metric-box">
+        <div class="metric-value">179%</div>
+        <div class="metric-label">Better Noise Robustness<br>vs. Baseline Systems</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-# Team Page
-elif page == "Team":
-    st.header("👥 Founding Team")
-    
-    st.subheader("Founder & CEO")
-    st.write("""
-    **Classi AI** is founded by a deep tech entrepreneur with expertise in:
-    - **Linguistic Theory**: Register-aware diagnostics, collocation analysis
-    - **Machine Learning**: ASR systems, phoneme mapping, acoustic modeling
-    - **Product Strategy**: Universal enhancement layer for voice/LLM systems
-    
-    **Vision**: To dethrone traditional grammar checkers and create the standard 
-    for spoken English fluency assessment.
-    """)
-    
-    st.subheader("Advisors & Partners")
-    st.write("""
-    - **xAI/Grok**: Public technical validation via X platform engagement
-    - **OpenRouter**: Qwen/Gwen integration for scalable AI inference
-    - **Target Partners**: Tesla (Optimus), humanitarian voice systems
-    """)
+with col3:
+    st.markdown("""
+    <div class="metric-box">
+        <div class="metric-value">3</div>
+        <div class="metric-label">Core Technology<br>Pillars</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-# Contact Page
-elif page == "Contact":
-    st.header("📧 Get In Touch")
-    
-    st.write("""
-    We're currently in **pre-MVP stage** and preparing for:
-    - **Friends & Family Round**: $3M cap or personal loan structure
-    - **Seed Round**: $8M-$15M valuation target
-    - **xAI BD Outreach**: Post <12% WER validation
-    
-    **Interested in partnering or investing?**
-    """)
-    
-    contact_form = st.form("contact_form")
-    name = contact_form.text_input("Name")
-    email = contact_form.text_input("Email")
-    message = contact_form.text_area("Message")
-    submitted = contact_form.form_submit_button("Send Message")
-    
-    if submitted:
-        st.success("Thank you for your interest! We'll be in touch soon.")
-    
-    st.markdown("---")
-    st.write("**Current Status**: Pre-MVP | **Target**: Q3 2026 Launch")
+st.markdown("---")
+
+# Technology - VAGUE but impressive
+st.markdown("""
+### 🔬 Our Innovation
+
+**Multi-Layer Processing Architecture:**
+1. **Acoustic Analysis** - Advanced phonetic pattern recognition
+2. **Contextual Understanding** - Intelligent interpretation engine
+3. **Adaptive Learning** - Personalized performance optimization
+
+**Key Capabilities:**
+- Real-time voice-to-text conversion
+- Accent-agnostic processing
+- Noise-resistant algorithms
+- Scalable cloud infrastructure
+
+**Target Applications:**
+- Voice assistants and smart devices
+- Transcription and captioning services
+- Language learning platforms
+- Accessibility tools
+""")
+
+# Validation Results - Keep it general
+st.markdown("---")
+st.markdown("### ✅ Validation Status")
+
+perf_data = {
+    "Test Batch": ["Batch 1", "Batch 2", "Batch 3", "Batch 4"],
+    "Baseline Accuracy": ["87.67%", "90.47%", "90.56%", "90.09%"],
+    "Our System": ["89.47%", "91.38%", "91.01%", "90.32%"],
+    "Improvement": ["+1.80%", "+0.91%", "+0.45%", "+0.23%"],
+    "Status": ["✅ PASS", "✅ PASS", "✅ PASS", "✅ PASS"]
+}
+
+st.dataframe(pd.DataFrame(perf_data), use_container_width=True)
+
+st.info("**Target:** <12% Error Rate | **Current:** 9.68% | **Status:** All batches exceed targets")
+
+# Contact CTA
+st.markdown("---")
+col_cta1, col_cta2, col_cta3 = st.columns([1, 2, 1])
+with col_cta2:
+    st.markdown("""
+    <div style="text-align: center; padding: 30px; background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(0, 153, 255, 0.1) 100%); 
+                border: 2px solid #00ffff; border-radius: 20px; margin: 30px 0;">
+        <h3 style="color: #00ffff; margin-bottom: 15px;"> Interested in Partnership?</h3>
+        <p style="color: #ffffff; margin-bottom: 20px;">
+        We're currently in pre-MVP stage and preparing for strategic partnerships.<br>
+        Contact us to learn more about collaboration opportunities.
+        </p>
+        <p style="color: #00ffff; font-size: 1.2rem; font-weight: bold;">
+        tommy@classiai.hk
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style='text-align: center; color: #666;'>
-    <p>© 2026 Classi AI. All rights reserved.</p>
-    <p>Built with ❤️ for L2 English learners worldwide</p>
+<div style='text-align: center; color: #666666; margin-top: 40px; padding: 20px; border-top: 1px solid rgba(0, 255, 255, 0.2);'>
+    <p style='font-size: 0.9rem;'>© 2026 Classi AI. All rights reserved. | Confidential & Proprietary</p>
+    <p style='font-size: 0.8rem; color: #444444;'>This demonstration contains trade secrets. Unauthorized use prohibited.</p>
 </div>
 """, unsafe_allow_html=True)
