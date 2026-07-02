@@ -2,8 +2,6 @@ import streamlit as st
 import time
 from datetime import datetime
 import hashlib
-import json
-import os
 from pathlib import Path
 
 # Page config
@@ -23,54 +21,55 @@ SPECIAL_PASSWORD = "ClassiDemo2024!"
 # Session timeout: 30 minutes
 SESSION_TIMEOUT = 1800
 
-# Custom CSS
+# Custom CSS - COMPACT VERSION
 st.markdown("""
 <style>
     .main-header {
         text-align: center;
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: #FF4B4B;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
     }
     .sub-header {
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1rem;
         color: #aaa;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
     .company-intro {
         background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
-        padding: 2rem;
-        border-radius: 15px;
-        margin: 2rem 0;
-        border-left: 5px solid #667eea;
-    }
-    .status-box {
-        padding: 1.5rem;
+        padding: 1.2rem;
         border-radius: 10px;
         margin: 1rem 0;
+        border-left: 4px solid #667eea;
+    }
+    .status-box {
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 0.5rem 0;
         background: #1e1e2e;
-        min-height: 120px;
+        min-height: 80px;
     }
     .dev-note {
         position: fixed;
         top: 10px;
         right: 10px;
         background: rgba(30, 30, 46, 0.95);
-        padding: 12px 18px;
-        border-radius: 8px;
+        padding: 8px 12px;
+        border-radius: 6px;
         border-left: 3px solid #667eea;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         color: #aaa;
         z-index: 9999;
-        max-width: 380px;
+        max-width: 350px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        line-height: 1.4;
     }
     .invitation {
         background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        margin: 2rem 0;
+        padding: 1rem;
+        border-radius: 8px;
+        margin: 1rem 0;
         text-align: center;
         border: 2px solid #667eea;
     }
@@ -80,67 +79,87 @@ st.markdown("""
         left: 10px;
         z-index: 9999;
         background: rgba(30, 30, 46, 0.95);
-        padding: 10px 15px;
-        border-radius: 8px;
+        padding: 6px 10px;
+        border-radius: 6px;
         border-left: 3px solid #f5576c;
     }
+    .password-container input {
+        width: 150px !important;
+        height: 30px !important;
+        font-size: 0.85rem !important;
+        padding: 5px 8px !important;
+    }
+    .stTextInput > div > div > input {
+        width: 150px !important;
+        height: 30px !important;
+        font-size: 0.85rem !important;
+    }
+    h2 { margin: 0 0 0.8rem 0 !important; }
+    h3 { margin: 0 0 0.6rem 0 !important; }
+    p { margin: 0.5rem 0 !important; line-height: 1.5; }
+    .stExpander { margin: 0.3rem 0 !important; }
+    blockquote { margin: 0.5rem 0 !important; }
+    .element-container { margin-bottom: 0.5rem !important; }
+    .stMarkdown { margin-bottom: 0.3rem !important; }
+    .stFileUploader { margin: 0.5rem 0 !important; }
+    .stButton > button { margin: 0.3rem 0 !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# Password Protection - Top Left Corner
+# Password Protection - Top Left Corner (COMPACT)
 st.markdown("""
 <div class="password-container">
-    <strong>🔐 Access Password</strong>
+    <strong style="font-size: 0.8rem;">🔐 Password</strong>
 </div>
 """, unsafe_allow_html=True)
 
-password = st.text_input("Password", type="password", label_visibility="collapsed", key="pwd_top")
+password = st.text_input("", type="password", label_visibility="collapsed", 
+                         key="pwd_top", placeholder="Enter password")
 
 if password:
     if password == SPECIAL_PASSWORD:
-        st.success("✅ Unlimited access granted!")
+        st.success("✅ Unlimited access!")
         st.session_state.session_timeout = None
     else:
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
         
         if elapsed > SESSION_TIMEOUT:
-            st.error("⏰ Session expired (30 minutes). Please refresh for a new session.")
+            st.error("⏰ Session expired (30 min). Refresh for new session.")
             st.stop()
         else:
             minutes = int(remaining // 60)
             seconds = int(remaining % 60)
-            st.info(f"⏱️ Session: {minutes}:{seconds:02d} remaining")
+            st.info(f"⏱️ {minutes}:{seconds:02d} left")
 
-# Development Note - Top Right
+# Development Note - Top Right (COMPACT)
 st.markdown("""
 <div class="dev-note">
-    <strong style="color: #667eea;">📌 Development Demo</strong><br>
-    Hosted on Streamlit Cloud for rapid iteration.<br>
-    <strong>Domain masking enabled</strong> for clean URL display.<br>
-    Production migration planned on Google Cloud
+    <strong style="color: #667eea;">📌 Dev Demo</strong><br>
+    Streamlit Cloud | Domain masking enabled<br>
+    Production: Google Cloud
 </div>
 """, unsafe_allow_html=True)
 
-# Add some spacing
-st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True)
+# Minimal spacing
+st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True)
 
 # Header
 st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Experience the difference in real-world voice recognition</p>', unsafe_allow_html=True)
 
-# Company Introduction
+# Company Introduction (COMPACT)
 st.markdown("""
 <div class="company-intro">
-    <h2 style="color: #667eea; margin-top: 0;">About Classi AI</h2>
-    <p style="font-size: 1.05rem; line-height: 1.6;">
+    <h2 style="color: #667eea; margin-top: 0; font-size: 1.5rem;">About Classi AI</h2>
+    <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 0.5rem;">
         Classi AI is redefining how the world bridges language barriers. While leading applications 
         merely guess at your words, we comprehend the true context of your conversation. 
         Powered by our proprietary <strong>Universal Fluency Layer</strong>, our voice-to-text engine 
         thrives in real-world environments where background noise, heavy accents, idioms, and 
         code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
     </p>
-    <p style="font-size: 1.05rem; line-height: 1.6; margin-bottom: 0;">
+    <p style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 0;">
         Beyond transcription, Classi's revolutionary SaaS platform is engineered to meet the needs 
         of over 1 billion non-native learners globally through interactive learning, real-time AI 
         coaching, and precision pronunciation guidance.
@@ -148,15 +167,15 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Invitation Message
+# Invitation Message (COMPACT)
 st.markdown("""
 <div class="invitation">
-    <h3 style="color: #667eea; margin-top: 0;">🚀 Join Our Vision</h3>
-    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+    <h3 style="color: #667eea; margin-top: 0; font-size: 1.2rem;">🚀 Join Our Vision</h3>
+    <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
         We're seeking strategic partners and investors who share our vision of making 
         voice technology truly universal and accessible.
     </p>
-    <p style="color: #aaa; margin-bottom: 0;">
+    <p style="color: #aaa; margin-bottom: 0; font-size: 0.9rem;">
         <em>Try the demo below and experience the future of voice recognition.</em>
     </p>
 </div>
@@ -173,12 +192,12 @@ else:
     st.session_state.accessed_ips.add(ip_hash)
     st.session_state.first_visit = False
 
-# WORKING AUDIO RECORDING - Simple File Upload
+# WORKING AUDIO RECORDING - COMPACT
 st.markdown("### 🎤 Upload Voice Recording")
-st.info("📱 **Desktop:** Click below to upload an audio file (WAV, MP3, M4A)")
-st.info("🎙️ **Alternative:** Use your phone to record, then upload the file")
+st.info("📱 Desktop: Upload WAV/MP3/M4A | 🎙️ Or record on phone then upload")
 
-uploaded_file = st.file_uploader("Choose an audio file", type=['wav', 'mp3', 'm4a', 'ogg'])
+uploaded_file = st.file_uploader("", type=['wav', 'mp3', 'm4a', 'ogg'], 
+                                  label_visibility="collapsed")
 
 if uploaded_file is not None:
     with st.spinner("🔄 Processing your voice..."):
