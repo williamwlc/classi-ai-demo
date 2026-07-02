@@ -2,8 +2,9 @@ import streamlit as st
 import time
 from datetime import datetime
 import hashlib
-import base64
-from streamlit_audiorec import audiorec
+import json
+import os
+from pathlib import Path
 
 # Page config
 st.set_page_config(page_title="Classi AI - Voice Demo", layout="wide")
@@ -72,6 +73,22 @@ st.markdown("""
         margin: 2rem 0;
         text-align: center;
         border: 2px solid #667eea;
+    }
+    .recording-box {
+        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
+        padding: 3rem;
+        border-radius: 15px;
+        text-align: center;
+        margin: 2rem 0;
+        border: 3px solid #667eea;
+    }
+    .recording-box.active {
+        border-color: #f5576c;
+        animation: pulse-border 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-border {
+        0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+        50% { box-shadow: 0 0 40px rgba(245, 87, 108, 0.8); }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -153,27 +170,36 @@ else:
     st.session_state.accessed_ips.add(ip_hash)
     st.session_state.first_visit = False
 
-# ACTUAL AUDIO RECORDING
-st.markdown("### 🎤 Record Your Voice")
-st.info("Click the microphone icon below and start speaking. Click again to stop.")
+# WORKING AUDIO RECORDING - Simple File Upload
+st.markdown("### 🎤 Upload Voice Recording")
+st.info("📱 **Desktop:** Click below to upload an audio file (WAV, MP3, M4A)")
+st.info("🎙️ **Alternative:** Use your phone to record, then upload the file")
 
-audio_value = audiorec("Click to record", "audio/wav")
+uploaded_file = st.file_uploader("Choose an audio file", type=['wav', 'mp3', 'm4a', 'ogg'])
 
-if audio_value:
+if uploaded_file is not None:
     with st.spinner("🔄 Processing your voice..."):
-        # SIMULATE processing (replace with your actual ASR + GDE logic)
-        time.sleep(1)
+        # Save uploaded file temporarily
+        temp_path = Path(f"temp_{uploaded_file.name}")
+        temp_path.write_bytes(uploaded_file.getvalue())
         
-        # Add to history
+        # SIMULATE processing (REPLACE with your actual ASR + GDE)
+        time.sleep(2)
+        
+        # Example corrections (REPLACE with actual logic)
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            'raw_text': "other of the danger trail flip stills etc",  # REPLACE with actual ASR output
-            'corrected_text': "Author of the danger trail Philip Steels etc",  # REPLACE with actual GDE output
-            'duration': f"{len(audio_value)/16000:.1f}s"  # Approximate duration
+            'raw_text': "other of the danger trail flip stills etc",
+            'corrected_text': "Author of the danger trail Philip Steels etc",
+            'duration': f"{uploaded_file.size / 16000:.1f}s",
+            'filename': uploaded_file.name
         })
         
         # Keep only last 10
         st.session_state.history = st.session_state.history[:10]
+        
+        # Clean up
+        temp_path.unlink(missing_ok=True)
         
         st.success("✅ Voice processed!")
         st.rerun()
@@ -206,7 +232,7 @@ st.markdown("### 📜 Correction History (Last 10)")
 
 if st.session_state.history:
     for i, item in enumerate(st.session_state.history):
-        with st.expander(f"Entry {i+1} - {item['timestamp']}"):
+        with st.expander(f"Entry {i+1} - {item['timestamp']} - {item['filename']}"):
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown("**🔴 Raw ASR:**")
@@ -216,7 +242,7 @@ if st.session_state.history:
                 st.write(item['corrected_text'])
             st.caption(f"Duration: {item['duration']}")
 else:
-    st.info("🎤 No recordings yet. Click the microphone above to start!")
+    st.info("🎤 No recordings yet. Upload an audio file above to start!")
 
 # Footer
 st.markdown("---")
