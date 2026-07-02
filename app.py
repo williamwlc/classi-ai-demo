@@ -1,7 +1,6 @@
 import streamlit as st
 import time
 from datetime import datetime
-import hashlib
 from pathlib import Path
 
 # Page config
@@ -12,8 +11,6 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 if 'session_start' not in st.session_state:
     st.session_state.session_start = time.time()
-if 'accessed_ips' not in st.session_state:
-    st.session_state.accessed_ips = set()
 
 # SPECIAL PASSWORD for unlimited testing
 SPECIAL_PASSWORD = "ClassiDemo2024!"
@@ -52,7 +49,7 @@ st.markdown("""
     }
     .dev-note {
         position: fixed;
-        top: 50px;  /* MOVED DOWN to avoid being cut off */
+        top: 50px;
         right: 10px;
         background: rgba(30, 30, 46, 0.95);
         padding: 8px 12px;
@@ -73,7 +70,6 @@ st.markdown("""
         text-align: center;
         border: 2px solid #667eea;
     }
-    /* Force compact margins everywhere */
     .block-container {
         padding-top: 1rem !important;
         padding-bottom: 1rem !important;
@@ -83,12 +79,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Development Note - Top Right (MOVED DOWN)
+# Development Note - Top Right (CLEAN - NO TIMESTAMP)
 st.markdown("""
 <div class="dev-note">
     <strong style="color: #667eea;">📌 Dev Demo</strong><br>
-    Streamlit Cloud | Domain masking enabled<br>
-    Production: Google Cloud
+    Domain masking enabled for clean URL display<br>
+    Production migration planned on Google Cloud
 </div>
 """, unsafe_allow_html=True)
 
@@ -143,7 +139,7 @@ st.markdown("""
 # Invitation Message (COMPACT)
 st.markdown("""
 <div class="invitation">
-    <h3 style="color: #667eea; margin-top: 0; font-size: 1.2rem;"> Join Our Vision</h3>
+    <h3 style="color: #667eea; margin-top: 0; font-size: 1.2rem;">🚀 Join Our Vision</h3>
     <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
         We're seeking strategic partners and investors who share our vision of making 
         voice technology truly universal and accessible.
@@ -153,16 +149,6 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
-
-# IP Tracking (SAFE VERSION - Removed st.context.headers to prevent crash)
-# Using a simple session-based check instead of IP hash for stability
-if 'session_check' not in st.session_state:
-    st.session_state.session_check = True
-else:
-    # If you want to enforce 1 session per browser refresh, you can uncomment below:
-    # st.warning("️ One demo session per visitor. Thank you for your interest!")
-    # st.stop()
-    pass
 
 # WORKING AUDIO RECORDING - COMPACT
 st.markdown("### 🎤 Upload Voice Recording")
