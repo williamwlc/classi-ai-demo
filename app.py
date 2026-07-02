@@ -27,20 +27,20 @@ st.markdown("""
     .main-header {
         text-align: center;
         font-size: 2rem;
-        color: #FF4B4B;
-        margin-bottom: 0.3rem;
+        color: #ffffff;
+        margin-bottom: 0.2rem;
     }
     .sub-header {
         text-align: center;
         font-size: 1rem;
         color: #aaa;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
     .company-intro {
         background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
-        padding: 1.2rem;
+        padding: 1rem;
         border-radius: 10px;
-        margin: 1rem 0;
+        margin: 0.5rem 0;
         border-left: 4px solid #667eea;
     }
     .status-box {
@@ -69,52 +69,34 @@ st.markdown("""
         background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%);
         padding: 1rem;
         border-radius: 8px;
-        margin: 1rem 0;
+        margin: 0.5rem 0;
         text-align: center;
         border: 2px solid #667eea;
     }
-    .password-container {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 9999;
-        background: rgba(30, 30, 46, 0.95);
-        padding: 6px 10px;
-        border-radius: 6px;
-        border-left: 3px solid #f5576c;
+    /* Force compact margins everywhere */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
     }
-    .password-container input {
-        width: 150px !important;
-        height: 30px !important;
-        font-size: 0.85rem !important;
-        padding: 5px 8px !important;
-    }
-    .stTextInput > div > div > input {
-        width: 150px !important;
-        height: 30px !important;
-        font-size: 0.85rem !important;
-    }
-    h2 { margin: 0 0 0.8rem 0 !important; }
-    h3 { margin: 0 0 0.6rem 0 !important; }
-    p { margin: 0.5rem 0 !important; line-height: 1.5; }
-    .stExpander { margin: 0.3rem 0 !important; }
-    blockquote { margin: 0.5rem 0 !important; }
-    .element-container { margin-bottom: 0.5rem !important; }
-    .stMarkdown { margin-bottom: 0.3rem !important; }
-    .stFileUploader { margin: 0.5rem 0 !important; }
-    .stButton > button { margin: 0.3rem 0 !important; }
+    h1, h2, h3, p { margin-bottom: 0.5rem !important; }
+    .stMarkdown { margin-bottom: 0.2rem !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# Password Protection - Top Left Corner (COMPACT)
+# Development Note - Top Right (COMPACT)
 st.markdown("""
-<div class="password-container">
-    <strong style="font-size: 0.8rem;">🔐 Password</strong>
+<div class="dev-note">
+    <strong style="color: #667eea;">📌 Dev Demo</strong><br>
+    Streamlit Cloud | Domain masking enabled<br>
+    Production: Google Cloud
 </div>
 """, unsafe_allow_html=True)
 
-password = st.text_input("", type="password", label_visibility="collapsed", 
-                         key="pwd_top", placeholder="Enter password")
+# Password Protection - Short Width (using columns)
+pwd_col1, pwd_col2 = st.columns([1, 5])
+with pwd_col1:
+    password = st.text_input("", type="password", label_visibility="collapsed", 
+                             key="pwd_top", placeholder="🔐 Password")
 
 if password:
     if password == SPECIAL_PASSWORD:
@@ -130,22 +112,13 @@ if password:
         else:
             minutes = int(remaining // 60)
             seconds = int(remaining % 60)
-            st.info(f"⏱️ {minutes}:{seconds:02d} left")
+            st.info(f"️ {minutes}:{seconds:02d} left")
 
-# Development Note - Top Right (COMPACT)
-st.markdown("""
-<div class="dev-note">
-    <strong style="color: #667eea;">📌 Dev Demo</strong><br>
-    Streamlit Cloud | Domain masking enabled<br>
-    Production: Google Cloud
-</div>
-""", unsafe_allow_html=True)
-
-# Minimal spacing
-st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True)
+# Minimal spacing (Reduced from 60px to 10px)
+st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # Header
-st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Experience the difference in real-world voice recognition</p>', unsafe_allow_html=True)
 
 # Company Introduction (COMPACT)
@@ -250,7 +223,7 @@ with col2:
 
 # History Section
 st.markdown("---")
-st.markdown("### 📜 Correction History (Last 10)")
+st.markdown("###  Correction History (Last 10)")
 
 if st.session_state.history:
     for i, item in enumerate(st.session_state.history):
@@ -269,7 +242,7 @@ else:
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #666; padding: 2rem;">
+<div style="text-align: center; color: #666; padding: 1rem;">
     <p style="margin: 0;"><strong>Classi AI</strong> - Bridging language barriers with precision</p>
     <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">Contact: info@classiaihk.com</p>
 </div>
