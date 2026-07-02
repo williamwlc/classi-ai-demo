@@ -13,7 +13,7 @@ if not st.session_state.authenticated:
     st.title("🔒 Classi AI - Confidential Demo")
     password = st.text_input("Enter access code:", type="password", key="password_input")
     if st.button("Login"):
-        if password == "classi2026invest":
+        if password == "postmvpsoon":
             st.session_state.authenticated = True
             st.rerun()
         else:
