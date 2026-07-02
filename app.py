@@ -1,13 +1,12 @@
-$createStreamlitWebsite = @'
+$updateStreamlitApp = @'
 import json
 from pathlib import Path
-from datetime import datetime
 
 print("="*80)
-print("CREATING PROFESSIONAL STREAMLIT WEBSITE FOR CLASSI AI")
+print("UPDATING STREAMLIT APP - REMOVING STAGES & IMPROVING BRANDING")
 print("="*80)
 
-# Create the Streamlit app
+# Create the updated Streamlit app
 streamlit_code = '''
 import streamlit as st
 import json
@@ -27,12 +26,21 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main-header {
-        font-size: 3rem;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 4rem;
         font-weight: 700;
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .tagline {
+        font-size: 1.3rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-style: italic;
     }
     .metric-card {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -41,6 +49,20 @@ st.markdown("""
         color: white;
         text-align: center;
         margin: 1rem 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .output-box {
+        background: #1a1a2e;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin: 1rem 0;
+        border-left: 4px solid #667eea;
+    }
+    .raw-output {
+        border-left-color: #e74c3c;
+    }
+    .corrected-output {
+        border-left-color: #2ecc71;
     }
     .tech-badge {
         display: inline-block;
@@ -50,12 +72,18 @@ st.markdown("""
         margin: 0.25rem;
         font-size: 0.9rem;
     }
+    .logo-container {
+        text-align: center;
+        margin: 2rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown('<h1 class="main-header">🎯 Classi AI</h1>', unsafe_allow_html=True)
-st.markdown("### Universal Fluency Layer for Voice & Language Systems")
+# Header with Logo and Company Name
+st.markdown('<div class="logo-container">', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Classi AI</h1>', unsafe_allow_html=True)
+st.markdown('<p class="tagline">Universal Fluency Layer for Voice & Language Systems</p>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 st.markdown("---")
 
 # Sidebar - Navigation
@@ -67,7 +95,7 @@ page = st.sidebar.radio(
 
 # Home Page
 if page == "Home":
-    st.header("Revolutionizing L2 English Fluency")
+    st.header("🎯 Revolutionizing L2 English Fluency")
     
     col1, col2, col3 = st.columns(3)
     
@@ -79,6 +107,31 @@ if page == "Home":
     
     with col3:
         st.markdown('<div class="metric-card"><h2>3</h2><p>Core Moats</p></div>', unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    # Voice Input Demo Section
+    st.subheader("🎙️ Try It Now")
+    st.write("Upload a voice message or record directly to see our technology in action:")
+    
+    uploaded_file = st.file_uploader("Choose an audio file", type=["wav", "mp3", "m4a"])
+    
+    if uploaded_file is not None:
+        st.audio(uploaded_file, format="audio/wav")
+        
+        col_a, col_b = st.columns(2)
+        
+        with col_a:
+            st.markdown('<div class="output-box raw-output">', unsafe_allow_html=True)
+            st.markdown("### 🔴 Raw ASR Output")
+            st.write("Waiting for processing...")
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        with col_b:
+            st.markdown('<div class="output-box corrected-output">', unsafe_allow_html=True)
+            st.markdown("### 🟢 Corrected Output")
+            st.write("Waiting for processing...")
+            st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown("---")
     
@@ -264,71 +317,98 @@ st.markdown("""
 """, unsafe_allow_html=True)
 '''
 
-# Save the Streamlit app
+# Save the updated Streamlit app
 app_path = Path(r"D:\fluency-mvp\website\app.py")
-app_path.parent.mkdir(parents=True, exist_ok=True)
 app_path.write_text(streamlit_code, encoding='utf-8')
-print(f"✅ Streamlit app created: {app_path}")
+print(f"✅ Updated Streamlit app saved: {app_path}")
 
-# Create requirements.txt
-requirements = """
-streamlit==1.28.0
-pandas==2.0.3
-numpy==1.24.3
+# Create logo suggestions document
+logo_suggestions = """
+# Classi AI Logo Suggestions
+
+Here are 5 logo concepts that connect to learning, alphabet, grammar, and language:
+
+## Logo Option 1: The Grammar Owl 🦉
+- **Symbol**: Owl (wisdom) holding a pen/pencil
+- **Elements**: Alphabet letters (A, B, C) forming the wings
+- **Colors**: Purple (creativity) + Gold (excellence)
+- **Meaning**: Wisdom in language learning, vigilance in grammar correction
+- **Style**: Modern, minimalist line art
+
+## Logo Option 2: The Speech Bubble ABC 🗨️
+- **Symbol**: Speech bubble with alphabet letters inside
+- **Elements**: A, B, C forming a gradient inside the bubble
+- **Colors**: Blue (trust) + Green (growth)
+- **Meaning**: Voice communication meets language fundamentals
+- **Style**: Clean, tech-forward design
+
+## Logo Option 3: The Graduation Cap + Letters 🎓
+- **Symbol**: Graduation cap with flowing letters
+- **Elements**: Cap with letters streaming out like a ribbon
+- **Colors**: Navy blue (professionalism) + Orange (energy)
+- **Meaning**: Educational achievement, mastery of language
+- **Style**: Academic yet modern
+
+## Logo Option 4: The Brain + Alphabet 🧠
+- **Symbol**: Brain outline with alphabet letters as neurons
+- **Elements**: Interconnected letters (A, B, C, D) forming neural pathways
+- **Colors**: Purple (innovation) + Teal (clarity)
+- **Meaning**: AI-powered learning, cognitive language processing
+- **Style**: Tech/scientific aesthetic
+
+## Logo Option 5: The Open Book + Voice Waves 📖
+- **Symbol**: Open book with sound waves emanating
+- **Elements**: Book pages with voice wave patterns
+- **Colors**: Green (growth) + Blue (communication)
+- **Meaning**: Traditional learning meets voice technology
+- **Style**: Balanced, harmonious design
+
+## Recommended Fonts:
+- **Primary**: Times New Roman (classic, academic, trustworthy)
+- **Secondary**: Arial/Helvetica (modern, clean, readable)
+
+## Color Palette:
+- **Primary**: #667eea (Purple - innovation, creativity)
+- **Secondary**: #764ba2 (Deep Purple - wisdom, quality)
+- **Accent**: #2ecc71 (Green - success, growth)
+- **Neutral**: #1a1a2e (Dark Blue - professionalism)
+
+## Where to Get These Logos:
+1. **Fiverr**: $50-150 for professional custom design
+2. **99designs**: Contest-based, $299+ for multiple options
+3. **Canva Pro**: DIY with templates, $12.99/month
+4. **Looka**: AI-powered logo maker, $65 one-time
+5. **Dribbble**: Hire top designers, $500+
+
+## Quick DIY Option:
+Use Canva or Looka with these keywords:
+- "Education + Technology"
+- "Language Learning + AI"
+- "Grammar + Voice"
 """
-req_path = Path(r"D:\fluency-mvp\website\requirements.txt")
-req_path.write_text(requirements, encoding='utf-8')
-print(f"✅ Requirements file created: {req_path}")
 
-# Create README for Google
-readme = """
-# Classi AI - Professional Website
-
-## About This Site
-This is the official public website for Classi AI, a deep tech startup building 
-the Universal Fluency Layer for voice and language systems.
-
-## Technology
-- Built with Streamlit (Python web framework)
-- Hosted on [Your Hosting Platform]
-- Public URL: [Your URL]
-
-## Company Information
-- **Founded**: 2026
-- **Stage**: Pre-MVP
-- **Focus**: L2 English fluency for Chinese speakers
-- **Technology**: RADE (Register-Aware Diagnostic Engine), UltraData phoneme mapping
-
-## Contact
-For inquiries, please visit the Contact page or email: [your-email@domain.com]
-
-## Visibility Status
-✅ **This website is PUBLIC and INDEXABLE**
-- No login required
-- No hidden pages
-- All content accessible to search engines
-- Mobile-responsive design
-"""
-readme_path = Path(r"D:\fluency-mvp\website\README.md")
-readme_path.write_text(readme, encoding='utf-8')
-print(f"✅ README created: {readme_path}")
+logo_path = Path(r"D:\fluency-mvp\website\LOGO_SUGGESTIONS.md")
+logo_path.write_text(logo_suggestions, encoding='utf-8')
+print(f"✅ Logo suggestions document created: {logo_path}")
 
 print("\n" + "="*80)
-print("STREAMLIT WEBSITE CREATED SUCCESSFULLY!")
+print("UPDATES COMPLETE!")
 print("="*80)
-print("\nTo run the website:")
-print("  1. cd D:\\fluency-mvp\\website")
-print("  2. pip install -r requirements.txt")
-print("  3. streamlit run app.py")
-print("\nTo deploy publicly (recommended for Google):")
-print("  Option 1: Streamlit Cloud (FREE)")
-print("    - Push to GitHub")
-print("    - Connect to https://share.streamlit.io")
-print("    - Get public URL instantly")
-print("\n  Option 2: Render.com (FREE tier)")
-print("  Option 3: Heroku (FREE tier)")
-print("\nOnce deployed, submit the public URL to Google Startup Program!")
+print("\n✅ Changes Made:")
+print("   1. Removed 'Stage 3' and 'Stage 5' labels")
+print("   2. Made 'Classi AI' bigger (4rem font size)")
+print("   3. Applied Times New Roman font to company name")
+print("   4. Improved visual hierarchy and mobile responsiveness")
+print("\n📋 Logo Suggestions:")
+print("   - Created detailed document with 5 logo concepts")
+print("   - Includes color palette and font recommendations")
+print("   - See: D:\\fluency-mvp\\website\\LOGO_SUGGESTIONS.md")
+print("\n🚀 Next Steps:")
+print("   1. Review the logo suggestions")
+print("   2. Choose a concept or hire a designer")
+print("   3. Update the app with your chosen logo")
+print("   4. Deploy to Streamlit Cloud for Google review")
 '@
 
-$createStreamlitWebsite | Out-File -FilePath "D:\fluency-mvp\create_website.py" -Encoding utf8
-& "D:\fluency-mvp\venv\Scripts\python.exe" "D:\fluency-mvp\create_website.py"
+$updateStreamlitApp | Out-File -FilePath "D:\fluency-mvp\update_streamlit.py" -Encoding utf8
+& "D:\fluency-mvp\venv\Scripts\python.exe" "D:\fluency-mvp\update_streamlit.py"
