@@ -98,7 +98,7 @@ st.markdown("""
 <div class="dev-note">
     <strong style="color: #667eea;">📌 Development Demo</strong><br>
     Hosted on Streamlit Cloud for rapid iteration.<br>
-    Access: <strong>ClassiAIhk.com</strong> | 
+    <strong>Domain masking enabled</strong> for clean URL display.<br>
     Production migration planned on Google Cloud
 </div>
 """, unsafe_allow_html=True)
@@ -140,12 +140,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Password Protection
-password = st.sidebar.text_input("🔐 Access Password", type="password")
+# Password Protection - Top Left Corner
+col_pwd1, col_pwd2, col_pwd3 = st.columns([1, 8, 1])
+with col_pwd1:
+    password = st.text_input("🔐 Access Password", type="password", key="pwd_input")
 
 if password:
     if password == SPECIAL_PASSWORD:
-        st.sidebar.success("✅ Unlimited access granted!")
+        st.success("✅ Unlimited access granted!")
         st.session_state.session_timeout = None
     else:
         elapsed = time.time() - st.session_state.session_start
@@ -157,7 +159,10 @@ if password:
         else:
             minutes = int(remaining // 60)
             seconds = int(remaining % 60)
-            st.sidebar.info(f"⏱️ Session: {minutes}:{seconds:02d} remaining")
+            st.info(f"⏱️ Session: {minutes}:{seconds:02d} remaining")
+
+# Remove the sidebar password
+# st.sidebar.text_input removed
 
 # IP Tracking
 user_ip = st.context.headers.get("X-Real-IP", "unknown") if hasattr(st, 'context') else "unknown"
