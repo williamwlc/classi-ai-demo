@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 st.set_page_config(
     page_title="Classi AI",
-    page_icon="🧠",
+    page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
@@ -14,6 +14,10 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "start_time" not in st.session_state:
     st.session_state.start_time = None
+if "recording" not in st.session_state:
+    st.session_state.recording = False
+if "transcript" not in st.session_state:
+    st.session_state.transcript = ""
 
 # Compact CSS for 1-page desktop fit
 st.markdown("""
@@ -128,6 +132,9 @@ if not st.session_state.authenticated:
     st.stop()
 
 # Check Time Limit (1 hour)
+minutes = 0
+seconds = 0
+
 if st.session_state.start_time:
     elapsed = datetime.now() - st.session_state.start_time
     time_remaining = timedelta(hours=1) - elapsed
@@ -137,11 +144,11 @@ if st.session_state.start_time:
         st.session_state.start_time = None
         st.rerun()
     
-    minutes = time_remaining.seconds // 60
-    seconds = time_remaining.seconds % 60
+    minutes = int(time_remaining.total_seconds() // 60)
+    seconds = int(time_remaining.total_seconds() % 60)
 
 # Main Content
-st.markdown(f'<div class="time-display">️ Time Remaining: {minutes}m {seconds}s</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="time-display">⏱️ Time Remaining: {minutes}m {seconds}s</div>', unsafe_allow_html=True)
 
 # Header
 col_logo, col_title = st.columns([1, 6])
@@ -149,7 +156,7 @@ with col_logo:
     try:
         st.image("logo.png", width=80)
     except:
-        st.markdown('<div style="font-size: 3.5rem;"></div>', unsafe_allow_html=True)
+        st.markdown('<div style="font-size: 3.5rem;">🎓</div>', unsafe_allow_html=True)
 with col_title:
     st.markdown('<h1 class="main-header">Classi AI</h1>', unsafe_allow_html=True)
     st.markdown('<p class="tagline">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
@@ -181,11 +188,7 @@ with col_left:
 
 with col_right:
     st.markdown("### 🎙️ Test Drive")
-    if "recording" not in st.session_state:
-        st.session_state.recording = False
-    if "transcript" not in st.session_state:
-        st.session_state.transcript = ""
-
+    
     c1, c2 = st.columns(2)
     with c1:
         if st.button("▶️ START", use_container_width=True, key="start_btn"):
@@ -198,7 +201,7 @@ with col_right:
             st.rerun()
 
     if st.session_state.recording:
-        st.markdown("<h4 style='color:#ff4444; text-align:center;'> Recording...</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#ff4444; text-align:center;'>🔴 Recording...</h4>", unsafe_allow_html=True)
     
     if st.session_state.transcript:
         st.markdown(f"""
@@ -212,7 +215,7 @@ with col_right:
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("###  History")
+    st.markdown("### 📜 History")
     history = [
         {"v": "I followed line of proper railroad", "c": "I followed the line of the proposed railroad"},
         {"v": "He turned sharply faced Grisham", "c": "He turned sharply and faced Gregson"}
