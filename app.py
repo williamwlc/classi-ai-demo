@@ -1,16 +1,21 @@
 import streamlit as st
-import pandas as pd
+import base64
+from pathlib import Path
 
 # Page Configuration
 st.set_page_config(
     page_title="Classi AI",
     page_icon="🎓",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS - Classi AI on LEFT
+# Custom CSS - Hide sidebar, mobile responsive
 st.markdown("""
 <style>
+    #MainMenu {visibility: hidden;}
+    .sidebar {display: none;}
+    
     @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap');
     
     .main-header {
@@ -19,147 +24,178 @@ st.markdown("""
         font-weight: 700;
         color: #667eea;
         text-align: left;
-        margin: 1rem 0;
+        margin: 0;
     }
+    
     .tagline {
         font-family: "Times New Roman", Times, serif;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         color: #666;
         text-align: left;
         margin-bottom: 2rem;
         font-style: italic;
     }
+    
+    .intro-text {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: #333;
+        text-align: justify;
+        margin: 2rem 0;
+    }
+    
+    .vip-box {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border: 3px solid #ffd700;
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        margin: 3rem 0;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .vip-title {
+        color: #ffd700;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+    }
+    
+    .vip-message {
+        color: #fff;
+        font-size: 1.3rem;
+        line-height: 1.8;
+        margin: 1.5rem 0;
+    }
+    
+    .voice-icon {
+        font-size: 5rem;
+        margin: 2rem 0;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    
+    .voice-icon:hover {
+        transform: scale(1.1);
+    }
+    
+    .recording-active {
+        animation: pulse 1.5s infinite;
+        color: #ff4444;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
+    
+    .transcript-box {
+        background: #f8f9fa;
+        border-left: 5px solid #667eea;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 8px;
+        font-size: 1.1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .main-header { font-size: 2.5rem; }
+        .vip-title { font-size: 1.8rem; }
+        .vip-message { font-size: 1.1rem; }
+        .voice-icon { font-size: 4rem; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Header - Classi AI on TOP LEFT
-st.markdown('<h1 class="main-header">🎓 Classi AI</h1>', unsafe_allow_html=True)
-st.markdown('<p class="tagline">Universal Fluency Layer for Voice & Language Systems</p>', unsafe_allow_html=True)
-st.markdown("---")
-
-# ONE PARAGRAPH INTRO - PROFESSIONAL
-st.write("""
-Classi AI is an advanced grammar diagnostic engine designed for L2 English learners, 
-with specialized focus on Chinese speakers. Our system integrates Whisper Large-v3 
-automatic speech recognition with a sophisticated Grammar Diagnostic Engine (GDE) 
-that employs keyword-based entity mapping for contextual understanding. When the system 
-detects domain-specific keywords such as "actor," "sequel," or "Mission Impossible," 
-it automatically activates the entertainment domain to accurately identify character 
-names like "Benji Dunn" and actor names like "Tom Cruise." Our engine achieves 9.68% 
-WER on clean audio and demonstrates robust performance under challenging acoustic 
-conditions where conventional ASR systems experience significant degradation.
-""")
+# Logo and Header - TOP LEFT
+col_logo, col_title = st.columns([1, 4])
+with col_logo:
+    st.markdown('<div style="font-size: 5rem; margin: 0.5rem;">🎓🧠</div>', unsafe_allow_html=True)
+with col_title:
+    st.markdown('<h1 class="main-header">Classi AI</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="tagline">Universal Fluency Layer for Voice & Language Systems</p>', unsafe_allow_html=True)
 
 st.markdown("---")
 
-# KEYWORD MAPPING EXAMPLE
-st.subheader("🎬 Context-Aware Entity Recognition")
-st.write("**Example Input:**")
-st.info('"Sequel of Mission Impossible is coming soon. Who will be the supporting male actor this time as Benji Dunn was unavailable."')
-
-st.write("**System Detection:**")
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.markdown("**Keywords Identified:**")
-    st.write("- sequel")
-    st.write("- actor")
-    st.write("- Mission Impossible")
-
-with col2:
-    st.markdown("**Domain Activated:**")
-    st.write("🎬 Entertainment")
-
-with col3:
-    st.markdown("**Entities Recognized:**")
-    st.write("- Benji Dunn (character)")
-    st.write("- Tom Cruise (actor)")
-    st.write("- Simon Pegg (actor)")
+# ONE PARAGRAPH INTRO - NO SENSITIVE INFO
+st.markdown("""
+<div class="intro-text">
+Classi AI is redefining how the world understands spoken language, specifically designed to bridge the fluency gap for non-native English speakers. Unlike traditional tools that merely transcribe words, our platform comprehends the actual context of your conversation. For instance, if you discuss the 'sequel to Mission Impossible' and mention a 'supporting actor,' our system instantly recognizes the entertainment domain, correctly identifying characters like 'Benji Dunn' rather than misinterpreting them as random phrases. By mapping keywords to real-world entities, we ensure your voice is not just heard, but truly understood, preserving your unique identity and intent in any environment.
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# Upload Section
-st.subheader("🎙️ Test the System")
-uploaded_file = st.file_uploader("Upload audio file", type=["wav", "mp3", "m4a"])
+# MISSION IMPOSSIBLE VIP INVITATION BOX
+st.markdown("""
+<div class="vip-box">
+    <h2 class="vip-title">🎬 VIP Invitation</h2>
+    <p class="vip-message">
+        <strong>Good evening, distinguished guest.</strong><br><br>
+        
+        You have been specially selected to join an exclusive circle of innovators shaping the future of human-machine communication. 
+        This message will self-destruct in your mind once you've made your decision.<br><br>
+        
+        <em>Your mission, should you choose to accept it, is to become a founding member of Classi AI's Founder's Circle. 
+        Your participation will help revolutionize how millions of people worldwide express themselves in English.</em><br><br>
+        
+        <strong>Recording Instructions:</strong><br>
+        Click the microphone icon below to record your response.<br>
+        Click once to START recording.<br>
+        Click again to STOP and transcribe.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
-if uploaded_file is not None:
-    st.audio(uploaded_file, format="audio/wav")
-    
-    if st.button("⚡ Process Audio", type="primary"):
-        with st.spinner("Processing with Whisper + GDE..."):
-            st.success("✅ Processing complete!")
-            
-            col_a, col_b = st.columns(2)
-            
-            with col_a:
-                st.markdown("### 🔴 Raw ASR Output")
-                st.info("Awaiting processing...")
-            
-            with col_b:
-                st.markdown("### 🟢 GDE Corrected Output")
-                st.info("Awaiting processing...")
+# Voice Recording Section
+st.markdown('<div style="text-align: center; margin: 3rem 0;">', unsafe_allow_html=True)
+st.markdown('<h2 style="color: #667eea; margin-bottom: 2rem;">🎙️ Record Your Response</h2>', unsafe_allow_html=True)
 
-st.markdown("---")
+# Initialize session state
+if "recording" not in st.session_state:
+    st.session_state.recording = False
+if "transcript" not in st.session_state:
+    st.session_state.transcript = ""
 
-# Performance Metrics
-st.subheader("📊 Performance Benchmarks")
-col1, col2 = st.columns(2)
+# Voice recording icon
+if st.session_state.recording:
+    voice_html = '<div class="voice-icon recording-active">🎤</div>'
+else:
+    voice_html = '<div class="voice-icon">🎤</div>'
 
-with col1:
-    st.markdown("#### Clean Audio")
-    st.success("""
-    - **Whisper Large-v3**: 9.5% WER
-    - **Classi AI GDE**: 9.68% WER
-    - **Status**: Industry parity achieved
-    """)
+st.markdown(voice_html, unsafe_allow_html=True)
 
-with col2:
-    st.markdown("#### Noisy Audio (0dB SNR)")
-    st.warning("""
-    - **Whisper Large-v3**: 26.4% WER
-    - **Classi AI GDE**: 27.1% WER
-    - **Advantage**: Maintains stability
-    """)
+# Recording button
+if st.session_state.recording:
+    if st.button("⏹️ Stop Recording", type="primary", use_container_width=True):
+        st.session_state.recording = False
+        # Simulated transcript (in real implementation, this would process audio)
+        st.session_state.transcript = "This is your recorded message. In production, this will display the actual transcription of your voice."
+        st.rerun()
+else:
+    if st.button(" Start Recording", type="primary", use_container_width=True):
+        st.session_state.recording = True
+        st.rerun()
 
-st.markdown("---")
+st.markdown('</div>', unsafe_allow_html=True)
 
-# Sample Corrections
-st.subheader("Sample Corrections")
-corrections = {
-    "ASR Output": ["The Danger Child", "apologized once more", "Grisham", "reef shot"],
-    "GDE Correction": ["Danger Trail", "apologized to Whittemore", "Gregson", "rifle shot"],
-    "Method": ["Entertainment DB", "Verb Valency", "Proper Noun Rescue", "Phonetic Mapping"]
-}
-st.dataframe(pd.DataFrame(corrections), use_container_width=True)
-
-st.markdown("---")
-
-# Contact Section
-st.subheader("📧 Contact & Investment Inquiry")
-st.write("""
-**Current Status**: Pre-MVP Development Stage  
-**Target Launch**: Q3 2026  
-**Funding Round**: Friends & Family / Seed  
-
-We are preparing for:
-- Friends & Family Round: $3M cap structure
-- Seed Round: $8M–$15M valuation target
-- Strategic partnerships with AI/voice technology leaders
-""")
-
-contact_form = st.form("contact_form")
-name = contact_form.text_input("Name")
-email = contact_form.text_input("Email")
-message = contact_form.text_area("Message")
-submitted = contact_form.form_submit_button("Send Message")
-
-if submitted:
-    st.success("Thank you for your interest. We will contact you soon.")
+# Display transcript
+if st.session_state.transcript:
+    st.markdown("""
+    <div class="transcript-box">
+        <h3 style="color: #667eea; margin-top: 0;">📝 Your Message:</h3>
+        <p style="font-size: 1.1rem; line-height: 1.6;">""" + st.session_state.transcript + """</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style='text-align: center; color: #666; font-family: "Times New Roman", serif;'>
+<div style='text-align: center; color: #666; font-family: "Times New Roman", serif; margin: 2rem 0;'>
     <p>© 2026 Classi AI. All rights reserved.</p>
-    <p>Secure Access: postmvpsoon</p>
+    <p style="font-size: 0.9rem;">Secure Access: postmvpsoon</p>
 </div>
 """, unsafe_allow_html=True)
