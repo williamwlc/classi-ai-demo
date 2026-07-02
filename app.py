@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 from datetime import datetime, timedelta
 
 st.set_page_config(
@@ -9,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Password Protection & Time Limit
+# Initialize session state
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "start_time" not in st.session_state:
@@ -19,12 +18,11 @@ if "recording" not in st.session_state:
 if "transcript" not in st.session_state:
     st.session_state.transcript = ""
 
-# Compact CSS for 1-page desktop fit
+# CSS
 st.markdown("""
 <style>
     #MainMenu, .sidebar, header {visibility: hidden;}
     .block-container {padding-top: 1.5rem; padding-bottom: 1rem;}
-    
     @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap');
     
     .main-header {
@@ -98,7 +96,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Authentication Check
+# Authentication
 if not st.session_state.authenticated:
     st.markdown("""
     <div style="text-align: center; margin: 3rem 0;">
@@ -131,10 +129,7 @@ if not st.session_state.authenticated:
     
     st.stop()
 
-# Check Time Limit (1 hour)
-minutes = 0
-seconds = 0
-
+# Time limit check
 if st.session_state.start_time:
     elapsed = datetime.now() - st.session_state.start_time
     time_remaining = timedelta(hours=1) - elapsed
@@ -146,21 +141,12 @@ if st.session_state.start_time:
     
     minutes = int(time_remaining.total_seconds() // 60)
     seconds = int(time_remaining.total_seconds() % 60)
-
-# Main Content
-st.markdown(f'<div class="time-display">⏱️ Time Remaining: {minutes}m {seconds}s</div>', unsafe_allow_html=True)
+    
+    st.markdown(f'<div class="time-display">⏱️ Time Remaining: {minutes}m {seconds}s</div>', unsafe_allow_html=True)
 
 # Header
-col_logo, col_title = st.columns([1, 6])
-with col_logo:
-    try:
-        st.image("logo.png", width=80)
-    except:
-        st.markdown('<div style="font-size: 3.5rem;">🎓</div>', unsafe_allow_html=True)
-with col_title:
-    st.markdown('<h1 class="main-header">Classi AI</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="tagline">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
-
+st.markdown('<h1 class="main-header">Classi AI</h1>', unsafe_allow_html=True)
+st.markdown('<p class="tagline">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 st.markdown("---")
 
 # 2-Column Layout
