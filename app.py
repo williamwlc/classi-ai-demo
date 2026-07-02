@@ -2,14 +2,13 @@ import streamlit as st
 import time
 from datetime import datetime
 import hashlib
-import os
+import base64
+from streamlit_audiorec import audiorec
 
 # Page config
 st.set_page_config(page_title="Classi AI - Voice Demo", layout="wide")
 
 # Initialize session state
-if 'recording' not in st.session_state:
-    st.session_state.recording = False
 if 'history' not in st.session_state:
     st.session_state.history = []
 if 'session_start' not in st.session_state:
@@ -17,10 +16,10 @@ if 'session_start' not in st.session_state:
 if 'accessed_ips' not in st.session_state:
     st.session_state.accessed_ips = set()
 
-# SPECIAL PASSWORD for unlimited testing (change this!)
-SPECIAL_PASSWORD = "ClassiDemo2024!"  # Share this with your partner/investors
+# SPECIAL PASSWORD for unlimited testing
+SPECIAL_PASSWORD = "ClassiDemo2024!"
 
-# Session timeout: 30 minutes (1800 seconds)
+# Session timeout: 30 minutes
 SESSION_TIMEOUT = 1800
 
 # Custom CSS
@@ -45,45 +44,12 @@ st.markdown("""
         margin: 2rem 0;
         border-left: 5px solid #667eea;
     }
-    .mic-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 3rem 0;
-    }
-    .mic-icon {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .mic-icon.recording {
-        animation: pulse 1.5s ease-in-out infinite;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-    }
     .status-box {
         padding: 1.5rem;
         border-radius: 10px;
         margin: 1rem 0;
         background: #1e1e2e;
         min-height: 120px;
-    }
-    .history-item {
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border-left: 4px solid #667eea;
-        background: #2a2a3a;
-        border-radius: 5px;
     }
     .dev-note {
         position: fixed;
@@ -110,7 +76,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Development Note (Top Right)
+# Development Note
 st.markdown("""
 <div class="dev-note">
     <strong style="color: #667eea;">📌 Development Demo</strong><br>
@@ -163,9 +129,8 @@ password = st.sidebar.text_input("🔐 Access Password", type="password")
 if password:
     if password == SPECIAL_PASSWORD:
         st.sidebar.success("✅ Unlimited access granted!")
-        st.session_state.session_timeout = None  # No timeout for special password
+        st.session_state.session_timeout = None
     else:
-        # Regular user - check session timeout
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
         
@@ -177,7 +142,7 @@ if password:
             seconds = int(remaining % 60)
             st.sidebar.info(f"⏱️ Session: {minutes}:{seconds:02d} remaining")
 
-# IP Tracking (simple implementation)
+# IP Tracking
 user_ip = st.context.headers.get("X-Real-IP", "unknown") if hasattr(st, 'context') else "unknown"
 ip_hash = hashlib.md5(user_ip.encode()).hexdigest()
 
@@ -188,42 +153,30 @@ else:
     st.session_state.accessed_ips.add(ip_hash)
     st.session_state.first_visit = False
 
-# Voice Recording Component
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    # Microphone Icon
-    mic_class = "mic-icon recording" if st.session_state.recording else "mic-icon"
-    st.markdown(f"""
-    <div class="mic-container">
-        <div class="{mic_class}">
-            <svg width="80" height="80" viewBox="0 0 24 24" fill="white">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-            </svg>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Recording Controls
-    col_a, col_b = st.columns(2)
-    with col_a:
-        if st.button("🎤 Start Recording", use_container_width=True, type="primary", disabled=st.session_state.recording):
-            st.session_state.recording = True
-            st.rerun()
-    
-    with col_b:
-        if st.button("⏹️ Stop Recording", use_container_width=True, disabled=not st.session_state.recording):
-            st.session_state.recording = False
-            # SIMULATED transcription (replace with your actual ASR logic)
-            st.session_state.history.insert(0, {
-                'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                'raw_text': "This is simulated raw ASR output",
-                'corrected_text': "This is corrected output from Classi AI",
-                'duration': "3.2s"
-            })
-            # Keep only last 10
-            st.session_state.history = st.session_state.history[:10]
-            st.rerun()
+# ACTUAL AUDIO RECORDING
+st.markdown("### 🎤 Record Your Voice")
+st.info("Click the microphone icon below and start speaking. Click again to stop.")
+
+audio_value = audiorec("Click to record", "audio/wav")
+
+if audio_value:
+    with st.spinner("🔄 Processing your voice..."):
+        # SIMULATE processing (replace with your actual ASR + GDE logic)
+        time.sleep(1)
+        
+        # Add to history
+        st.session_state.history.insert(0, {
+            'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            'raw_text': "other of the danger trail flip stills etc",  # REPLACE with actual ASR output
+            'corrected_text': "Author of the danger trail Philip Steels etc",  # REPLACE with actual GDE output
+            'duration': f"{len(audio_value)/16000:.1f}s"  # Approximate duration
+        })
+        
+        # Keep only last 10
+        st.session_state.history = st.session_state.history[:10]
+        
+        st.success("✅ Voice processed!")
+        st.rerun()
 
 # Status Display
 col1, col2 = st.columns(2)
@@ -263,7 +216,7 @@ if st.session_state.history:
                 st.write(item['corrected_text'])
             st.caption(f"Duration: {item['duration']}")
 else:
-    st.info("🎤 No history yet. Click 'Start Recording' to begin!")
+    st.info("🎤 No recordings yet. Click the microphone above to start!")
 
 # Footer
 st.markdown("---")
