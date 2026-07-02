@@ -96,7 +96,7 @@ if not st.session_state.authenticated:
     st.markdown("""
     <div style="text-align: center; margin: 3rem 0;">
         <h1 style="font-family: 'Times New Roman', serif; color: #ffffff; font-size: 3rem;">Classi AI</h1>
-        <p style="color: #cccccc; font-style: italic;">Universal Fluency Layer for Voice & Language Systems</p>
+        <p style="color: #cccccc; font-style: italic;">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>
     </div>
     """, unsafe_allow_html=True)
     
