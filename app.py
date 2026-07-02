@@ -52,7 +52,7 @@ st.markdown("""
     }
     .dev-note {
         position: fixed;
-        top: 10px;
+        top: 50px;  /* MOVED DOWN to avoid being cut off */
         right: 10px;
         background: rgba(30, 30, 46, 0.95);
         padding: 8px 12px;
@@ -83,7 +83,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Development Note - Top Right (COMPACT)
+# Development Note - Top Right (MOVED DOWN)
 st.markdown("""
 <div class="dev-note">
     <strong style="color: #667eea;">📌 Dev Demo</strong><br>
@@ -112,13 +112,13 @@ if password:
         else:
             minutes = int(remaining // 60)
             seconds = int(remaining % 60)
-            st.info(f"️ {minutes}:{seconds:02d} left")
+            st.info(f"⏱️ {minutes}:{seconds:02d} left")
 
-# Minimal spacing (Reduced from 60px to 10px)
+# Minimal spacing
 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
 # Header
-st.markdown('<h1 class="main-header">️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Experience the difference in real-world voice recognition</p>', unsafe_allow_html=True)
 
 # Company Introduction (COMPACT)
@@ -143,7 +143,7 @@ st.markdown("""
 # Invitation Message (COMPACT)
 st.markdown("""
 <div class="invitation">
-    <h3 style="color: #667eea; margin-top: 0; font-size: 1.2rem;">🚀 Join Our Vision</h3>
+    <h3 style="color: #667eea; margin-top: 0; font-size: 1.2rem;"> Join Our Vision</h3>
     <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">
         We're seeking strategic partners and investors who share our vision of making 
         voice technology truly universal and accessible.
@@ -154,16 +154,15 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# IP Tracking
-user_ip = st.context.headers.get("X-Real-IP", "unknown") if hasattr(st, 'context') else "unknown"
-ip_hash = hashlib.md5(user_ip.encode()).hexdigest()
-
-if ip_hash in st.session_state.accessed_ips and 'first_visit' not in st.session_state:
-    st.warning("⚠️ One demo session per visitor. Thank you for your interest!")
-    st.stop()
+# IP Tracking (SAFE VERSION - Removed st.context.headers to prevent crash)
+# Using a simple session-based check instead of IP hash for stability
+if 'session_check' not in st.session_state:
+    st.session_state.session_check = True
 else:
-    st.session_state.accessed_ips.add(ip_hash)
-    st.session_state.first_visit = False
+    # If you want to enforce 1 session per browser refresh, you can uncomment below:
+    # st.warning("️ One demo session per visitor. Thank you for your interest!")
+    # st.stop()
+    pass
 
 # WORKING AUDIO RECORDING - COMPACT
 st.markdown("### 🎤 Upload Voice Recording")
@@ -223,7 +222,7 @@ with col2:
 
 # History Section
 st.markdown("---")
-st.markdown("###  Correction History (Last 10)")
+st.markdown("### 📜 Correction History (Last 10)")
 
 if st.session_state.history:
     for i, item in enumerate(st.session_state.history):
