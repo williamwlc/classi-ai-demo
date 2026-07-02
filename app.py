@@ -74,26 +74,45 @@ st.markdown("""
         text-align: center;
         border: 2px solid #667eea;
     }
-    .recording-box {
-        background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
-        padding: 3rem;
-        border-radius: 15px;
-        text-align: center;
-        margin: 2rem 0;
-        border: 3px solid #667eea;
-    }
-    .recording-box.active {
-        border-color: #f5576c;
-        animation: pulse-border 1.5s ease-in-out infinite;
-    }
-    @keyframes pulse-border {
-        0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
-        50% { box-shadow: 0 0 40px rgba(245, 87, 108, 0.8); }
+    .password-container {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 9999;
+        background: rgba(30, 30, 46, 0.95);
+        padding: 10px 15px;
+        border-radius: 8px;
+        border-left: 3px solid #f5576c;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Development Note
+# Password Protection - Top Left Corner
+st.markdown("""
+<div class="password-container">
+    <strong>🔐 Access Password</strong>
+</div>
+""", unsafe_allow_html=True)
+
+password = st.text_input("Password", type="password", label_visibility="collapsed", key="pwd_top")
+
+if password:
+    if password == SPECIAL_PASSWORD:
+        st.success("✅ Unlimited access granted!")
+        st.session_state.session_timeout = None
+    else:
+        elapsed = time.time() - st.session_state.session_start
+        remaining = SESSION_TIMEOUT - elapsed
+        
+        if elapsed > SESSION_TIMEOUT:
+            st.error("⏰ Session expired (30 minutes). Please refresh for a new session.")
+            st.stop()
+        else:
+            minutes = int(remaining // 60)
+            seconds = int(remaining % 60)
+            st.info(f"⏱️ Session: {minutes}:{seconds:02d} remaining")
+
+# Development Note - Top Right
 st.markdown("""
 <div class="dev-note">
     <strong style="color: #667eea;">📌 Development Demo</strong><br>
@@ -102,6 +121,9 @@ st.markdown("""
     Production migration planned on Google Cloud
 </div>
 """, unsafe_allow_html=True)
+
+# Add some spacing
+st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True)
 
 # Header
 st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
@@ -139,30 +161,6 @@ st.markdown("""
     </p>
 </div>
 """, unsafe_allow_html=True)
-
-# Password Protection - Top Left Corner
-col_pwd1, col_pwd2, col_pwd3 = st.columns([1, 8, 1])
-with col_pwd1:
-    password = st.text_input("🔐 Access Password", type="password", key="pwd_input")
-
-if password:
-    if password == SPECIAL_PASSWORD:
-        st.success("✅ Unlimited access granted!")
-        st.session_state.session_timeout = None
-    else:
-        elapsed = time.time() - st.session_state.session_start
-        remaining = SESSION_TIMEOUT - elapsed
-        
-        if elapsed > SESSION_TIMEOUT:
-            st.error("⏰ Session expired (30 minutes). Please refresh for a new session.")
-            st.stop()
-        else:
-            minutes = int(remaining // 60)
-            seconds = int(remaining % 60)
-            st.info(f"⏱️ Session: {minutes}:{seconds:02d} remaining")
-
-# Remove the sidebar password
-# st.sidebar.text_input removed
 
 # IP Tracking
 user_ip = st.context.headers.get("X-Real-IP", "unknown") if hasattr(st, 'context') else "unknown"
