@@ -1,27 +1,21 @@
-$createStreamlitWebsite = @'
-import json
-from pathlib import Path
-from datetime import datetime
-
-print("="*80)
-print("CREATING PROFESSIONAL STREAMLIT WEBSITE FOR CLASSI AI")
-print("="*80)
-
-# Create the Streamlit app
-streamlit_code = '''
 import streamlit as st
-import pandas as pd
+import base64
 
 # Page Configuration
 st.set_page_config(
     page_title="Classi AI",
     page_icon="🎓",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS - Mobile Responsive
+# Custom CSS - Mobile Responsive & Clean
 st.markdown("""
 <style>
+    /* Hide default Streamlit menu and sidebar */
+    #MainMenu {visibility: hidden;}
+    .stSidebar {display: none;}
+    
     @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&display=swap');
     
     .main-header {
@@ -70,11 +64,15 @@ st.markdown("""
         line-height: 1.8;
         margin: 1.5rem 0;
     }
+    .voice-icon-container {
+        text-align: center;
+        margin: 3rem 0;
+    }
     .voice-icon {
-        font-size: 5rem;
-        margin: 2rem 0;
+        font-size: 6rem;
         cursor: pointer;
         transition: transform 0.3s;
+        display: inline-block;
     }
     .voice-icon:hover {
         transform: scale(1.1);
@@ -84,9 +82,9 @@ st.markdown("""
         color: #ff4444;
     }
     @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
+        0% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.1); }
+        100% { opacity: 1; transform: scale(1); }
     }
     .transcript-box {
         background: #f8f9fa;
@@ -100,34 +98,34 @@ st.markdown("""
         .main-header { font-size: 2.5rem; }
         .vip-title { font-size: 1.8rem; }
         .vip-message { font-size: 1.1rem; }
-        .voice-icon { font-size: 4rem; }
+        .voice-icon { font-size: 5rem; }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Logo and Header - TOP LEFT
+# --- HEADER: LOGO + COMPANY NAME (TOP LEFT) ---
 col_logo, col_title = st.columns([1, 4])
 with col_logo:
     try:
-        st.image("logo.png", width=140)
+        st.image("logo.png", width=120)
     except:
-        st.markdown('<div style="font-size: 5rem; margin: 0.5rem;">🎓🧠</div>', unsafe_allow_html=True)
+        st.markdown('<div style="font-size: 5rem;">🎓</div>', unsafe_allow_html=True)
 with col_title:
     st.markdown('<h1 class="main-header">Classi AI</h1>', unsafe_allow_html=True)
     st.markdown('<p class="tagline">Universal Fluency Layer for Voice & Language Systems</p>', unsafe_allow_html=True)
 
 st.markdown("---")
 
-# ONE PARAGRAPH INTRO - NO SENSITIVE INFO
+# --- ONE PARAGRAPH INTRO (NO SENSITIVE INFO) ---
 st.markdown("""
 <div class="intro-text">
-Classi AI is redefining how the world understands spoken language, specifically designed to bridge the fluency gap for non-native English speakers. Unlike traditional tools that merely transcribe words, our platform comprehends the actual context of your conversation. For instance, if you discuss the 'sequel to Mission Impossible' and mention a 'supporting actor,' our system instantly recognizes the entertainment domain, correctly identifying characters like 'Benji Dunn' rather than misinterpreting them as random phrases. By mapping keywords to real-world entities, we ensure your voice is not just heard, but truly understood, preserving your unique identity and intent in any environment.
+Classi AI is redefining how the world understands spoken language, specifically designed to bridge the fluency gap for non-native English speakers. Unlike traditional tools that merely transcribe words, our platform comprehends the actual context of your conversation.
 </div>
 """, unsafe_allow_html=True)
 
 st.markdown("---")
 
-# MISSION IMPOSSIBLE VIP INVITATION BOX
+# --- MISSION IMPOSSIBLE VIP INVITATION BOX ---
 st.markdown("""
 <div class="vip-box">
     <h2 class="vip-title">🎬 VIP Invitation</h2>
@@ -137,7 +135,7 @@ st.markdown("""
         You have been specially selected to join an exclusive circle of innovators shaping the future of human-machine communication. 
         This message will self-destruct in your mind once you've made your decision.<br><br>
         
-        <em>Your mission, should you choose to accept it, is to become a founding member of Classi AI's Founder's Circle. 
+        <em>Should you choose to accept it, is to become a founding member of Classi AI's Founder's Circle. 
         Your participation will help revolutionize how millions of people worldwide express themselves in English.</em><br><br>
         
         <strong>Recording Instructions:</strong><br>
@@ -148,17 +146,17 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Voice Recording Section
-st.markdown('<div style="text-align: center; margin: 3rem 0;">', unsafe_allow_html=True)
-st.markdown('<h2 style="color: #667eea; margin-bottom: 2rem;">🎙️ Record Your Response</h2>', unsafe_allow_html=True)
+# --- VOICE RECORDING SECTION ---
+st.markdown('<div class="voice-icon-container">', unsafe_allow_html=True)
+st.markdown('<h2 style="color: #667eea; margin-bottom: 2rem;">️ Record Your Response</h2>', unsafe_allow_html=True)
 
-# Initialize session state
+# Initialize session state for recording
 if "recording" not in st.session_state:
     st.session_state.recording = False
 if "transcript" not in st.session_state:
     st.session_state.transcript = ""
 
-# Voice recording icon
+# Display Voice Icon
 if st.session_state.recording:
     voice_html = '<div class="voice-icon recording-active">🎤</div>'
 else:
@@ -166,10 +164,11 @@ else:
 
 st.markdown(voice_html, unsafe_allow_html=True)
 
-# Recording button
+# Recording Toggle Button
 if st.session_state.recording:
-    if st.button("⏹️ Stop Recording", type="primary", use_container_width=True):
+    if st.button("️ Stop Recording", type="primary", use_container_width=True):
         st.session_state.recording = False
+        # In production, this triggers the actual ASR/GDE pipeline
         st.session_state.transcript = "This is your recorded message. In production, this will display the actual transcription of your voice."
         st.rerun()
 else:
@@ -179,16 +178,16 @@ else:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Display transcript
+# Display Transcript
 if st.session_state.transcript:
     st.markdown(f"""
     <div class="transcript-box">
-        <h3 style="color: #667eea; margin-top: 0;">📝 Your Message:</h3>
+        <h3 style="color: #667eea; margin-top: 0;"> Your Message:</h3>
         <p style="font-size: 1.1rem; line-height: 1.6;">{st.session_state.transcript}</p>
     </div>
     """, unsafe_allow_html=True)
 
-# Footer
+# --- FOOTER ---
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666; font-family: "Times New Roman", serif; margin: 2rem 0;'>
@@ -196,80 +195,3 @@ st.markdown("""
     <p style="font-size: 0.9rem;">Secure Access: postmvpsoon</p>
 </div>
 """, unsafe_allow_html=True)
-'''
-
-# Save the Streamlit app
-app_path = Path(r"D:\fluency-mvp\website\app.py")
-app_path.parent.mkdir(parents=True, exist_ok=True)
-app_path.write_text(streamlit_code, encoding='utf-8')
-print(f"✅ Streamlit app created: {app_path}")
-
-# Create requirements.txt
-requirements = """
-streamlit==1.28.0
-pandas==2.0.3
-numpy==1.24.3
-"""
-req_path = Path(r"D:\fluency-mvp\website\requirements.txt")
-req_path.write_text(requirements, encoding='utf-8')
-print(f"✅ Requirements file created: {req_path}")
-
-# Create README for Google
-readme = """
-# Classi AI - Professional Website
-
-## About This Site
-This is the official public website for Classi AI, a deep tech startup building 
-the Universal Fluency Layer for voice and language systems.
-
-## Technology
-- Built with Streamlit (Python web framework)
-- Hosted on Streamlit Cloud
-- Public URL: https://classi-ai-demo.streamlit.app
-
-## Company Information
-- **Founded**: 2026
-- **Stage**: Pre-MVP
-- **Focus**: L2 English fluency for Chinese speakers
-- **Technology**: RADE (Register-Aware Diagnostic Engine), UltraData phoneme mapping
-
-## Contact
-For inquiries, please visit the Contact page or email: [your-email@domain.com]
-
-## Visibility Status
-✅ **This website is PUBLIC and INDEXABLE**
-- No login required
-- No hidden pages
-- All content accessible to search engines
-- Mobile-responsive design (Android & iPhone compatible)
-"""
-readme_path = Path(r"D:\fluency-mvp\website\README.md")
-readme_path.write_text(readme, encoding='utf-8')
-print(f"✅ README created: {readme_path}")
-
-print("\n" + "="*80)
-print("STREAMLIT WEBSITE CREATED SUCCESSFULLY!")
-print("="*80)
-print("\n📋 DEPLOYMENT INSTRUCTIONS:")
-print("="*80)
-print("\nSTEP 1: Save your logo image")
-print("   - Save the AI brain + graduation cap image as 'logo.png'")
-print("   - Place it in: D:\\fluency-mvp\\website\\")
-print("\nSTEP 2: Push to GitHub")
-print("   - Create a new GitHub repository (e.g., 'classi-ai-website')")
-print("   - Push all files from D:\\fluency-mvp\\website\\ folder")
-print("   - Make sure logo.png is included!")
-print("\nSTEP 3: Deploy to Streamlit Cloud")
-print("   - Go to https://share.streamlit.io")
-print("   - Connect your GitHub repository")
-print("   - Main file path: app.py")
-print("   - Click 'Deploy!'")
-print("\nSTEP 4: Test on Mobile")
-print("   - Open the deployed URL on Android/iPhone")
-print("   - Verify logo displays correctly")
-print("   - Test voice recording functionality")
-print("\n" + "="*80)
-'@
-
-$createStreamlitWebsite | Out-File -FilePath "D:\fluency-mvp\create_website_final.py" -Encoding utf8
-& "D:\fluency-mvp\venv\Scripts\python.exe" "D:\fluency-mvp\create_website_final.py"
