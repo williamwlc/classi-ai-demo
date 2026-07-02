@@ -1,19 +1,8 @@
-$updateWithLogo = @'
-import json
-from pathlib import Path
-
-print("="*80)
-print("UPDATING STREAMLIT WITH NEW LOGO & VOICE TESTING READY")
-print("="*80)
-
-# Create the updated Streamlit app with logo
-streamlit_code = '''
 import streamlit as st
 import json
 from pathlib import Path
 from datetime import datetime
 import pandas as pd
-import base64
 
 # Page Configuration
 st.set_page_config(
@@ -73,18 +62,13 @@ st.markdown("""
         margin: 2rem 0;
         padding: 1rem;
     }
-    .logo-brain {
-        width: 200px;
-        height: auto;
-        filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
-    }
 </style>
 """, unsafe_allow_html=True)
 
 # Header with Logo
 st.markdown('<div class="logo-container">', unsafe_allow_html=True)
 
-# Logo placeholder - you can replace with actual image
+# Logo placeholder - AI Brain + Graduation Cap
 st.markdown("""
 <div style="font-size: 8rem; margin: 1rem;">🎓🧠</div>
 <h1 style="font-family: 'Times New Roman', serif; font-size: 4rem; color: #667eea; margin: 0;">Classi AI</h1>
@@ -115,7 +99,7 @@ if page == "🏠 Home Demo":
     if uploaded_file is not None:
         st.audio(uploaded_file, format="audio/wav")
         
-        if st.button(" Process Audio", type="primary"):
+        if st.button("⚡ Process Audio", type="primary"):
             with st.spinner("Processing with Whisper + GDE..."):
                 # Placeholder for actual processing
                 st.success("✅ Processing complete!")
@@ -124,13 +108,13 @@ if page == "🏠 Home Demo":
                 
                 with col_a:
                     st.markdown('<div class="output-box raw-output">', unsafe_allow_html=True)
-                    st.markdown("### 🔴 Raw ASR Output (Stage 3)")
+                    st.markdown("### 🔴 Raw ASR Output")
                     st.info("Waiting for audio processing...")
                     st.markdown('</div>', unsafe_allow_html=True)
                 
                 with col_b:
                     st.markdown('<div class="output-box corrected-output">', unsafe_allow_html=True)
-                    st.markdown("### 🟢 Corrected Output (Stage 5)")
+                    st.markdown("### 🟢 Corrected Output")
                     st.info("Waiting for GDE correction...")
                     st.markdown('</div>', unsafe_allow_html=True)
     
@@ -331,25 +315,3 @@ st.markdown("""
     <p>Built with ❤️ for L2 English learners worldwide</p>
 </div>
 """, unsafe_allow_html=True)
-'''
-
-# Save the updated Streamlit app
-app_path = Path(r"D:\fluency-mvp\website\app.py")
-app_path.write_text(streamlit_code, encoding='utf-8')
-print(f"✅ Updated Streamlit app with logo saved: {app_path}")
-
-# Create logo image placeholder guide
-logo_guide = """
-# Classi AI Logo Implementation Guide
-
-## Current Status
-✅ Website updated with emoji placeholder (🎓🧠)
-
-## Next Steps for Professional Logo
-
-### Option 1: Use Generated Image
-1. Take the AI brain + graduation cap image you generated
-2. Save as `logo.png` in `D:\\fluency-mvp\\website\\assets\\`
-3. Update app.py line with:
-   ```python
-   st.image("assets/logo.png", width=200)
