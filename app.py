@@ -17,14 +17,13 @@ PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
 SESSION_TIMEOUT = 1800
 
-# Custom CSS - REMOVE LINK SYMBOL & FIX SPACING
+# Custom CSS - TIGHT SPACING & CLEAN TEXT BOX
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
     
     /* HIDE ANCHOR/LINK SYMBOLS */
     a.header-anchor { display: none !important; }
-    .stMarkdown h2::before { content: none !important; }
     
     .block-container { 
         padding-top: 2rem !important; 
@@ -45,7 +44,7 @@ st.markdown("""
         margin: 0 0 0.5rem 0 !important; 
     }
     
-    /* TIGHT SPACING FOR ABOUT SECTION */
+    /* TIGHTEN ABOUT SECTION - REMOVE BOTTOM SPACING */
     .about-container {
         margin: 0 !important;
         padding: 0 !important;
@@ -63,15 +62,24 @@ st.markdown("""
         border: 1px solid #3A506B !important; 
         border-left: 4px solid #5BC0BE !important;
         border-radius: 8px; 
-        padding: 0.8rem !important;
-        margin: 0 !important; 
+        padding: 0.6rem 0.8rem !important; /* Reduced padding */
+        margin: 0 !important; /* Removed all margin */
     }
     
+    /* REMOVE FIRST AND LAST EMPTY LINES IN TEXT */
     .company-intro p { 
         font-size: 0.95rem !important; 
         line-height: 1.4 !important; 
         color: #E0E1DD !important; 
-        margin: 0.3rem 0 !important; 
+        margin: 0.2rem 0 !important; 
+    }
+    .company-intro p:first-child {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    .company-intro p:last-child {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
     
     .dev-note { 
@@ -121,13 +129,6 @@ st.markdown("""
         text-align: center;
         font-weight: bold;
         margin: 0.3rem 0;
-        animation: pulse 1.5s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { opacity: 1; }
-        50% { opacity: 0.5; }
-        100% { opacity: 1; }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -167,13 +168,13 @@ st.markdown("""
 <div class="about-container">
     <h2 class="about-heading">About Classi AI</h2>
     <div class="company-intro">
-        <p style="margin-top: 0 !important;">
+        <p>
             Classi AI is redefining how the world bridges language barriers. While leading applications 
             merely guess at your words, we comprehend the true context of your conversation. Powered by our proprietary 
             Universal Fluency Layer, our voice-to-text engine thrives in the real world—mastering complex environments 
             where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
         </p>
-        <p style="margin-bottom: 0 !important;">
+        <p>
             Beyond transcription, Classi's revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
             By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, 
             and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.
@@ -183,7 +184,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # VOICE MICROPHONE SECTION
-st.markdown("### 🎤 Voice Microphone")
+st.markdown("###  Voice Microphone")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -195,18 +196,16 @@ with col1:
 with col2:
     if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         if st.session_state.recording and st.session_state.recording_start_time:
-            # Calculate duration
             duration = time.time() - st.session_state.recording_start_time
             duration_str = f"{duration:.1f}s"
             
-            # Reset recording state
             st.session_state.recording = False
             
-            # ADD TO HISTORY WITH ACTUAL DURATION
+            # ADD TO HISTORY - CLEANED TEXT (m3 fix)
             st.session_state.history.insert(0, {
                 'timestamp': datetime.now().strftime("%H:%M:%S"),
-                'raw_text': "Audio captured - MVP integration pending",
-                'corrected_text': "Awaiting MVP engine processing",
+                'raw_text': "Audio captured",
+                'corrected_text': "Processing pending",
                 'duration': duration_str
             })
             st.session_state.history = st.session_state.history[:10]
