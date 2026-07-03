@@ -15,27 +15,107 @@ PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
 SESSION_TIMEOUT = 1800
 
+# Custom CSS - TIGHT SPACING & HIDE LINK SYMBOL
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
-    .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
-    .main-header { text-align: center; font-size: 2.8rem !important; color: #ffffff; margin: 0 !important; font-weight: 700; }
-    .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0.2rem 0 0.5rem 0 !important; }
-    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1rem !important; margin: 0.2rem 0 !important; }
-    .company-intro { border-left: 5px solid #5BC0BE !important; }
-    .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 0.5rem 0 !important; }
-    .company-intro p { font-size: 1.1rem !important; line-height: 1.5 !important; color: #E0E1DD !important; margin: 0 0 0.5rem 0 !important; }
-    .company-intro p:last-child { margin-bottom: 0 !important; }
-    .dev-note { display: inline-block; background-color: #1C2541 !important; border: 1px solid #3A506B !important; padding: 0.3rem 0.6rem !important; border-radius: 6px !important; font-size: 0.8rem !important; color: #8B9DC3 !important; margin: 0.2rem 0 !important; line-height: 1.3 !important; }
-    .status-box h4 { margin: 0 0 0.5rem 0 !important; font-size: 1.2rem !important; }
-    .status-box p { color: #E0E1DD !important; font-size: 1rem !important; margin: 0 !important; }
-    .stButton > button { background-color: #3A506B !important; color: white !important; border: none !important; border-radius: 6px !important; font-size: 1rem !important; padding: 0.8rem !important; }
-    .stButton > button:hover { background-color: #5BC0BE !important; color: #0B132B !important; }
-    .stTextInput > div > div > input { background-color: #1C2541 !important; color: white !important; border: 1px solid #3A506B !important; }
+    
+    /* HIDE THE LINK/ANCHOR ICON ON HEADERS */
+    a[aria-hidden="true"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+    
+    /* 0.1cm SPACING - VERY TIGHT */
+    .block-container { 
+        padding-top: 1rem !important; 
+        padding-bottom: 1rem !important; 
+    }
+    
+    .main-header { 
+        text-align: center; 
+        font-size: 2.5rem !important; 
+        color: #ffffff; 
+        margin: 0 !important; 
+        padding-top: 0 !important;
+    }
+    
+    .sub-header { 
+        text-align: center; 
+        font-size: 1.1rem !important; 
+        color: #8B9DC3; 
+        margin: 0.1rem 0 0.5rem 0 !important; 
+    }
+    
+    /* Tighten the About Box */
+    .company-intro { 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        border-radius: 8px; 
+        padding: 0.8rem !important; /* 0.1cm approx */
+        margin: 0.1rem 0 !important; 
+    }
+    
+    .company-intro { border-left: 4px solid #5BC0BE !important; }
+    
+    .company-intro h2 { 
+        font-size: 1.5rem !important; 
+        color: #5BC0BE !important; 
+        margin: 0 0 0.3rem 0 !important; 
+    }
+    
+    .company-intro p { 
+        font-size: 0.95rem !important; 
+        line-height: 1.4 !important; 
+        color: #E0E1DD !important; 
+        margin: 0 0 0.3rem 0 !important; 
+    }
+    
+    .dev-note { 
+        display: inline-block; 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        padding: 0.2rem 0.5rem !important; 
+        border-radius: 4px !important; 
+        font-size: 0.75rem !important; 
+        color: #8B9DC3 !important; 
+        margin: 0.1rem 0 !important; 
+    }
+    
+    /* Status Box */
+    .status-box { 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        border-radius: 6px; 
+        padding: 0.5rem !important; 
+        margin: 0.2rem 0 !important; 
+    }
+    
+    .status-box h4 { margin: 0 0 0.2rem 0 !important; font-size: 1rem !important; }
+    .status-box p { color: #E0E1DD !important; font-size: 0.9rem !important; margin: 0 !important; }
+    
+    .stButton > button { 
+        background-color: #3A506B !important; 
+        color: white !important; 
+        border: none !important; 
+        border-radius: 4px !important; 
+        font-size: 0.9rem !important; 
+        padding: 0.4rem !important; 
+        margin: 0.1rem !important;
+    }
+    
+    .stTextInput > div > div > input { 
+        background-color: #1C2541 !important; 
+        color: white !important; 
+        border: 1px solid #3A506B !important; 
+    }
+    
     p, h1, h2, h3, h4 { color: #ffffff !important; }
     .stMarkdown p { color: #E0E1DD !important; }
-    .record-buttons { display: flex; gap: 1rem; margin: 0.5rem 0; }
-    .record-buttons button { flex: 1; }
+    
+    /* Voice Mic Section Tightening */
+    h3.stMarkdown { margin: 0.3rem 0 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -56,7 +136,7 @@ if password:
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
         if elapsed > SESSION_TIMEOUT:
-            st.error("⏰ Session expired (30 min)")
+            st.error(" Session expired (30 min)")
             st.stop()
         else:
             minutes = int(remaining // 60)
@@ -69,6 +149,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# ABOUT SECTION
 st.markdown("""
 <div class="company-intro">
     <h2>About Classi AI</h2>
@@ -78,7 +159,7 @@ st.markdown("""
         Universal Fluency Layer, our voice-to-text engine thrives in the real world—mastering complex environments 
         where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
     </p>
-    <p>
+    <p style="margin-bottom: 0 !important;">
         Beyond transcription, Classi's revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
         By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, 
         and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.
@@ -86,6 +167,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# VOICE MICROPHONE SECTION
 st.markdown("### 🎤 Voice Microphone")
 st.markdown('<div class="record-buttons">', unsafe_allow_html=True)
 col1, col2 = st.columns(2)
@@ -94,28 +176,30 @@ with col1:
         st.session_state.recording = True
         st.rerun()
 with col2:
-    if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
+    if st.button("️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
+        # SIMULATED RESULT FOR UI DEMONSTRATION
+        # (When MVP is connected, this will be replaced by actual engine output)
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
-            'raw_text': "Ready",
-            'corrected_text': "Ready",
-            'duration': "0.0s"
+            'raw_text': "Sequel of Mission Impossible coming soon Who supporting actor this time",
+            'corrected_text': "The sequel to Mission Impossible is coming soon. Who is the supporting actor this time?",
+            'duration': "3.2s"
         })
         st.session_state.history = st.session_state.history[:10]
-        st.success("✅ Processed!")
+        st.success("✅ Transcription Processed!")
         st.rerun()
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.recording:
-    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; font-size: 1.2rem;'>🔴 RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; margin: 0.2rem 0;'>🔴 RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
 
 col_a, col_b = st.columns(2)
 with col_a:
     st.markdown("""
     <div class="status-box">
-        <h4 style="color: #ff4b4b; margin: 0;">🔴 Raw ASR</h4>
-        <p style="margin: 0; color: #aaa; font-size: 1rem;">
+        <h4 style="color: #ff4b4b; margin: 0;"> Raw ASR</h4>
+        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">
             {}
         </p>
     </div>
@@ -125,7 +209,7 @@ with col_b:
     st.markdown("""
     <div class="status-box">
         <h4 style="color: #00ff88; margin: 0;">🟢 Corrected</h4>
-        <p style="margin: 0; color: #aaa; font-size: 1rem;">
+        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">
             {}
         </p>
     </div>
@@ -145,7 +229,7 @@ if st.session_state.history:
 
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #8B9DC3; font-size: 0.9rem; margin-top: 1rem;">
+<div style="text-align: center; color: #8B9DC3; font-size: 0.8rem; margin-top: 0.5rem;">
     <p>© 2026 Classi AI. All rights reserved. | Contact: <strong>William@ClassiAIhk.com</strong></p>
 </div>
 """, unsafe_allow_html=True)
