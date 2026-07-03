@@ -13,25 +13,22 @@ if 'session_start' not in st.session_state:
 if 'recording' not in st.session_state:
     st.session_state.recording = False
 
-# SPECIAL PASSWORD for unlimited testing
+# PASSWORDS
+PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
+
 SESSION_TIMEOUT = 1800
 
-# Custom CSS - DEEP NAVY BLUE THEME & FIXED SPACING
+# Custom CSS
 st.markdown("""
 <style>
-    /* Global Background Color - Special Deep Navy Blue */
     .stApp {
         background-color: #0B132B !important;
     }
-    
-    /* Fix Header Cut-off by adding top padding */
     .block-container {
         padding-top: 4rem !important;
         padding-bottom: 2rem !important;
     }
-    
-    /* Typography */
     .main-header {
         text-align: center;
         font-size: 2.8rem !important;
@@ -45,9 +42,7 @@ st.markdown("""
         color: #8B9DC3;
         margin: 0 0 2rem 0 !important;
     }
-    
-    /* Cards and Boxes */
-    .company-intro, .status-box, .history-item {
+    .company-intro, .status-box {
         background-color: #1C2541 !important;
         border: 1px solid #3A506B !important;
         border-radius: 10px;
@@ -57,7 +52,6 @@ st.markdown("""
     .company-intro {
         border-left: 5px solid #5BC0BE !important;
     }
-    
     .company-intro h2 {
         font-size: 1.8rem !important;
         color: #5BC0BE !important;
@@ -69,20 +63,18 @@ st.markdown("""
         color: #E0E1DD !important;
         margin: 0 !important;
     }
-    
-    /* Dev Note */
+    /* Dev Note - SAME SMALL SIZE as password box */
     .dev-note {
-        text-align: center;
+        display: inline-block;
         background-color: #1C2541 !important;
         border: 1px solid #3A506B !important;
-        padding: 0.8rem;
-        border-radius: 8px;
-        font-size: 0.85rem;
-        color: #8B9DC3;
-        margin: 1rem 0 !important;
+        padding: 0.4rem 0.8rem !important;
+        border-radius: 6px !important;
+        font-size: 0.8rem !important;
+        color: #8B9DC3 !important;
+        margin: 0.5rem 0 !important;
+        line-height: 1.3 !important;
     }
-    
-    /* Status Boxes */
     .status-box h4 {
         margin: 0 0 0.5rem 0 !important;
         font-size: 1.2rem !important;
@@ -92,8 +84,6 @@ st.markdown("""
         font-size: 1rem !important;
         margin: 0 !important;
     }
-    
-    /* Buttons */
     .stButton > button {
         background-color: #3A506B !important;
         color: white !important;
@@ -106,15 +96,11 @@ st.markdown("""
         background-color: #5BC0BE !important;
         color: #0B132B !important;
     }
-    
-    /* Text Inputs */
     .stTextInput > div > div > input {
         background-color: #1C2541 !important;
         color: white !important;
         border: 1px solid #3A506B !important;
     }
-    
-    /* General Text */
     p, h1, h2, h3, h4 {
         color: #ffffff !important;
     }
@@ -124,7 +110,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Header - LOWERED (Fixed top spacing in CSS)
+# Header
 st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Experience real-world voice recognition</p>', unsafe_allow_html=True)
 
@@ -136,8 +122,10 @@ with pwd_col1:
 
 if password:
     if password == SPECIAL_PASSWORD:
-        st.success("✅ Unlimited access!")
+        st.success("✅ Unlimited access granted!")
         st.session_state.session_timeout = None
+    elif password == PUBLIC_PASSWORD:
+        st.success("✅ Access granted! (1-hour test drive)")
     else:
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
@@ -149,10 +137,10 @@ if password:
             seconds = int(remaining % 60)
             st.info(f"⏱️ {minutes}:{seconds:02d}")
 
-# Dev Note
+# Dev Note - SMALL BOX (same size as password input)
 st.markdown("""
 <div class="dev-note">
-    📌 <strong>Dev Demo</strong> | Displaying ClassiAIhk.com via domain masking | Production migration planned on Google Cloud
+    📌 <strong>Dev Demo</strong> | ClassiAIhk.com via domain masking | Google Cloud migration planned
 </div>
 """, unsafe_allow_html=True)
 
@@ -169,7 +157,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Recording Section (Upload REMOVED)
+# Recording Section
 st.markdown("### 🎤 Record Voice")
 
 col_rec1, col_rec2 = st.columns(2)
@@ -181,7 +169,6 @@ with col_rec1:
 with col_rec2:
     if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
-        # Simulate processing (replace with actual GDE call)
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
             'raw_text': "other of the danger trail flip stills etc",
@@ -217,10 +204,9 @@ with col2:
     </div>
     """.format("Waiting..." if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
 
-# History Section - EXACT TITLE AS REQUESTED
+# History
 if st.session_state.history:
     st.markdown("### 📜 History of Rolling Last 10 Text Transcriptions")
-    
     for i, item in enumerate(st.session_state.history[:10]):
         with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
             col_a, col_b = st.columns(2)
