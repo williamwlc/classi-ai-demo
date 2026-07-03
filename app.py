@@ -18,10 +18,7 @@ SPECIAL_PASSWORD = "ClassiDemo2024!"
 # Session timeout: 30 minutes
 SESSION_TIMEOUT = 1800
 
-# Get current computer clock time
-current_time = datetime.now().strftime("%H:%M:%S")
-
-# Custom CSS - FIXED POSITIONING & SPACING
+# Custom CSS - FIXED POSITIONING
 st.markdown("""
 <style>
     .main-header {
@@ -69,9 +66,9 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         line-height: 1.4;
     }
-    .password-container {
-        margin-top: 60px !important;
-        margin-bottom: 1rem !important;
+    .password-wrapper {
+        margin-top: 80px !important;
+        margin-bottom: 1.5rem !important;
     }
     .block-container {
         padding-top: 0 !important;
@@ -102,18 +99,14 @@ st.markdown("""
         background: #1e1e2e;
         min-height: 80px;
     }
-    .status-box h4 {
-        margin: 0 0 0.5rem 0 !important;
-        font-size: 1.2rem !important;
-    }
     .upload-section {
-        margin: 1rem 0 !important;
+        margin: 1.5rem 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Password Protection - MOVED DOWN
-st.markdown('<div class="password-container">', unsafe_allow_html=True)
+# Password Protection - MOVED DOWN with wrapper
+st.markdown('<div class="password-wrapper">', unsafe_allow_html=True)
 pwd_col1, pwd_col2 = st.columns([1, 4])
 with pwd_col1:
     password = st.text_input("", type="password", label_visibility="collapsed", 
@@ -136,7 +129,8 @@ if password:
             st.info(f"⏱️ {minutes}:{seconds:02d}")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Development Note - Top Right (MOVED DOWN)
+# Development Note - Top Right (MOVED DOWN to 80px)
+current_time = datetime.now().strftime("%H:%M:%S")
 st.markdown(f"""
 <div class="dev-note">
     <strong style="color: #667eea;">📌 Dev Demo</strong><br>
@@ -150,7 +144,7 @@ st.markdown(f"""
 st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Experience real-world voice recognition</p>', unsafe_allow_html=True)
 
-# Company Introduction - NO EXTRA SPACING ABOVE
+# Company Introduction - NO EXTRA SPACING
 st.markdown("""
 <div class="company-intro">
     <h2>About Classi AI</h2>
@@ -163,9 +157,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# REMOVED "Join Our Vision" section - you're right, it sends wrong message
+# REMOVED "Join Our Vision" section
 
-# Upload Section - RESTORED
+# Upload Section
 st.markdown('<div class="upload-section">', unsafe_allow_html=True)
 st.markdown("### 🎤 Upload Voice Recording")
 uploaded_file = st.file_uploader("", type=['wav', 'mp3', 'm4a', 'ogg'], 
