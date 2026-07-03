@@ -24,7 +24,8 @@ st.markdown("""
     .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1.5rem; margin: 0 !important; }
     .company-intro { border-left: 5px solid #5BC0BE !important; }
     .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 1rem 0 !important; }
-    .company-intro p { font-size: 1.1rem !important; line-height: 1.6 !important; color: #E0E1DD !important; margin: 0 !important; }
+    .company-intro p { font-size: 1.1rem !important; line-height: 1.6 !important; color: #E0E1DD !important; margin: 0 0 1rem 0 !important; }
+    .company-intro p:last-child { margin-bottom: 0 !important; }
     .dev-note { display: inline-block; background-color: #1C2541 !important; border: 1px solid #3A506B !important; padding: 0.4rem 0.8rem !important; border-radius: 6px !important; font-size: 0.8rem !important; color: #8B9DC3 !important; margin: 0.5rem 0 !important; line-height: 1.3 !important; }
     .status-box h4 { margin: 0 0 0.5rem 0 !important; font-size: 1.2rem !important; }
     .status-box p { color: #E0E1DD !important; font-size: 1rem !important; margin: 0 !important; }
@@ -73,9 +74,14 @@ st.markdown("""
     <h2>About Classi AI</h2>
     <p>
         Classi AI is redefining how the world bridges language barriers. While leading applications 
-        merely guess at your words, we comprehend the true context. Powered by our proprietary 
-        <strong>Universal Fluency Layer</strong>, our engine thrives where noise, accents, idioms, 
-        and code-switching cause competitor accuracy to plummet by 30-45%.
+        merely guess at your words, we comprehend the true context of your conversation. Powered by our proprietary 
+        Universal Fluency Layer, our voice-to-text engine thrives in the real world—mastering complex environments 
+        where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
+    </p>
+    <p>
+        Beyond transcription, Classi’s revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
+        By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, 
+        and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -90,9 +96,6 @@ with col1:
 with col2:
     if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
-        # PROCESS WITH YOUR MVP ENGINE HERE
-        # Replace this with actual GDE processing:
-        # raw_text, corrected_text = process_with_gde(audio_file)
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
             'raw_text': "Waiting for MVP integration...",
@@ -134,7 +137,7 @@ if st.session_state.history:
         with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
             col_x, col_y = st.columns(2)
             with col_x:
-                st.markdown("**🔴 Raw ASR:**")
+                st.markdown("** Raw ASR:**")
                 st.write(item['raw_text'])
             with col_y:
                 st.markdown("**🟢 Corrected:**")
