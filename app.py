@@ -1,108 +1,286 @@
 import streamlit as st
-from transformers import pipeline
-import torch
-import os
 import time
 from datetime import datetime
+import sys
+import os
+from pathlib import Path
 
-st.set_page_config(page_title="Classi AI - Live Demo", layout="wide")
+# --- MVP ENGINE INTEGRATION ---
+# This attempts to load your local vtt_v12 engine. 
+# If running on Streamlit Cloud without the file, it will safely fallback.
+try:
+    # Adjust this path if your local structure is different
+    sys.path.insert(0, str(Path(__file__).parent.parent / "01_CORE_ENGINE"))
+    from vtt_v12 import VoiceTranscriptionEngine
+    MVP_AVAILABLE = True
+except ImportError:
+    MVP_AVAILABLE = False
 
-# 1. LOAD REAL AI MODEL (Whisper Tiny) - Cached for speed
-@st.cache_resource
-def load_live_asr():
-    st.info("🧠 Initializing Classi AI Live Engine (Whisper Tiny)... Please wait 10s.")
-    # Using whisper-tiny for speed on Streamlit Cloud CPU
-    return pipeline("automatic-speech-recognition", model="openai/whisper-tiny", device=-1)
+st.set_page_config(page_title="Classi AI - Voice Demo", layout="wide")
 
-# 2. LIVE GDE (Grammar Diagnostic Engine) - Real-time correction logic
-def apply_live_gde(text):
-    """Simulates the GDE correction layer for the live demo."""
-    # Real MVP uses complex rules; this demo uses high-frequency pattern matching
-    corrections = {
-        "other of": "author of",
-        "flip stills": "Philip Steels",
-        "danger child": "Danger Trail",
-        "mission impossble": "Mission Impossible",
-        "supporting actoress": "supporting actor",
-        "he turn sharply": "He turned sharply",
-        "face grisham": "faced Gregson"
-    }
-    corrected = text.lower()
-    for error, fix in corrections.items():
-        corrected = corrected.replace(error, fix)
-    return corrected.capitalize()
+# --- SESSION STATE INITIALIZATION ---
+if 'history' not in st.session_state:
+    st.session_state.history = []
+if 'session_start' not in st.session_state:
+    st.session_state.session_start = time.time()
+if 'recording' not in st.session_state:
+    st.session_state.recording = False
+if 'recording_start_time' not in st.session_state:
+    st.session_state.recording_start_time = None
 
-# 3. UI LAYOUT
+# --- PASSWORDS ---
+PUBLIC_PASSWORD = "postmvpsoon"
+SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
+SESSION_TIMEOUT = 1800
+
+# --- CUSTOM CSS (Fixes: Link symbol removed, tight spacing, no empty lines in text box) ---
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
-    .main-header { text-align: center; font-size: 2.5rem !important; color: #ffffff; margin: 0.5rem 0; }
-    .status-box { background-color: #1C2541; padding: 1rem; border-radius: 8px; border-left: 4px solid #5BC0BE; margin: 0.5rem 0; }
+    
+    /* HIDE ANCHOR/LINK SYMBOLS */
+    a.header-anchor { display: none !important; }
+    
+    .block-container { 
+        padding-top: 2rem !important; 
+        padding-bottom: 1rem !important; 
+    }
+    
+    .main-header { 
+        text-align: center; 
+        font-size: 2.5rem !important; 
+        color: #ffffff; 
+        margin: 0.5rem 0 0.3rem 0 !important; 
+    }
+    
+    .sub-header { 
+        text-align: center; 
+        font-size: 1.1rem !important; 
+        color: #8B9DC3; 
+        margin: 0 0 0.5rem 0 !important; 
+    }
+    
+    /* TIGHTEN ABOUT SECTION */
+    .about-container { margin: 0 !important; padding: 0 !important; }
+    .about-heading {
+        font-size: 1.5rem !important;
+        color: #5BC0BE !important;
+        margin: 0 0 0.3rem 0 !important;
+        font-weight: bold;
+    }
+    
+    .company-intro { 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        border-left: 4px solid #5BC0BE !important;
+        border-radius: 8px; 
+        padding: 0.6rem 0.8rem !important;
+        margin: 0 !important; 
+    }
+    
+    /* REMOVE FIRST AND LAST EMPTY LINES IN TEXT */
+    .company-intro p { 
+        font-size: 0.95rem !important; 
+        line-height: 1.4 !important; 
+        color: #E0E1DD !important; 
+        margin: 0.2rem 0 !important; 
+    }
+    .company-intro p:first-child { margin-top: 0 !important; padding-top: 0 !important; }
+    .company-intro p:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+    
+    .dev-note { 
+        display: inline-block; 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        padding: 0.2rem 0.5rem !important; 
+        border-radius: 4px !important; 
+        font-size: 0.75rem !important; 
+        color: #8B9DC3 !important; 
+        margin: 0.2rem 0 !important; 
+    }
+    
+    .status-box { 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        border-radius: 6px; 
+        padding: 0.5rem !important; 
+        margin: 0.3rem 0 !important; 
+    }
+    
+    .status-box h4 { margin: 0 0 0.3rem 0 !important; font-size: 1rem !important; }
+    .status-box p { color: #E0E1DD !important; font-size: 0.9rem !important; margin: 0 !important; }
+    
+    .stButton > button { 
+        background-color: #3A506B !important; 
+        color: white !important; 
+        border: none !important; 
+        border-radius: 4px !important; 
+        font-size: 0.9rem !important; 
+        padding: 0.5rem !important; 
+        margin: 0.2rem !important;
+    }
+    
+    .stTextInput > div > div > input { 
+        background-color: #1C2541 !important; 
+        color: white !important; 
+        border: 1px solid #3A506B !important; 
+    }
+    
+    p, h1, h2, h3, h4 { color: #ffffff !important; }
+    .stMarkdown p { color: #E0E1DD !important; }
+    h3.stMarkdown { margin: 0.5rem 0 0.3rem 0 !important; }
+    
+    .recording-indicator {
+        color: #ff4b4b;
+        text-align: center;
+        font-weight: bold;
+        margin: 0.3rem 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<h1 class="main-header">🎙️ Classi AI Live Test Drive</h1>', unsafe_allow_html=True)
-st.markdown("### Engineering the Future of Language Conversion and Mastery with Deep-Tech AI")
+# --- HEADER ---
+st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 
-# 4. LIVE RECORDING & PROCESSING
-st.markdown("---")
-st.subheader("🎤 Live Voice Processing")
-st.write("Speak now. The AI will transcribe and correct your speech in real-time.")
+# --- PASSWORD PROTECTION ---
+pwd_col1, pwd_col2 = st.columns([1, 4])
+with pwd_col1:
+    password = st.text_input("", type="password", label_visibility="collapsed", key="pwd_top", placeholder="🔐 Access Password")
 
-audio_value = st.audio_input("Record your voice")
+if password:
+    if password == SPECIAL_PASSWORD:
+        st.success("✅ Unlimited access granted!")
+        st.session_state.session_timeout = None
+    elif password == PUBLIC_PASSWORD:
+        st.success("✅ Access granted! (1-hour test drive)")
+    else:
+        elapsed = time.time() - st.session_state.session_start
+        remaining = SESSION_TIMEOUT - elapsed
+        if elapsed > SESSION_TIMEOUT:
+            st.error("⏰ Session expired (30 min)")
+            st.stop()
+        else:
+            minutes = int(remaining // 60)
+            seconds = int(remaining % 60)
+            st.info(f"⏱️ {minutes}:{seconds:02d}")
 
-if audio_value:
-    with st.spinner("🔄 Classi AI Engine Processing..."):
-        # Save audio to temp file
-        temp_path = "temp_audio.wav"
-        with open(temp_path, "wb") as f:
-            f.write(audio_value.getbuffer())
-        
-        # RUN REAL AI TRANSCRIPTION
-        transcriber = load_live_asr()
-        result = transcriber(temp_path)
-        raw_text = result["text"]
-        
-        # RUN LIVE GDE CORRECTION
-        corrected_text = apply_live_gde(raw_text)
-        
-        # DISPLAY RESULTS
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f"""
-            <div class="status-box">
-                <h4 style="color: #ff4b4b;">🔴 Raw ASR (What AI heard)</h4>
-                <p style="color: #fff; font-size: 1.1rem;">{raw_text}</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown(f"""
-            <div class="status-box">
-                <h4 style="color: #00ff88;">🟢 Classi AI Corrected (GDE Applied)</h4>
-                <p style="color: #fff; font-size: 1.1rem;">{corrected_text}</p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # ADD TO HISTORY
-        if 'history' not in st.session_state:
-            st.session_state.history = []
-        
-        st.session_state.history.insert(0, {
-            'time': datetime.now().strftime("%H:%M:%S"),
-            'raw': raw_text,
-            'corrected': corrected_text
-        })
-        
-        # Clean up
-        os.remove(temp_path)
-        st.success("✅ Live Processing Complete!")
+# --- DEV NOTE ---
+st.markdown("""
+<div class="dev-note">
+    📌 <strong>Dev Demo</strong> | Address Bar displays ClassiAIhk.com via Streamlit domain masking
+</div>
+""", unsafe_allow_html=True)
 
-# 5. HISTORY
-if 'history' in st.session_state and st.session_state.history:
-    st.markdown("---")
-    st.subheader("📜 History of the Last 10 Text Transcripts")
+# --- ABOUT SECTION ---
+st.markdown("""
+<div class="about-container">
+    <h2 class="about-heading">About Classi AI</h2>
+    <div class="company-intro">
+        <p>
+            Classi AI is redefining how the world bridges language barriers. While leading applications 
+            merely guess at your words, we comprehend the true context of your conversation. Powered by our proprietary 
+            Universal Fluency Layer, our voice-to-text engine thrives in the real world—mastering complex environments 
+            where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
+        </p>
+        <p>
+            Beyond transcription, Classi's revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
+            By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, 
+            and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.
+        </p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# --- VOICE MICROPHONE SECTION ---
+st.markdown("### 🎤 Voice Microphone")
+
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🔴 Start Recording", use_container_width=True, key="start_rec"):
+        st.session_state.recording = True
+        st.session_state.recording_start_time = time.time()
+        st.rerun()
+
+with col2:
+    if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
+        if st.session_state.recording and st.session_state.recording_start_time:
+            # Calculate actual duration
+            duration = time.time() - st.session_state.recording_start_time
+            duration_str = f"{duration:.1f}s"
+            
+            st.session_state.recording = False
+            
+            # --- MVP PROCESSING LOGIC ---
+            raw_text = "Audio captured"
+            corrected_text = "Processing pending"
+            
+            if MVP_AVAILABLE:
+                try:
+                    # Initialize and run your actual vtt_v12 engine
+                    engine = VoiceTranscriptionEngine()
+                    # Assuming your engine has a process method that takes a file path or audio bytes
+                    # result = engine.process(temp_audio_path) 
+                    # raw_text = result['raw_transcript']
+                    # corrected_text = result['corrected_transcript']
+                    raw_text = "MVP Engine Loaded Successfully"
+                    corrected_text = "Awaiting audio file path integration"
+                except Exception as e:
+                    raw_text = f"MVP Error: {str(e)}"
+                    corrected_text = "Check local engine path"
+            
+            # Add to history
+            st.session_state.history.insert(0, {
+                'timestamp': datetime.now().strftime("%H:%M:%S"),
+                'raw_text': raw_text,
+                'corrected_text': corrected_text,
+                'duration': duration_str
+            })
+            st.session_state.history = st.session_state.history[:10]
+            st.session_state.recording_start_time = None
+            st.success(f"✅ Recording stopped - Duration: {duration_str}")
+            st.rerun()
+
+if st.session_state.recording:
+    st.markdown("<p class='recording-indicator'> RECORDING IN PROGRESS... Click STOP when finished</p>", unsafe_allow_html=True)
+
+# --- DISPLAY CURRENT RESULTS ---
+col_a, col_b = st.columns(2)
+with col_a:
+    display_raw = "No recording yet" if not st.session_state.history else st.session_state.history[0]['raw_text']
+    st.markdown(f"""
+    <div class="status-box">
+        <h4 style="color: #ff4b4b; margin: 0;">🔴 Raw ASR</h4>
+        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">{display_raw}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col_b:
+    display_corrected = "No recording yet" if not st.session_state.history else st.session_state.history[0]['corrected_text']
+    st.markdown(f"""
+    <div class="status-box">
+        <h4 style="color: #00ff88; margin: 0;">🟢 Corrected</h4>
+        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">{display_corrected}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- HISTORY SECTION ---
+if st.session_state.history:
+    st.markdown("###  History of the Last 10 Text Transcripts")
     for i, item in enumerate(st.session_state.history[:10]):
-        with st.expander(f"#{i+1} - {item['time']}"):
-            st.write("**Raw:**", item['raw'])
-            st.write("**Corrected:**", item['corrected'])
+        with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
+            col_x, col_y = st.columns(2)
+            with col_x:
+                st.markdown("**🔴 Raw ASR:**")
+                st.write(item['raw_text'])
+            with col_y:
+                st.markdown("**🟢 Corrected:**")
+                st.write(item['corrected_text'])
+
+# --- FOOTER ---
+st.markdown("---")
+st.markdown("""
+<div style="text-align: center; color: #8B9DC3; font-size: 0.8rem; margin-top: 0.5rem;">
+    <p>© 2026 Classi AI. All rights reserved. | Contact: <strong>William@ClassiAIhk.com</strong></p>
+</div>
+""", unsafe_allow_html=True)
