@@ -18,28 +18,35 @@ SESSION_TIMEOUT = 1800
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
-    .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
+    
+    /* AGGRESSIVE SPACING REMOVAL */
+    .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; }
     .main-header { text-align: center; font-size: 2.8rem !important; color: #ffffff; margin: 0 !important; font-weight: 700; }
-    .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0.3rem 0 1rem 0 !important; }
-    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1.5rem; margin: 0 !important; }
+    .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0.2rem 0 0.5rem 0 !important; }
+    
+    /* TIGHTENED COMPANY INTRO */
+    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1rem !important; margin: 0.2rem 0 !important; }
     .company-intro { border-left: 5px solid #5BC0BE !important; }
-    .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 1rem 0 !important; }
-    .company-intro p { font-size: 1.1rem !important; line-height: 1.6 !important; color: #E0E1DD !important; margin: 0 0 1rem 0 !important; }
+    .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 0.5rem 0 !important; }
+    .company-intro p { font-size: 1.1rem !important; line-height: 1.5 !important; color: #E0E1DD !important; margin: 0 0 0.5rem 0 !important; }
     .company-intro p:last-child { margin-bottom: 0 !important; }
-    .dev-note { display: inline-block; background-color: #1C2541 !important; border: 1px solid #3A506B !important; padding: 0.4rem 0.8rem !important; border-radius: 6px !important; font-size: 0.8rem !important; color: #8B9DC3 !important; margin: 0.5rem 0 !important; line-height: 1.3 !important; }
+    
+    .dev-note { display: inline-block; background-color: #1C2541 !important; border: 1px solid #3A506B !important; padding: 0.3rem 0.6rem !important; border-radius: 6px !important; font-size: 0.8rem !important; color: #8B9DC3 !important; margin: 0.2rem 0 !important; line-height: 1.3 !important; }
+    
     .status-box h4 { margin: 0 0 0.5rem 0 !important; font-size: 1.2rem !important; }
     .status-box p { color: #E0E1DD !important; font-size: 1rem !important; margin: 0 !important; }
+    
     .stButton > button { background-color: #3A506B !important; color: white !important; border: none !important; border-radius: 6px !important; font-size: 1rem !important; padding: 0.8rem !important; }
     .stButton > button:hover { background-color: #5BC0BE !important; color: #0B132B !important; }
     .stTextInput > div > div > input { background-color: #1C2541 !important; color: white !important; border: 1px solid #3A506B !important; }
     p, h1, h2, h3, h4 { color: #ffffff !important; }
     .stMarkdown p { color: #E0E1DD !important; }
-    .record-buttons { display: flex; gap: 1rem; margin: 1rem 0; }
+    .record-buttons { display: flex; gap: 1rem; margin: 0.5rem 0; }
     .record-buttons button { flex: 1; }
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Experience real-world voice recognition</p>', unsafe_allow_html=True)
 
 pwd_col1, pwd_col2 = st.columns([1, 4])
@@ -65,7 +72,7 @@ if password:
 
 st.markdown("""
 <div class="dev-note">
-    📌 <strong>Dev Demo</strong> | Address Bar displays ClassiAIhk.com via Streamlit domain masking
+     <strong>Dev Demo</strong> | Address Bar displays ClassiAIhk.com via Streamlit domain masking
 </div>
 """, unsafe_allow_html=True)
 
@@ -79,14 +86,14 @@ st.markdown("""
         where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
     </p>
     <p>
-        Beyond transcription, Classi’s revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
+        Beyond transcription, Classi's revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
         By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, 
         and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("### 🎤 Voice Microphone")
+st.markdown("###  Voice Microphone")
 st.markdown('<div class="record-buttons">', unsafe_allow_html=True)
 col1, col2 = st.columns(2)
 with col1:
@@ -96,10 +103,11 @@ with col1:
 with col2:
     if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
+        # Placeholder data until MVP is connected
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
-            'raw_text': "Waiting for MVP integration...",
-            'corrected_text': "Waiting for MVP integration...",
+            'raw_text': "—",
+            'corrected_text': "—",
             'duration': "0.0s"
         })
         st.session_state.history = st.session_state.history[:10]
@@ -108,7 +116,7 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.recording:
-    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; font-size: 1.2rem;'>🔴 RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; font-size: 1.2rem;'> RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
 
 col_a, col_b = st.columns(2)
 with col_a:
@@ -119,7 +127,7 @@ with col_a:
             {}
         </p>
     </div>
-    """.format("Waiting for recording..." if not st.session_state.history else st.session_state.history[0]['raw_text']), unsafe_allow_html=True)
+    """.format("Ready" if not st.session_state.history else st.session_state.history[0]['raw_text']), unsafe_allow_html=True)
 
 with col_b:
     st.markdown("""
@@ -129,7 +137,7 @@ with col_b:
             {}
         </p>
     </div>
-    """.format("Waiting for recording..." if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
+    """.format("Ready" if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
 
 if st.session_state.history:
     st.markdown("### 📜 History of the Last 10 Text Transcripts")
@@ -137,10 +145,10 @@ if st.session_state.history:
         with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
             col_x, col_y = st.columns(2)
             with col_x:
-                st.markdown("** Raw ASR:**")
+                st.markdown("**🔴 Raw ASR:**")
                 st.write(item['raw_text'])
             with col_y:
-                st.markdown("**🟢 Corrected:**")
+                st.markdown("** Corrected:**")
                 st.write(item['corrected_text'])
 
 st.markdown("---")
