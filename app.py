@@ -11,14 +11,16 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 if 'session_start' not in st.session_state:
     st.session_state.session_start = time.time()
+if 'recording' not in st.session_state:
+    st.session_state.recording = False
 
 # SPECIAL PASSWORD for unlimited testing
-SPECIAL_PASSWORD = "postmvpsoon!"
+SPECIAL_PASSWORD = "ClassiDemo2024!"
 
 # Session timeout: 30 minutes
 SESSION_TIMEOUT = 1800
 
-# Custom CSS - FIXED POSITIONING
+# Custom CSS - COMPACT LAYOUT
 st.markdown("""
 <style>
     .main-header {
@@ -26,53 +28,48 @@ st.markdown("""
         font-size: 2.5rem !important;
         color: #ffffff;
         margin: 0 !important;
-        padding-top: 0 !important;
+        padding: 0 !important;
     }
     .sub-header {
         text-align: center;
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
         color: #aaa;
-        margin: 0.5rem 0 1.5rem 0 !important;
+        margin: 0.3rem 0 1rem 0 !important;
     }
     .company-intro {
         background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3a 100%);
-        padding: 1.5rem;
+        padding: 1rem;
         border-radius: 8px;
-        margin: 0 !important;
+        margin: 0.5rem 0 !important;
         border-left: 4px solid #667eea;
     }
     .company-intro h2 {
-        font-size: 1.8rem !important;
+        font-size: 1.5rem !important;
         color: #667eea;
-        margin: 0 0 0.8rem 0 !important;
+        margin: 0 0 0.5rem 0 !important;
     }
     .company-intro p {
-        font-size: 1.15rem !important;
-        line-height: 1.6 !important;
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
         margin: 0 !important;
     }
+    .password-wrapper {
+        margin: 0.5rem 0 !important;
+        padding: 0 !important;
+    }
     .dev-note {
-        position: fixed;
-        top: 80px !important;
-        right: 10px;
+        text-align: center;
         background: rgba(30, 30, 46, 0.95);
-        padding: 8px 12px;
+        padding: 0.5rem;
         border-radius: 6px;
         border-left: 3px solid #667eea;
         font-size: 0.75rem;
         color: #aaa;
-        z-index: 9999;
-        max-width: 320px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        line-height: 1.4;
-    }
-    .password-wrapper {
-        margin-top: 80px !important;
-        margin-bottom: 1.5rem !important;
+        margin: 0.5rem 0 !important;
     }
     .block-container {
-        padding-top: 0 !important;
-        padding-bottom: 1rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 0.5rem !important;
     }
     section.main > div {
         padding-top: 0 !important;
@@ -81,36 +78,67 @@ st.markdown("""
     h1 {
         margin: 0 !important;
         font-size: 2.5rem !important;
-        padding-top: 0 !important;
+        padding: 0 !important;
     }
     h2 {
-        margin: 0 0 0.8rem 0 !important;
-        font-size: 1.8rem !important;
+        margin: 0 0 0.5rem 0 !important;
+        font-size: 1.5rem !important;
+    }
+    h3 {
+        margin: 0 0 0.4rem 0 !important;
+        font-size: 1.2rem !important;
     }
     p {
-        margin: 0.5rem 0 !important;
-        line-height: 1.6;
-        font-size: 1.15rem !important;
+        margin: 0.3rem 0 !important;
+        line-height: 1.5;
+        font-size: 1rem !important;
     }
     .status-box {
-        padding: 1rem;
+        padding: 0.8rem;
         border-radius: 8px;
-        margin: 0.5rem 0;
+        margin: 0.3rem 0;
         background: #1e1e2e;
-        min-height: 80px;
+        min-height: 70px;
+    }
+    .status-box h4 {
+        margin: 0 0 0.4rem 0 !important;
+        font-size: 1.1rem !important;
     }
     .upload-section {
-        margin: 1.5rem 0 !important;
+        margin: 0.8rem 0 !important;
+        padding: 0.5rem 0 !important;
+    }
+    .history-section {
+        margin: 0.8rem 0 !important;
+        padding: 0.5rem 0 !important;
+    }
+    .stFileUploader {
+        margin: 0.3rem 0 !important;
+        padding: 0 !important;
+    }
+    .record-buttons {
+        display: flex;
+        gap: 1rem;
+        margin: 0.8rem 0;
+    }
+    .record-buttons button {
+        flex: 1;
+        padding: 0.8rem !important;
+        font-size: 1rem !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Password Protection - MOVED DOWN with wrapper
+# Header - VERY TOP
+st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Experience real-world voice recognition</p>', unsafe_allow_html=True)
+
+# Password Protection
 st.markdown('<div class="password-wrapper">', unsafe_allow_html=True)
 pwd_col1, pwd_col2 = st.columns([1, 4])
 with pwd_col1:
     password = st.text_input("", type="password", label_visibility="collapsed", 
-                             key="pwd_top", placeholder="🔐 Password")
+                             key="pwd_top", placeholder="🔐 Access Password")
 
 if password:
     if password == SPECIAL_PASSWORD:
@@ -129,22 +157,14 @@ if password:
             st.info(f"⏱️ {minutes}:{seconds:02d}")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Development Note - Top Right (MOVED DOWN to 80px)
-current_time = datetime.now().strftime("%H:%M:%S")
-st.markdown(f"""
+# Dev Note - BELOW PASSWORD (no timestamp)
+st.markdown("""
 <div class="dev-note">
-    <strong style="color: #667eea;">📌 Dev Demo</strong><br>
-    Displaying ClassiAIhk.com via domain masking<br>
-    Production migration planned on Google Cloud<br>
-    <span style="color: #555; font-size: 0.7rem;">{current_time}</span>
+    <strong style="color: #667eea;">📌 Dev Demo</strong> | Displaying ClassiAIhk.com via domain masking | Production migration planned on Google Cloud
 </div>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Experience real-world voice recognition</p>', unsafe_allow_html=True)
-
-# Company Introduction - NO EXTRA SPACING
+# Company Introduction
 st.markdown("""
 <div class="company-intro">
     <h2>About Classi AI</h2>
@@ -157,13 +177,37 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# REMOVED "Join Our Vision" section
-
-# Upload Section
+# Recording Section
 st.markdown('<div class="upload-section">', unsafe_allow_html=True)
-st.markdown("### 🎤 Upload Voice Recording")
-uploaded_file = st.file_uploader("", type=['wav', 'mp3', 'm4a', 'ogg'], 
-                                  label_visibility="collapsed")
+st.markdown("### 🎤 Record or Upload Voice")
+
+# Recording buttons
+col_rec1, col_rec2 = st.columns(2)
+with col_rec1:
+    if st.button("🔴 Start Recording", use_container_width=True, key="start_rec"):
+        st.session_state.recording = True
+        st.rerun()
+
+with col_rec2:
+    if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
+        st.session_state.recording = False
+        # Simulate processing (replace with actual GDE call)
+        st.session_state.history.insert(0, {
+            'timestamp': datetime.now().strftime("%H:%M:%S"),
+            'raw_text': "other of the danger trail flip stills etc",
+            'corrected_text': "Author of the danger trail Philip Steels etc",
+            'duration': "3.2s"
+        })
+        st.session_state.history = st.session_state.history[:10]
+        st.success("✅ Processed!")
+        st.rerun()
+
+if st.session_state.recording:
+    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold;'>🔴 RECORDING IN PROGRESS... Click STOP when finished</p>", unsafe_allow_html=True)
+
+# File upload fallback
+uploaded_file = st.file_uploader("Or upload audio file", type=['wav', 'mp3', 'm4a', 'ogg'], 
+                                  label_visibility="collapsed", key="file_upload")
 
 if uploaded_file is not None:
     with st.spinner("🔄 Processing..."):
@@ -171,17 +215,20 @@ if uploaded_file is not None:
         temp_path.write_bytes(uploaded_file.getvalue())
         time.sleep(2)
         
+        # HERE: Call your actual GDE engine
+        # raw_text, corrected_text = process_audio(temp_path)
+        
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
-            'raw_text': "other of the danger trail flip stills etc",
-            'corrected_text': "Author of the danger trail Philip Steels etc",
-            'duration': f"{uploaded_file.size / 16000:.1f}s",
-            'filename': uploaded_file.name
+            'raw_text': f"Processed {uploaded_file.name}",
+            'corrected_text': "GDE correction will appear here",
+            'duration': f"{uploaded_file.size / 16000:.1f}s"
         })
         st.session_state.history = st.session_state.history[:10]
         temp_path.unlink(missing_ok=True)
         st.success("✅ Processed!")
         st.rerun()
+
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Status Display
@@ -190,7 +237,7 @@ with col1:
     st.markdown("""
     <div class="status-box">
         <h4 style="color: #ff4b4b; margin: 0;">🔴 Raw ASR</h4>
-        <p style="margin: 0.3rem 0 0 0; color: #aaa; font-size: 0.95rem;">
+        <p style="margin: 0; color: #aaa; font-size: 0.95rem;">
             {}
         </p>
     </div>
@@ -200,29 +247,32 @@ with col2:
     st.markdown("""
     <div class="status-box">
         <h4 style="color: #00ff88; margin: 0;">🟢 Corrected</h4>
-        <p style="margin: 0.3rem 0 0 0; color: #aaa; font-size: 0.95rem;">
+        <p style="margin: 0; color: #aaa; font-size: 0.95rem;">
             {}
         </p>
     </div>
     """.format("Waiting..." if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
 
-# History
+# History Section - Last 10 Transcriptions
 if st.session_state.history:
-    st.markdown("---")
-    st.markdown("### 📜 History")
-    for i, item in enumerate(st.session_state.history):
-        with st.expander(f"#{i+1} - {item['timestamp']}"):
+    st.markdown('<div class="history-section">', unsafe_allow_html=True)
+    st.markdown("### 📜 History of Rolling Last 10 Text Transcriptions")
+    
+    for i, item in enumerate(st.session_state.history[:10]):
+        with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
             col_a, col_b = st.columns(2)
             with col_a:
-                st.write("**Raw:**", item['raw_text'])
+                st.markdown("**🔴 Raw ASR:**")
+                st.write(item['raw_text'])
             with col_b:
-                st.write("**Corrected:**", item['corrected_text'])
+                st.markdown("**🟢 Corrected:**")
+                st.write(item['corrected_text'])
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 2rem;">
-    <p>© 2026 Classi AI. All rights reserved.</p>
-    <p>Contact: <strong>William@ClassiAIhk.com</strong></p>
+<div style="text-align: center; color: #666; font-size: 0.85rem; margin: 0.5rem 0;">
+    <p>© 2026 Classi AI. All rights reserved. | Contact: <strong>William@ClassiAIhk.com</strong></p>
 </div>
 """, unsafe_allow_html=True)
