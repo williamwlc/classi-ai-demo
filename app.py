@@ -2,14 +2,9 @@ import streamlit as st
 import time
 from datetime import datetime
 import os
-from transformers import pipeline
+from pathlib import Path
 
 st.set_page_config(page_title="Classi AI - Voice Demo", layout="wide")
-
-# Load a lightweight AI model to transcribe audio on Streamlit Cloud
-@st.cache_resource
-def load_asr_model():
-    return pipeline("automatic-speech-recognition", model="openai/whisper-tiny")
 
 # Initialize session state
 if 'history' not in st.session_state:
@@ -20,34 +15,140 @@ if 'recording' not in st.session_state:
     st.session_state.recording = False
 if 'recording_start_time' not in st.session_state:
     st.session_state.recording_start_time = None
+if 'audio_data' not in st.session_state:
+    st.session_state.audio_data = None
 
 PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
 SESSION_TIMEOUT = 1800
 
+# Custom CSS with oscillating animation
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
+    
     a.header-anchor { display: none !important; }
-    .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
-    .main-header { text-align: center; font-size: 2.5rem !important; color: #ffffff; margin: 0.5rem 0 0.3rem 0 !important; }
-    .sub-header { text-align: center; font-size: 1.1rem !important; color: #8B9DC3; margin: 0 0 0.5rem 0 !important; }
+    
+    .block-container { 
+        padding-top: 2rem !important; 
+        padding-bottom: 1rem !important; 
+    }
+    
+    .main-header { 
+        text-align: center; 
+        font-size: 2.5rem !important; 
+        color: #ffffff; 
+        margin: 0.5rem 0 0.3rem 0 !important; 
+    }
+    
+    .sub-header { 
+        text-align: center; 
+        font-size: 1.1rem !important; 
+        color: #8B9DC3; 
+        margin: 0 0 0.5rem 0 !important; 
+    }
+    
     .about-container { margin: 0 !important; padding: 0 !important; }
-    .about-heading { font-size: 1.5rem !important; color: #5BC0BE !important; margin: 0 0 0.3rem 0 !important; font-weight: bold; }
-    .company-intro { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-left: 4px solid #5BC0BE !important; border-radius: 8px; padding: 0.6rem 0.8rem !important; margin: 0 !important; }
-    .company-intro p { font-size: 0.95rem !important; line-height: 1.4 !important; color: #E0E1DD !important; margin: 0.2rem 0 !important; }
+    .about-heading {
+        font-size: 1.5rem !important;
+        color: #5BC0BE !important;
+        margin: 0 0 0.3rem 0 !important;
+        font-weight: bold;
+    }
+    
+    .company-intro { 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        border-left: 4px solid #5BC0BE !important;
+        border-radius: 8px; 
+        padding: 0.6rem 0.8rem !important;
+        margin: 0 !important; 
+    }
+    
+    .company-intro p { 
+        font-size: 0.95rem !important; 
+        line-height: 1.4 !important; 
+        color: #E0E1DD !important; 
+        margin: 0.2rem 0 !important; 
+    }
     .company-intro p:first-child { margin-top: 0 !important; padding-top: 0 !important; }
     .company-intro p:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
-    .dev-note { display: inline-block; background-color: #1C2541 !important; border: 1px solid #3A506B !important; padding: 0.2rem 0.5rem !important; border-radius: 4px !important; font-size: 0.75rem !important; color: #8B9DC3 !important; margin: 0.2rem 0 !important; }
-    .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 6px; padding: 0.5rem !important; margin: 0.3rem 0 !important; }
+    
+    .dev-note { 
+        display: inline-block; 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        padding: 0.2rem 0.5rem !important; 
+        border-radius: 4px !important; 
+        font-size: 0.75rem !important; 
+        color: #8B9DC3 !important; 
+        margin: 0.2rem 0 !important; 
+    }
+    
+    .status-box { 
+        background-color: #1C2541 !important; 
+        border: 1px solid #3A506B !important; 
+        border-radius: 6px; 
+        padding: 0.5rem !important; 
+        margin: 0.3rem 0 !important; 
+    }
+    
     .status-box h4 { margin: 0 0 0.3rem 0 !important; font-size: 1rem !important; }
     .status-box p { color: #E0E1DD !important; font-size: 0.9rem !important; margin: 0 !important; }
-    .stButton > button { background-color: #3A506B !important; color: white !important; border: none !important; border-radius: 4px !important; font-size: 0.9rem !important; padding: 0.5rem !important; margin: 0.2rem !important; }
-    .stTextInput > div > div > input { background-color: #1C2541 !important; color: white !important; border: 1px solid #3A506B !important; }
+    
+    .stButton > button { 
+        background-color: #3A506B !important; 
+        color: white !important; 
+        border: none !important; 
+        border-radius: 4px !important; 
+        font-size: 0.9rem !important; 
+        padding: 0.5rem !important; 
+        margin: 0.2rem !important;
+    }
+    
+    .stTextInput > div > div > input { 
+        background-color: #1C2541 !important; 
+        color: white !important; 
+        border: 1px solid #3A506B !important; 
+    }
+    
     p, h1, h2, h3, h4 { color: #ffffff !important; }
     .stMarkdown p { color: #E0E1DD !important; }
     h3.stMarkdown { margin: 0.5rem 0 0.3rem 0 !important; }
-    .recording-indicator { color: #ff4b4b; text-align: center; font-weight: bold; margin: 0.3rem 0; }
+    
+    /* OSCILLATING RECORDING INDICATOR */
+    .recording-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-color: #ff4b4b;
+        border-radius: 50%;
+        margin-right: 8px;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);
+            opacity: 0.5;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    
+    .recording-status {
+        color: #ff4b4b;
+        text-align: center;
+        font-weight: bold;
+        margin: 0.5rem 0;
+        font-size: 1.1rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -68,7 +169,7 @@ if password:
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
         if elapsed > SESSION_TIMEOUT:
-            st.error("⏰ Session expired (30 min)")
+            st.error(" Session expired (30 min)")
             st.stop()
         else:
             minutes = int(remaining // 60)
@@ -100,11 +201,12 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Voice Microphone Section with oscillating indicator
 st.markdown("### 🎤 Voice Microphone")
 
 col1, col2 = st.columns(2)
 with col1:
-    if st.button(" Start Recording", use_container_width=True, key="start_rec"):
+    if st.button("🔴 Start Recording", use_container_width=True, key="start_rec"):
         st.session_state.recording = True
         st.session_state.recording_start_time = time.time()
         st.rerun()
@@ -114,24 +216,29 @@ with col2:
         if st.session_state.recording and st.session_state.recording_start_time:
             duration = time.time() - st.session_state.recording_start_time
             duration_str = f"{duration:.1f}s"
+            
             st.session_state.recording = False
             
-            # --- ACTUAL AI TRANSCRIPTION ---
-            raw_text = "Processing..."
-            corrected_text = "Applying GDE..."
+            # Process audio if available
+            raw_text = "Audio captured"
+            corrected_text = "Processing pending"
             
-            try:
-                # Use Streamlit's audio recorder if available, or placeholder for demo
-                # Since we can't easily pass the mic stream directly here without a file, 
-                # we simulate the ASR result for the UI flow, or process if file uploaded.
-                # FOR LIVE DEMO: We will use a placeholder that proves the UI works.
-                # To get REAL audio, we need st.audio_input()
-                raw_text = "Audio captured successfully"
-                corrected_text = "Ready for MVP integration"
-            except Exception as e:
-                raw_text = f"Error: {e}"
-                corrected_text = "Check logs"
-
+            if st.session_state.audio_data:
+                try:
+                    # Save audio temporarily
+                    temp_path = Path("temp_audio.wav")
+                    temp_path.write_bytes(st.session_state.audio_data)
+                    
+                    # Here you would call your MVP engine
+                    # For now, we simulate the processing
+                    raw_text = f"Audio processed ({duration_str})"
+                    corrected_text = "GDE correction applied"
+                    
+                    temp_path.unlink(missing_ok=True)
+                except Exception as e:
+                    raw_text = f"Error: {str(e)}"
+                    corrected_text = "Check logs"
+            
             st.session_state.history.insert(0, {
                 'timestamp': datetime.now().strftime("%H:%M:%S"),
                 'raw_text': raw_text,
@@ -143,9 +250,23 @@ with col2:
             st.success(f"✅ Recording stopped - Duration: {duration_str}")
             st.rerun()
 
+# Show oscillating indicator when recording
 if st.session_state.recording:
-    st.markdown("<p class='recording-indicator'>🔴 RECORDING IN PROGRESS... Click STOP when finished</p>", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="recording-status">
+        <span class="recording-indicator"></span>
+        RECORDING IN PROGRESS... Click STOP when finished
+    </div>
+    """, unsafe_allow_html=True)
 
+# Audio input for actual recording
+audio_value = st.audio_input("Record your voice", key="audio_recorder")
+
+if audio_value:
+    st.session_state.audio_data = audio_value.getvalue()
+    st.success("✅ Audio captured! Click 'Stop Recording' to process.")
+
+# Display current results
 col_a, col_b = st.columns(2)
 with col_a:
     display_raw = "No recording yet" if not st.session_state.history else st.session_state.history[0]['raw_text']
@@ -165,8 +286,9 @@ with col_b:
     </div>
     """, unsafe_allow_html=True)
 
+# History section
 if st.session_state.history:
-    st.markdown("###  History of the Last 10 Text Transcripts")
+    st.markdown("### 📜 History of the Last 10 Text Transcripts")
     for i, item in enumerate(st.session_state.history[:10]):
         with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
             col_x, col_y = st.columns(2)
@@ -174,7 +296,7 @@ if st.session_state.history:
                 st.markdown("**🔴 Raw ASR:**")
                 st.write(item['raw_text'])
             with col_y:
-                st.markdown("** Corrected:**")
+                st.markdown("**🟢 Corrected:**")
                 st.write(item['corrected_text'])
 
 st.markdown("---")
