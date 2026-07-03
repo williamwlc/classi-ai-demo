@@ -21,7 +21,7 @@ st.markdown("""
     .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
     .main-header { text-align: center; font-size: 2.8rem !important; color: #ffffff; margin: 0 !important; font-weight: 700; }
     .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0.3rem 0 1rem 0 !important; }
-    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1.5rem; margin: 0.5rem 0 !important; }
+    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1.5rem; margin: 0 !important; }
     .company-intro { border-left: 5px solid #5BC0BE !important; }
     .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 1rem 0 !important; }
     .company-intro p { font-size: 1.1rem !important; line-height: 1.6 !important; color: #E0E1DD !important; margin: 0 !important; }
@@ -90,11 +90,14 @@ with col1:
 with col2:
     if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
+        # PROCESS WITH YOUR MVP ENGINE HERE
+        # Replace this with actual GDE processing:
+        # raw_text, corrected_text = process_with_gde(audio_file)
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
-            'raw_text': "other of the danger trail flip stills etc",
-            'corrected_text': "Author of the danger trail Philip Steels etc",
-            'duration': "3.2s"
+            'raw_text': "Waiting for MVP integration...",
+            'corrected_text': "Waiting for MVP integration...",
+            'duration': "0.0s"
         })
         st.session_state.history = st.session_state.history[:10]
         st.success("✅ Processed!")
@@ -113,7 +116,7 @@ with col_a:
             {}
         </p>
     </div>
-    """.format("Waiting..." if not st.session_state.history else st.session_state.history[0]['raw_text']), unsafe_allow_html=True)
+    """.format("Waiting for recording..." if not st.session_state.history else st.session_state.history[0]['raw_text']), unsafe_allow_html=True)
 
 with col_b:
     st.markdown("""
@@ -123,10 +126,10 @@ with col_b:
             {}
         </p>
     </div>
-    """.format("Waiting..." if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
+    """.format("Waiting for recording..." if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
 
 if st.session_state.history:
-    st.markdown("### 📜 History of Rolling Last 10 Text Transcriptions")
+    st.markdown("### 📜 History of the Last 10 Text Transcripts")
     for i, item in enumerate(st.session_state.history[:10]):
         with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
             col_x, col_y = st.columns(2)
