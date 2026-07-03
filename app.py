@@ -1,10 +1,16 @@
 import streamlit as st
 import time
 from datetime import datetime
+from transformers import pipeline
 import os
 from pathlib import Path
 
 st.set_page_config(page_title="Classi AI - Voice Demo", layout="wide")
+
+# Load lightweight AI model for real transcription
+@st.cache_resource
+def load_asr_model():
+    return pipeline("automatic-speech-recognition", model="openai/whisper-tiny")
 
 # Initialize session state
 if 'history' not in st.session_state:
@@ -15,14 +21,12 @@ if 'recording' not in st.session_state:
     st.session_state.recording = False
 if 'recording_start_time' not in st.session_state:
     st.session_state.recording_start_time = None
-if 'audio_data' not in st.session_state:
-    st.session_state.audio_data = None
 
 PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
 SESSION_TIMEOUT = 1800
 
-# Custom CSS with oscillating animation
+# Custom CSS with SLOWER blinking animation
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
@@ -116,29 +120,26 @@ st.markdown("""
     .stMarkdown p { color: #E0E1DD !important; }
     h3.stMarkdown { margin: 0.5rem 0 0.3rem 0 !important; }
     
-    /* OSCILLATING RECORDING INDICATOR */
+    /* SLOWER BLINKING ANIMATION (2s instead of 1.5s) */
     .recording-indicator {
         display: inline-block;
-        width: 12px;
-        height: 12px;
+        width: 14px;
+        height: 14px;
         background-color: #ff4b4b;
         border-radius: 50%;
-        margin-right: 8px;
-        animation: pulse 1.5s infinite;
+        margin-right: 10px;
+        animation: slow-pulse 2s ease-in-out infinite;
+        box-shadow: 0 0 10px rgba(255, 75, 75, 0.6);
     }
     
-    @keyframes pulse {
-        0% {
+    @keyframes slow-pulse {
+        0%, 100% {
             transform: scale(1);
             opacity: 1;
         }
         50% {
-            transform: scale(1.5);
-            opacity: 0.5;
-        }
-        100% {
-            transform: scale(1);
-            opacity: 1;
+            transform: scale(1.8);
+            opacity: 0.3;
         }
     }
     
@@ -146,8 +147,23 @@ st.markdown("""
         color: #ff4b4b;
         text-align: center;
         font-weight: bold;
-        margin: 0.5rem 0;
-        font-size: 1.1rem;
+        margin: 1rem 0;
+        font-size: 1.2rem;
+        animation: text-fade 2s ease-in-out infinite;
+    }
+    
+    @keyframes text-fade {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
+    
+    .pulse-text {
+        animation: text-pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes text-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -169,7 +185,7 @@ if password:
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
         if elapsed > SESSION_TIMEOUT:
-            st.error(" Session expired (30 min)")
+            st.error("⏰ Session expired (30 min)")
             st.stop()
         else:
             minutes = int(remaining // 60)
@@ -201,7 +217,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Voice Microphone Section with oscillating indicator
+# Voice Microphone Section
 st.markdown("### 🎤 Voice Microphone")
 
 col1, col2 = st.columns(2)
@@ -218,44 +234,16 @@ with col2:
             duration_str = f"{duration:.1f}s"
             
             st.session_state.recording = False
-            
-            # Process audio if available
-            raw_text = "Audio captured"
-            corrected_text = "Processing pending"
-            
-            if st.session_state.audio_data:
-                try:
-                    # Save audio temporarily
-                    temp_path = Path("temp_audio.wav")
-                    temp_path.write_bytes(st.session_state.audio_data)
-                    
-                    # Here you would call your MVP engine
-                    # For now, we simulate the processing
-                    raw_text = f"Audio processed ({duration_str})"
-                    corrected_text = "GDE correction applied"
-                    
-                    temp_path.unlink(missing_ok=True)
-                except Exception as e:
-                    raw_text = f"Error: {str(e)}"
-                    corrected_text = "Check logs"
-            
-            st.session_state.history.insert(0, {
-                'timestamp': datetime.now().strftime("%H:%M:%S"),
-                'raw_text': raw_text,
-                'corrected_text': corrected_text,
-                'duration': duration_str
-            })
-            st.session_state.history = st.session_state.history[:10]
             st.session_state.recording_start_time = None
             st.success(f"✅ Recording stopped - Duration: {duration_str}")
             st.rerun()
 
-# Show oscillating indicator when recording
+# Show SLOWER blinking indicator when recording
 if st.session_state.recording:
     st.markdown("""
     <div class="recording-status">
         <span class="recording-indicator"></span>
-        RECORDING IN PROGRESS... Click STOP when finished
+        <span class="pulse-text">RECORDING IN PROGRESS... Click STOP when finished</span>
     </div>
     """, unsafe_allow_html=True)
 
@@ -263,8 +251,55 @@ if st.session_state.recording:
 audio_value = st.audio_input("Record your voice", key="audio_recorder")
 
 if audio_value:
-    st.session_state.audio_data = audio_value.getvalue()
-    st.success("✅ Audio captured! Click 'Stop Recording' to process.")
+    with st.spinner("🔄 Processing audio with AI..."):
+        # Save audio temporarily
+        temp_path = Path("temp_audio.wav")
+        temp_path.write_bytes(audio_value.getvalue())
+        
+        # ACTUAL AI TRANSCRIPTION
+        try:
+            transcriber = load_asr_model()
+            result = transcriber(str(temp_path))
+            raw_text = result["text"]
+            
+            # Simple GDE simulation (replace with your actual MVP logic)
+            corrected_text = raw_text
+            # Add basic corrections
+            corrections = {
+                "other of": "author of",
+                "flip stills": "Philip Steels", 
+                "danger child": "Danger Trail",
+                "mission impossble": "Mission Impossible"
+            }
+            for error, fix in corrections.items():
+                corrected_text = corrected_text.lower().replace(error, fix)
+            corrected_text = corrected_text.capitalize()
+            
+            # Add to history
+            st.session_state.history.insert(0, {
+                'timestamp': datetime.now().strftime("%H:%M:%S"),
+                'raw_text': raw_text,
+                'corrected_text': corrected_text,
+                'duration': duration_str if 'duration_str' in locals() else "N/A"
+            })
+            st.session_state.history = st.session_state.history[:10]
+            
+            st.success("✅ Transcription complete!")
+            
+        except Exception as e:
+            st.error(f"Processing error: {str(e)}")
+            st.session_state.history.insert(0, {
+                'timestamp': datetime.now().strftime("%H:%M:%S"),
+                'raw_text': "Error processing audio",
+                'corrected_text': str(e),
+                'duration': "N/A"
+            })
+        
+        # Clean up
+        if temp_path.exists():
+            temp_path.unlink()
+        
+        st.rerun()
 
 # Display current results
 col_a, col_b = st.columns(2)
