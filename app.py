@@ -13,7 +13,7 @@ if 'session_start' not in st.session_state:
     st.session_state.session_start = time.time()
 
 # SPECIAL PASSWORD for unlimited testing
-SPECIAL_PASSWORD = "ClassiDemo2024!"
+SPECIAL_PASSWORD = "postmvpsoon!"
 
 # Session timeout: 30 minutes
 SESSION_TIMEOUT = 1800
