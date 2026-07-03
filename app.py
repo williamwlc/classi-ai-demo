@@ -15,21 +15,14 @@ PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
 SESSION_TIMEOUT = 1800
 
-# Custom CSS - TIGHT SPACING & HIDE LINK SYMBOL
+# Custom CSS - LOWER HEADING & TIGHT SPACING
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
     
-    /* HIDE THE LINK/ANCHOR ICON ON HEADERS */
-    a[aria-hidden="true"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
-    /* 0.1cm SPACING - VERY TIGHT */
+    /* LOWER HEADING - ADD MORE TOP PADDING */
     .block-container { 
-        padding-top: 1rem !important; 
+        padding-top: 3rem !important; 
         padding-bottom: 1rem !important; 
     }
     
@@ -37,40 +30,28 @@ st.markdown("""
         text-align: center; 
         font-size: 2.5rem !important; 
         color: #ffffff; 
-        margin: 0 !important; 
-        padding-top: 0 !important;
+        margin: 1rem 0 0.5rem 0 !important; 
+        padding-top: 1rem !important;
     }
     
     .sub-header { 
         text-align: center; 
         font-size: 1.1rem !important; 
         color: #8B9DC3; 
-        margin: 0.1rem 0 0.5rem 0 !important; 
+        margin: 0.2rem 0 0.8rem 0 !important; 
     }
     
-    /* Tighten the About Box */
     .company-intro { 
         background-color: #1C2541 !important; 
         border: 1px solid #3A506B !important; 
         border-radius: 8px; 
-        padding: 0.8rem !important; /* 0.1cm approx */
-        margin: 0.1rem 0 !important; 
+        padding: 0.8rem !important;
+        margin: 0.2rem 0 !important; 
     }
     
     .company-intro { border-left: 4px solid #5BC0BE !important; }
-    
-    .company-intro h2 { 
-        font-size: 1.5rem !important; 
-        color: #5BC0BE !important; 
-        margin: 0 0 0.3rem 0 !important; 
-    }
-    
-    .company-intro p { 
-        font-size: 0.95rem !important; 
-        line-height: 1.4 !important; 
-        color: #E0E1DD !important; 
-        margin: 0 0 0.3rem 0 !important; 
-    }
+    .company-intro h2 { font-size: 1.5rem !important; color: #5BC0BE !important; margin: 0 0 0.3rem 0 !important; }
+    .company-intro p { font-size: 0.95rem !important; line-height: 1.4 !important; color: #E0E1DD !important; margin: 0 0 0.3rem 0 !important; }
     
     .dev-note { 
         display: inline-block; 
@@ -80,10 +61,9 @@ st.markdown("""
         border-radius: 4px !important; 
         font-size: 0.75rem !important; 
         color: #8B9DC3 !important; 
-        margin: 0.1rem 0 !important; 
+        margin: 0.2rem 0 !important; 
     }
     
-    /* Status Box */
     .status-box { 
         background-color: #1C2541 !important; 
         border: 1px solid #3A506B !important; 
@@ -113,9 +93,7 @@ st.markdown("""
     
     p, h1, h2, h3, h4 { color: #ffffff !important; }
     .stMarkdown p { color: #E0E1DD !important; }
-    
-    /* Voice Mic Section Tightening */
-    h3.stMarkdown { margin: 0.3rem 0 !important; }
+    h3.stMarkdown { margin: 0.5rem 0 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -136,7 +114,7 @@ if password:
         elapsed = time.time() - st.session_state.session_start
         remaining = SESSION_TIMEOUT - elapsed
         if elapsed > SESSION_TIMEOUT:
-            st.error(" Session expired (30 min)")
+            st.error("⏰ Session expired (30 min)")
             st.stop()
         else:
             minutes = int(remaining // 60)
@@ -149,7 +127,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ABOUT SECTION
 st.markdown("""
 <div class="company-intro">
     <h2>About Classi AI</h2>
@@ -167,7 +144,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# VOICE MICROPHONE SECTION
 st.markdown("### 🎤 Voice Microphone")
 st.markdown('<div class="record-buttons">', unsafe_allow_html=True)
 col1, col2 = st.columns(2)
@@ -176,18 +152,18 @@ with col1:
         st.session_state.recording = True
         st.rerun()
 with col2:
-    if st.button("️ Stop Recording", use_container_width=True, key="stop_rec"):
+    if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
-        # SIMULATED RESULT FOR UI DEMONSTRATION
-        # (When MVP is connected, this will be replaced by actual engine output)
+        # PLACEHOLDER - MVP INTEGRATION NEEDED HERE
+        # This will be replaced by actual engine processing
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
-            'raw_text': "Sequel of Mission Impossible coming soon Who supporting actor this time",
-            'corrected_text': "The sequel to Mission Impossible is coming soon. Who is the supporting actor this time?",
-            'duration': "3.2s"
+            'raw_text': "[MVP Integration Required]",
+            'corrected_text': "[MVP Integration Required]",
+            'duration': "0.0s"
         })
         st.session_state.history = st.session_state.history[:10]
-        st.success("✅ Transcription Processed!")
+        st.success("✅ Audio captured - MVP processing pending")
         st.rerun()
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -196,24 +172,22 @@ if st.session_state.recording:
 
 col_a, col_b = st.columns(2)
 with col_a:
-    st.markdown("""
+    display_raw = "Waiting for audio..." if not st.session_state.history else st.session_state.history[0]['raw_text']
+    st.markdown(f"""
     <div class="status-box">
-        <h4 style="color: #ff4b4b; margin: 0;"> Raw ASR</h4>
-        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">
-            {}
-        </p>
+        <h4 style="color: #ff4b4b; margin: 0;">🔴 Raw ASR</h4>
+        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">{display_raw}</p>
     </div>
-    """.format("Ready" if not st.session_state.history else st.session_state.history[0]['raw_text']), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 with col_b:
-    st.markdown("""
+    display_corrected = "Waiting for audio..." if not st.session_state.history else st.session_state.history[0]['corrected_text']
+    st.markdown(f"""
     <div class="status-box">
         <h4 style="color: #00ff88; margin: 0;">🟢 Corrected</h4>
-        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">
-            {}
-        </p>
+        <p style="margin: 0; color: #aaa; font-size: 0.9rem;">{display_corrected}</p>
     </div>
-    """.format("Ready" if not st.session_state.history else st.session_state.history[0]['corrected_text']), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 if st.session_state.history:
     st.markdown("### 📜 History of the Last 10 Text Transcripts")
