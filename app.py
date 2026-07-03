@@ -18,24 +18,17 @@ SESSION_TIMEOUT = 1800
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
-    
-    /* AGGRESSIVE SPACING REMOVAL */
-    .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+    .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
     .main-header { text-align: center; font-size: 2.8rem !important; color: #ffffff; margin: 0 !important; font-weight: 700; }
     .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0.2rem 0 0.5rem 0 !important; }
-    
-    /* TIGHTENED COMPANY INTRO */
     .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1rem !important; margin: 0.2rem 0 !important; }
     .company-intro { border-left: 5px solid #5BC0BE !important; }
     .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 0.5rem 0 !important; }
     .company-intro p { font-size: 1.1rem !important; line-height: 1.5 !important; color: #E0E1DD !important; margin: 0 0 0.5rem 0 !important; }
     .company-intro p:last-child { margin-bottom: 0 !important; }
-    
     .dev-note { display: inline-block; background-color: #1C2541 !important; border: 1px solid #3A506B !important; padding: 0.3rem 0.6rem !important; border-radius: 6px !important; font-size: 0.8rem !important; color: #8B9DC3 !important; margin: 0.2rem 0 !important; line-height: 1.3 !important; }
-    
     .status-box h4 { margin: 0 0 0.5rem 0 !important; font-size: 1.2rem !important; }
     .status-box p { color: #E0E1DD !important; font-size: 1rem !important; margin: 0 !important; }
-    
     .stButton > button { background-color: #3A506B !important; color: white !important; border: none !important; border-radius: 6px !important; font-size: 1rem !important; padding: 0.8rem !important; }
     .stButton > button:hover { background-color: #5BC0BE !important; color: #0B132B !important; }
     .stTextInput > div > div > input { background-color: #1C2541 !important; color: white !important; border: 1px solid #3A506B !important; }
@@ -46,8 +39,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<h1 class="main-header">️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Experience real-world voice recognition</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🎙️ Classi AI Voice Demo</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 
 pwd_col1, pwd_col2 = st.columns([1, 4])
 with pwd_col1:
@@ -72,7 +65,7 @@ if password:
 
 st.markdown("""
 <div class="dev-note">
-     <strong>Dev Demo</strong> | Address Bar displays ClassiAIhk.com via Streamlit domain masking
+    📌 <strong>Dev Demo</strong> | Address Bar displays ClassiAIhk.com via Streamlit domain masking
 </div>
 """, unsafe_allow_html=True)
 
@@ -93,7 +86,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("###  Voice Microphone")
+st.markdown("### 🎤 Voice Microphone")
 st.markdown('<div class="record-buttons">', unsafe_allow_html=True)
 col1, col2 = st.columns(2)
 with col1:
@@ -103,11 +96,10 @@ with col1:
 with col2:
     if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
         st.session_state.recording = False
-        # Placeholder data until MVP is connected
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
-            'raw_text': "—",
-            'corrected_text': "—",
+            'raw_text': "Ready",
+            'corrected_text': "Ready",
             'duration': "0.0s"
         })
         st.session_state.history = st.session_state.history[:10]
@@ -116,7 +108,7 @@ with col2:
 st.markdown('</div>', unsafe_allow_html=True)
 
 if st.session_state.recording:
-    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; font-size: 1.2rem;'> RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; font-size: 1.2rem;'>🔴 RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
 
 col_a, col_b = st.columns(2)
 with col_a:
@@ -148,7 +140,7 @@ if st.session_state.history:
                 st.markdown("**🔴 Raw ASR:**")
                 st.write(item['raw_text'])
             with col_y:
-                st.markdown("** Corrected:**")
+                st.markdown("**🟢 Corrected:**")
                 st.write(item['corrected_text'])
 
 st.markdown("---")
