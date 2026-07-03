@@ -10,8 +10,6 @@ if 'session_start' not in st.session_state:
     st.session_state.session_start = time.time()
 if 'recording' not in st.session_state:
     st.session_state.recording = False
-if 'audio_data' not in st.session_state:
-    st.session_state.audio_data = None
 
 PUBLIC_PASSWORD = "postmvpsoon"
 SPECIAL_PASSWORD = "Amd13751376Cc13751376)(*!@#"
@@ -20,10 +18,10 @@ SESSION_TIMEOUT = 1800
 st.markdown("""
 <style>
     .stApp { background-color: #0B132B !important; }
-    .block-container { padding-top: 4rem !important; padding-bottom: 2rem !important; }
-    .main-header { text-align: center; font-size: 2.8rem !important; color: #ffffff; margin: 1rem 0 0.5rem 0 !important; font-weight: 700; }
-    .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0 0 2rem 0 !important; }
-    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1.5rem; margin: 1rem 0 !important; }
+    .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
+    .main-header { text-align: center; font-size: 2.8rem !important; color: #ffffff; margin: 0 !important; font-weight: 700; }
+    .sub-header { text-align: center; font-size: 1.2rem !important; color: #8B9DC3; margin: 0.3rem 0 1rem 0 !important; }
+    .company-intro, .status-box { background-color: #1C2541 !important; border: 1px solid #3A506B !important; border-radius: 10px; padding: 1.5rem; margin: 0.5rem 0 !important; }
     .company-intro { border-left: 5px solid #5BC0BE !important; }
     .company-intro h2 { font-size: 1.8rem !important; color: #5BC0BE !important; margin: 0 0 1rem 0 !important; }
     .company-intro p { font-size: 1.1rem !important; line-height: 1.6 !important; color: #E0E1DD !important; margin: 0 !important; }
@@ -35,6 +33,8 @@ st.markdown("""
     .stTextInput > div > div > input { background-color: #1C2541 !important; color: white !important; border: 1px solid #3A506B !important; }
     p, h1, h2, h3, h4 { color: #ffffff !important; }
     .stMarkdown p { color: #E0E1DD !important; }
+    .record-buttons { display: flex; gap: 1rem; margin: 1rem 0; }
+    .record-buttons button { flex: 1; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -81,11 +81,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("### 🎤 Voice Microphone")
-audio_value = st.audio_input("Record your voice", key="audio_recorder")
-
-if audio_value:
-    with st.spinner("🔄 Processing..."):
-        time.sleep(2)
+st.markdown('<div class="record-buttons">', unsafe_allow_html=True)
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🔴 Start Recording", use_container_width=True, key="start_rec"):
+        st.session_state.recording = True
+        st.rerun()
+with col2:
+    if st.button("⏹️ Stop Recording", use_container_width=True, key="stop_rec"):
+        st.session_state.recording = False
         st.session_state.history.insert(0, {
             'timestamp': datetime.now().strftime("%H:%M:%S"),
             'raw_text': "other of the danger trail flip stills etc",
@@ -95,9 +99,13 @@ if audio_value:
         st.session_state.history = st.session_state.history[:10]
         st.success("✅ Processed!")
         st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
-with col1:
+if st.session_state.recording:
+    st.markdown("<p style='color: #ff4b4b; text-align: center; font-weight: bold; font-size: 1.2rem;'>🔴 RECORDING IN PROGRESS...</p>", unsafe_allow_html=True)
+
+col_a, col_b = st.columns(2)
+with col_a:
     st.markdown("""
     <div class="status-box">
         <h4 style="color: #ff4b4b; margin: 0;">🔴 Raw ASR</h4>
@@ -107,7 +115,7 @@ with col1:
     </div>
     """.format("Waiting..." if not st.session_state.history else st.session_state.history[0]['raw_text']), unsafe_allow_html=True)
 
-with col2:
+with col_b:
     st.markdown("""
     <div class="status-box">
         <h4 style="color: #00ff88; margin: 0;">🟢 Corrected</h4>
@@ -121,17 +129,17 @@ if st.session_state.history:
     st.markdown("### 📜 History of Rolling Last 10 Text Transcriptions")
     for i, item in enumerate(st.session_state.history[:10]):
         with st.expander(f"#{i+1} - {item['timestamp']} - {item.get('duration', 'N/A')}", expanded=(i==0)):
-            col_a, col_b = st.columns(2)
-            with col_a:
+            col_x, col_y = st.columns(2)
+            with col_x:
                 st.markdown("**🔴 Raw ASR:**")
                 st.write(item['raw_text'])
-            with col_b:
+            with col_y:
                 st.markdown("**🟢 Corrected:**")
                 st.write(item['corrected_text'])
 
 st.markdown("---")
 st.markdown("""
-<div style="text-align: center; color: #8B9DC3; font-size: 0.9rem; margin-top: 2rem;">
+<div style="text-align: center; color: #8B9DC3; font-size: 0.9rem; margin-top: 1rem;">
     <p>© 2026 Classi AI. All rights reserved. | Contact: <strong>William@ClassiAIhk.com</strong></p>
 </div>
 """, unsafe_allow_html=True)
