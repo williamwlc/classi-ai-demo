@@ -203,15 +203,10 @@ st.markdown("""
     <h2 class="about-heading">About Classi AI</h2>
     <div class="company-intro">
         <p>
-            Classi AI is redefining how the world bridges language barriers. While leading applications 
-            merely guess at your words, we comprehend the true context of your conversation. Powered by our proprietary 
-            Universal Fluency Layer, our voice-to-text engine thrives in the real world—mastering complex environments 
-            where background noise, heavy accents, idioms, and code-switching cause competitor accuracy to plummet by 30%, 40%, or even more.
+            Classi AI is a deep-tech AI infrastructure company. Our core technology is a proprietary Universal Fluency Layer designed to enhance and complement voice-to-text and LLM systems across multiple verticals, including EdTech, B2B, and enterprise applications.
         </p>
         <p>
-            Beyond transcription, Classi's revolutionary SaaS platform is engineered to meet the needs of over 1 billion non-native learners globally. 
-            By delivering interactive, corrective feedback across all four core English skills, real-time AI coaching, precision pronunciation guidance, 
-            and personalized drills, our comprehensive ecosystem doesn't just compete with legacy dictionaries and translation apps—it makes them obsolete.
+            Beyond enterprise infrastructure, Classi's consumer SaaS platform is equally powerful. Engineered to serve the over 1 billion non-native English learners globally, it delivers a comprehensive suite of advanced features—including interactive conversational practice, AI-powered tutoring, and precision pronunciation guidance across all four core language skills. By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, our ecosystem doesn't just compete with legacy EdTech tools—it renders dictionaries, translation apps, and conventional language learning platforms obsolete.
         </p>
     </div>
 </div>
