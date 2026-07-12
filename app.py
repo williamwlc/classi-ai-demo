@@ -1,10 +1,26 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Classi AI - Universal Fluency Layer",
+    page_title="Classi AI",
     page_icon="",
     layout="centered"
 )
+
+# Custom CSS for button styling
+st.markdown("""
+<style>
+    .stop-button > div > button {
+        background-color: #D8BFD8 !important;
+        color: #4B0082 !important;
+        border: 2px solid #9370DB !important;
+        font-weight: bold !important;
+    }
+    .stop-button > div > button:hover {
+        background-color: #DDA0DD !important;
+        border-color: #8A2BE2 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Title
 st.title("Classi AI")
@@ -15,24 +31,26 @@ st.markdown("---")
 # About Section
 st.header("About Classi AI")
 st.info("""
-**Classi AI** is a deep-tech AI infrastructure company. Our core technology is a proprietary **Universal Fluency Layer (UFL)** designed to enhance and complement voice-to-text and LLM systems across multiple verticals, including EdTech, B2B, and enterprise applications.
+**Classi AI** is a deep-tech AI infrastructure company developing advanced solutions for voice AI and language learning applications.
 
-Beyond enterprise infrastructure, Classi's consumer SaaS platform is equally powerful. Engineered to serve the over **1 billion non-native English learners globally**, it delivers a comprehensive suite of advanced features—including interactive conversational practice, AI-powered tutoring, and precision pronunciation guidance across all four core language skills. By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, our ecosystem doesn't just compete with legacy EdTech tools—it renders dictionaries, translation apps, and conventional language learning platforms obsolete.
+Our platform is designed to serve the global market with innovative AI-powered tools for enhanced communication and learning experiences.
 """)
 
 # Voice Recording Section
 st.markdown("---")
 st.header("Voice Recording")
-st.markdown("Test our Universal Fluency Layer with your voice")
 
 col1, col2 = st.columns(2)
 with col1:
     if st.button("🎤 Start Recording", use_container_width=True, type="primary"):
-        st.warning("⚠️ Voice recording features are temporarily disabled during final MVP debugging. Please check back soon.")
+        st.warning("⚠️ Features coming soon - MVP in development")
 
 with col2:
-    if st.button("️ Stop Recording", use_container_width=True):
-        st.info("ℹ️ Recording stopped. (Demo mode)")
+    # Add custom CSS class for purple button
+    st.markdown('<div class="stop-button">', unsafe_allow_html=True)
+    if st.button("⏹️ Stop Recording", use_container_width=True):
+        st.info("ℹ️ Recording stopped")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Contact
 st.markdown("---")
