@@ -6,19 +6,26 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS - Compact spacing + Purple button + Navy/Cyan Box
+# Custom CSS
 st.markdown("""
 <style>
-    .stop-button > div > button {
+    /* Purple Stop Button */
+    div.stButton > button[data-testid="stButton"]:nth-child(2),
+    .stButton > button:nth-of-type(2),
+    button[kind="secondary"] {
         background-color: #9370DB !important;
         color: white !important;
         border: 2px solid #6A5ACD !important;
         font-weight: bold !important;
     }
-    .stop-button > div > button:hover {
+    div.stButton > button[data-testid="stButton"]:nth-child(2):hover,
+    .stButton > button:nth-of-type(2):hover {
         background-color: #8A2BE2 !important;
         border-color: #4B0082 !important;
+        color: white !important;
     }
+    
+    /* Info Box - Navy/Cyan */
     .info-box {
         background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%) !important;
         color: #00ffff !important;
@@ -27,27 +34,24 @@ st.markdown("""
         border-left: 5px solid #00d4ff !important;
         box-shadow: 0 3px 10px rgba(0, 212, 255, 0.3) !important;
         margin-bottom: 1rem !important;
-        overflow: visible !important;
     }
     .info-box p {
         color: #e0f7ff !important;
         line-height: 1.6 !important;
         font-size: 1.1rem !important;
         margin: 0.5rem 0 !important;
-        word-wrap: break-word !important;
     }
     .info-box strong {
         color: #00ffff !important;
         font-weight: 700 !important;
     }
+    
+    /* Compact spacing */
     .main-header {
         margin: 1rem 0 !important;
     }
     .section-header {
         margin: 1rem 0 0.5rem 0 !important;
-    }
-    div[data-testid="stMarkdownContainer"] {
-        margin: 0.5rem 0 !important;
     }
     hr {
         margin: 0.5rem 0 !important;
@@ -59,8 +63,7 @@ st.markdown("""
 st.markdown('<h1 class="main-header" style="text-align: center; margin-bottom: 0.5rem !important;">Classi AI</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; color: #888; margin-top: 0 !important; margin-bottom: 1rem !important;">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 
-# About Section with Masterpiece Text
-st.markdown('<h2 class="section-header">About Classi AI</h2>', unsafe_allow_html=True)
+# About Content (without heading)
 st.markdown("""
 <div class="info-box">
 <p><strong>Classi AI</strong> is a deep-tech AI infrastructure company. Our core technology is a proprietary <strong>Universal Fluency Layer</strong> designed to enhance and complement voice-to-text and LLM systems across multiple verticals, including EdTech, B2B, and enterprise applications.</p>
@@ -73,14 +76,10 @@ st.markdown('<h2 class="section-header">Voice Recording</h2>', unsafe_allow_html
 
 col1, col2 = st.columns(2)
 with col1:
-    if st.button(" Start Recording", use_container_width=True, type="primary"):
-        st.warning("⚠️ Features coming soon - MVP in development")
+    st.button(" Start Recording", use_container_width=True, type="primary", key="start_btn")
 
 with col2:
-    st.markdown('<div class="stop-button">', unsafe_allow_html=True)
-    if st.button("️ Stop Recording", use_container_width=True):
-        st.info("ℹ️ Recording stopped")
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.button("️ Stop Recording", use_container_width=True, type="secondary", key="stop_btn")
 
 # Contact
 st.markdown("---")
