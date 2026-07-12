@@ -111,10 +111,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Current Status
-st.markdown('<h2 class="section-header">Current Status</h2>', unsafe_allow_html=True)
-st.info("🚀 **MVP Development in Progress**\n\nOur team is actively developing and testing the full pipeline with 20+ test cases. Expected completion: Q3 2026")
-
 # Contact Section
 st.markdown("---")
 st.markdown("""
