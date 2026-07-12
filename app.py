@@ -6,54 +6,64 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS for vibrant navy/cyan styling
+# Custom CSS - Compact spacing + Purple button
 st.markdown("""
 <style>
     .stop-button > div > button {
-        background-color: #D8BFD8 !important;
-        color: #4B0082 !important;
-        border: 2px solid #9370DB !important;
+        background-color: #9370DB !important;
+        color: white !important;
+        border: 2px solid #6A5ACD !important;
         font-weight: bold !important;
+    }
+    .stop-button > div > button:hover {
+        background-color: #8A2BE2 !important;
+        border-color: #4B0082 !important;
     }
     .info-box {
         background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%) !important;
         color: #00ffff !important;
-        padding: 2.5rem !important;
-        border-radius: 12px !important;
-        border-left: 6px solid #00d4ff !important;
-        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3) !important;
+        padding: 1.5rem !important;
+        border-radius: 10px !important;
+        border-left: 5px solid #00d4ff !important;
+        box-shadow: 0 3px 10px rgba(0, 212, 255, 0.3) !important;
+        margin-bottom: 1rem !important;
     }
     .info-box p {
         color: #e0f7ff !important;
-        line-height: 1.8 !important;
-        font-size: 1.15rem !important;
+        line-height: 1.6 !important;
+        font-size: 1.1rem !important;
+        margin: 0.5rem 0 !important;
     }
-    .info-box strong {
-        color: #00ffff !important;
-        font-weight: 700 !important;
+    .main-header {
+        margin: 1rem 0 !important;
+    }
+    .section-header {
+        margin: 1rem 0 0.5rem 0 !important;
+    }
+    div[data-testid="stMarkdownContainer"] {
+        margin: 0.5rem 0 !important;
+    }
+    hr {
+        margin: 0.5rem 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # Title
-st.title("Classi AI")
-st.markdown("### Engineering the Future of Language Conversion and Mastery with Deep-Tech AI")
+st.markdown('<h1 class="main-header" style="text-align: center; margin-bottom: 0.5rem !important;">Classi AI</h1>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; color: #666; margin-top: 0 !important; margin-bottom: 1rem !important;">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 
-st.markdown("---")
-
-# About Section - Vibrant Navy/Cyan
-st.header("About Classi AI")
+# About Section
+st.markdown('<h2 class="section-header">About Classi AI</h2>', unsafe_allow_html=True)
 st.markdown("""
 <div class="info-box">
 <p><strong>Classi AI</strong> is a deep-tech AI infrastructure company developing advanced solutions for voice AI and language learning applications.</p>
-
 <p>Our platform is designed to serve the global market with innovative AI-powered tools for enhanced communication and learning experiences.</p>
 </div>
 """, unsafe_allow_html=True)
 
 # Voice Recording Section
-st.markdown("---")
-st.header("Voice Recording")
+st.markdown('<h2 class="section-header">Voice Recording</h2>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
@@ -72,5 +82,4 @@ st.markdown("### Contact Us")
 st.markdown("📧 williamwlc@yahoo.com")
 
 # Footer
-st.markdown("---")
 st.caption("© 2026 Classi AI. All rights reserved.")
