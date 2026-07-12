@@ -6,7 +6,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# Custom CSS for better styling
+# Custom CSS for vibrant navy/cyan styling
 st.markdown("""
 <style>
     .stop-button > div > button {
@@ -16,11 +16,21 @@ st.markdown("""
         font-weight: bold !important;
     }
     .info-box {
-        background-color: #f0f2f6 !important;
-        color: #262730 !important;
-        padding: 2rem !important;
-        border-radius: 10px !important;
-        border-left: 5px solid #FF4B4B !important;
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%) !important;
+        color: #00ffff !important;
+        padding: 2.5rem !important;
+        border-radius: 12px !important;
+        border-left: 6px solid #00d4ff !important;
+        box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3) !important;
+    }
+    .info-box p {
+        color: #e0f7ff !important;
+        line-height: 1.8 !important;
+        font-size: 1.15rem !important;
+    }
+    .info-box strong {
+        color: #00ffff !important;
+        font-weight: 700 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -31,7 +41,7 @@ st.markdown("### Engineering the Future of Language Conversion and Mastery with 
 
 st.markdown("---")
 
-# About Section - Clean styling
+# About Section - Vibrant Navy/Cyan
 st.header("About Classi AI")
 st.markdown("""
 <div class="info-box">
