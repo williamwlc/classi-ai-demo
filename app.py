@@ -73,23 +73,23 @@ st.markdown("""
 st.markdown('<h1 class="main-header" style="text-align: center; margin-bottom: 0.5rem !important;">Classi AI</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; color: #888; margin-top: 0 !important; margin-bottom: 1rem !important;">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 
-# About Content
+# About Content - Updated with your new powerful phrasing
 st.markdown("""
 <div class="info-box">
 <p><strong>Classi AI</strong> is a deep-tech AI infrastructure company. Our core technology is a proprietary <strong>Universal Fluency Layer</strong> designed to enhance and complement voice-to-text and LLM systems across multiple verticals, including EdTech, B2B, and enterprise applications.</p>
-<p>Beyond enterprise infrastructure, Classi's consumer SaaS platform is <strong>equally disruptive</strong>. Engineered to serve the over <strong>1 billion non-native English learners globally</strong>, it delivers a comprehensive suite of advanced features, <strong>some first in the market</strong>—including our flagship "Let's Talk" feature with advanced, exam-style conversational simulations and precision pronunciation guidance across all four core language skills. By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, our ecosystem doesn't just compete with legacy EdTech tools—it renders dictionaries, translation apps, and conventional language learning platforms obsolete.</p>
+<p>Beyond enterprise infrastructure, Classi's consumer SaaS platform is <strong>equally disruptive</strong>. Engineered to serve the over <strong>1 billion non-native English learners globally</strong>, it delivers a comprehensive suite of advanced features, <strong>some first in the market</strong>—including our flagship "Let's Talk" feature with long-awaited learning solutions offering configurable topics, conversation types, and more, fulfilling the genuine needs of global students and standardized exam candidates, alongside precision pronunciation guidance across all four core language skills. By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, our ecosystem doesn't just compete with legacy EdTech tools—it renders dictionaries, translation apps, and conventional language learning platforms obsolete.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# Voice Conversion Section (Heading changed)
+# Voice Conversion Section
 st.markdown('<h2 class="section-header">Voice Conversion</h2>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 with col1:
-    st.button("🎤 Start Recording", use_container_width=True, type="primary", key="start_btn")
+    st.button(" Start Recording", use_container_width=True, type="primary", key="start_btn")
 
 with col2:
-    st.button("️ Stop Recording", use_container_width=True, type="secondary", key="stop_btn")
+    st.button("⏹️ Stop Recording", use_container_width=True, type="secondary", key="stop_btn")
 
 # Contact
 st.markdown("---")
