@@ -1,5 +1,14 @@
 import streamlit as st
 
+# Hide the GitHub fork button
+st.markdown("""
+    <style>
+    .stAppDeployButton {
+        visibility: hidden;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 st.set_page_config(
     page_title="Classi AI",
     page_icon="",
