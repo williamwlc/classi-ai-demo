@@ -1,19 +1,36 @@
 import streamlit as st
 
-# Hide the GitHub fork button
+import streamlit as st
+
+# Hide the Fork button and GitHub icon
 st.markdown("""
     <style>
+    /* Hide the Fork button */
     .stAppDeployButton {
         visibility: hidden;
     }
+    
+    /* Hide GitHub fork link */
+    a[href*="github.com"] {
+        display: none !important;
+    }
+    
+    /* Alternative: Hide specific fork element */
+    header .toolbar {
+        visibility: hidden;
+    }
+    
+    /* For mobile-specific hiding */
+    @media (max-width: 768px) {
+        .stAppDeployButton,
+        a[href*="github.com"],
+        header .toolbar {
+            display: none !important;
+            visibility: hidden !important;
+        }
+    }
     </style>
-    """, unsafe_allow_html=True)
-
-st.set_page_config(
-    page_title="Classi AI",
-    page_icon="",
-    layout="centered"
-)
+""", unsafe_allow_html=True)
 
 # Custom CSS with bigger button font
 st.markdown("""
