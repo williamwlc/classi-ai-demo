@@ -1,7 +1,5 @@
 import streamlit as st
 
-import streamlit as st
-
 # Hide the Fork button and GitHub icon
 st.markdown("""
     <style>
@@ -28,6 +26,35 @@ st.markdown("""
             display: none !important;
             visibility: hidden !important;
         }
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
+import streamlit as st
+
+st.set_page_config(
+    page_title="Classi AI",
+    page_icon="🎯",
+    layout="wide",
+    initial_sidebar_state="collapsed",
+    menu_items={
+        "Get Help": None,
+        "Report a bug": None,
+    }
+)
+
+# Add mobile-responsive CSS
+st.markdown("""
+    <style>
+    @media (max-width: 768px) {
+        .main > div {
+            padding-top: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        h1 { font-size: 1.5rem; }
+        h2 { font-size: 1.2rem; }
     }
     </style>
 """, unsafe_allow_html=True)
