@@ -1,38 +1,5 @@
 import streamlit as st
 
-# Hide the Fork button and GitHub icon
-st.markdown("""
-    <style>
-    /* Hide the Fork button */
-    .stAppDeployButton {
-        visibility: hidden;
-    }
-    
-    /* Hide GitHub fork link */
-    a[href*="github.com"] {
-        display: none !important;
-    }
-    
-    /* Alternative: Hide specific fork element */
-    header .toolbar {
-        visibility: hidden;
-    }
-    
-    /* For mobile-specific hiding */
-    @media (max-width: 768px) {
-        .stAppDeployButton,
-        a[href*="github.com"],
-        header .toolbar {
-            display: none !important;
-            visibility: hidden !important;
-        }
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-import streamlit as st
-
 st.set_page_config(
     page_title="Classi AI",
     page_icon="🎯",
@@ -59,7 +26,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Custom CSS with bigger button font
+# Custom CSS with bigger button font and info box styling
 st.markdown("""
 <style>
     /* Purple Stop Button - Bigger Font */
@@ -126,11 +93,11 @@ st.markdown("""
 st.markdown('<h1 class="main-header" style="text-align: center; margin-bottom: 0.5rem !important;">Classi AI</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; color: #888; margin-top: 0 !important; margin-bottom: 1rem !important;">Engineering the Future of Language Conversion and Mastery with Deep-Tech AI</p>', unsafe_allow_html=True)
 
-# About Content - "feature" removed
+# About Content
 st.markdown("""
 <div class="info-box">
 <p><strong>Classi AI</strong> is a deep-tech AI infrastructure company. Our core technology is a proprietary <strong>Universal Fluency Layer</strong>—powered by advanced computational linguistics and proprietary acoustic modeling—designed to enhance and complement voice-to-text and LLM systems across multiple verticals, including EdTech, B2B, and enterprise applications.</p>
-<p>Beyond enterprise infrastructure, Classi's consumer SaaS platform is equally disruptive. Engineered to serve the over 1 billion non-native English learners globally, it delivers a comprehensive suite of advanced features—some first-to-market—including our flagship "Let's Talk," a highly anticipated learning solution offering configurable topics, conversation types, and more. Coupled with precision pronunciation feedback and a robust suite of tools designed to master all four core language skills, our platform squarely fulfills the genuine needs of global students and standardized exam candidates. By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, our ecosystem doesn't just compete with legacy EdTech tools—it renders dictionaries, translation apps, and conventional language learning platforms obsolete.</p>
+<p>Beyond enterprise infrastructure, Classi's consumer SaaS platform is equally disruptive. Engineered to serve the over 1 billion non-native English learners globally, it delivers a comprehensive suite of advanced features—some first-to-market—including our flagship "Let's Talk," a highly anticipated learning solution offering configurable topics, conversation types, and more. Coupled with <strong>kinetic pronunciation guidance and feedback</strong>, and a robust suite of tools designed to master all four core language skills, our platform squarely fulfills the genuine needs of global students and standardized exam candidates. By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, our ecosystem doesn't just compete with legacy EdTech tools—it renders dictionaries, translation apps, and conventional language learning platforms obsolete.</p>
 </div>
 """, unsafe_allow_html=True)
 
