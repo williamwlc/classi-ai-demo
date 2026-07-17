@@ -118,3 +118,4 @@ st.markdown("📧 William@ClassiAIhk.com")
 
 # Footer
 st.caption("© 2026 Classi AI. All rights reserved.")
+st.caption("© Powered by <strong>Nvidia</strong>  Build.  Cloud partner = Our 1st JV licensee")
