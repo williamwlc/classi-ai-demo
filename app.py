@@ -119,6 +119,10 @@ st.markdown("📧 William@ClassiAIhk.com")
 # Footer
 st.caption("© 2026 Classi AI. All rights reserved.")
 st.markdown(
-    '<p style="font-size: 18px; color: #909090;">© Powered by <strong style="color: #00FFFF; font-weight: 700;">Nvidia</strong> Build. Cloud partner = Our 1st JV licensee</p>',
+    '<p style="font-size: 18px; color: #909090;">© Powered by <strong style="color: #00FFFF; font-weight: 700;">Nvidia</strong> Build.</p>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<p style="font-size: 18px; color: #909090;">© Cloud partner = Our 1st JV licensee</p>',
     unsafe_allow_html=True
 )
