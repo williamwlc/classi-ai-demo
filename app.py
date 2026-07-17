@@ -113,8 +113,7 @@ with col2:
 
 # Contact
 st.markdown("---")
-st.markdown("### Contact Us:","📧 William@ClassiAIhk.com") 
-st.markdown("📧 William@ClassiAIhk.com")
+st.markdown("### Contact Us:  William@ClassiAIhk.com")
 
 # Footer
 st.caption("© 2026 Classi AI. All rights reserved.")
@@ -123,6 +122,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown(
-    '<p style="font-size: 16px; color: #909090;">    Cloud partner = Our 1st JV licensee</p>',
+    '<p style="font-size: 16px; color: #909090;">Cloud Infrastructure: Strategically aligned with our primary JV partners.</p>',
     unsafe_allow_html=True
 )
