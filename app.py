@@ -123,6 +123,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown(
-    '<p style="font-size: 16px; color: #909090;"> Cloud partner = Our 1st JV licensee</p>',
+    '<p style="font-size: 16px; color: #909090;">     partner = Our 1st JV licensee</p>',
     unsafe_allow_html=True
 )
