@@ -122,6 +122,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown(
-    '<p style="font-size: 16px; color: #909090;">Cloud Infrastructure: Strategically aligned with our primary JV partners.</p>',
+    '<p style="font-size: 16px; color: #909090;">Cloud Parner: To be confirmed.</p>',
     unsafe_allow_html=True
 )
