@@ -127,4 +127,3 @@ st.markdown("""
 Cloud Partner: To be confirmed.
 </p>
 """, unsafe_allow_html=True)
-)
