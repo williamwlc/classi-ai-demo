@@ -113,7 +113,7 @@ with col2:
 
 # Contact
 st.markdown("---")
-st.markdown("### Contact Us: William@ClassiAIhk.com")
+st.markdown("font-size: 19px; ### Contact Us: William@ClassiAIhk.com")
 
 # Footer
 st.caption("© 2026 Classi AI. All rights reserved.")
