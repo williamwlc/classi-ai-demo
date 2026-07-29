@@ -117,7 +117,7 @@ col1, col2 = st.columns(2)
 with col1:
     audio_data = st.audio_input("Record your voice", key="recorder")
 with col2:
-    ground_truth_text = st.text_input("Expected text (for WER)", placeholder="What you really said...")
+    ground_truth_text = st.text_input("Enter the text now or after the recording.", placeholder="What you really said...")
 
 if audio_data is not None:
     # Read audio bytes
