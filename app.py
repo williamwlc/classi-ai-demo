@@ -1,4 +1,29 @@
 import streamlit as st
+from audio_recorder_streamlit import audio_recorder
+import time
+import jiwer
+import re
+
+# ============================================================
+# PASSWORD PROTECTION
+# ============================================================
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("Classi AI - Access Restricted")
+    password = st.text_input("Enter password:", type="password")
+    if st.button("Login"):
+        if password == "bftf2026":
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect password")
+    st.stop()
+
+# ============================================================
+# MAIN APP
+# ============================================================
 
 st.set_page_config(
     page_title="Classi AI",
@@ -11,7 +36,7 @@ st.set_page_config(
     }
 )
 
-# Add mobile-responsive CSS
+# Mobile-responsive CSS
 st.markdown("""
     <style>
     @media (max-width: 768px) {
@@ -26,35 +51,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Custom CSS with bigger button font and info box styling
+# Custom CSS
 st.markdown("""
 <style>
-    /* Purple Stop Button - Bigger Font */
-    div.stButton > button[data-testid="stButton"]:nth-child(2),
-    .stButton > button:nth-of-type(2),
-    button[kind="secondary"] {
-        background-color: #9370DB !important;
-        color: white !important;
-        border: 2px solid #6A5ACD !important;
-        font-weight: bold !important;
-        font-size: 1.1rem !important;
-    }
-    div.stButton > button[data-testid="stButton"]:nth-child(2):hover,
-    .stButton > button:nth-of-type(2):hover {
-        background-color: #8A2BE2 !important;
-        border-color: #4B0082 !important;
-        color: white !important;
-    }
-    
-    /* Start Button - Bigger Font */
-    div.stButton > button[data-testid="stButton"]:first-child,
-    .stButton > button:nth-of-type(1),
-    button[kind="primary"] {
+    div.stButton > button {
         font-size: 1.1rem !important;
         font-weight: bold !important;
     }
     
-    /* Info Box - Navy/Cyan */
     .info-box {
         background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%) !important;
         color: #00ffff !important;
@@ -75,7 +79,6 @@ st.markdown("""
         font-weight: 700 !important;
     }
     
-    /* Compact spacing */
     .main-header {
         margin: 1rem 0 !important;
     }
@@ -83,6 +86,26 @@ st.markdown("""
         margin: 1rem 0 0.5rem 0 !important;
         font-size: 2.2rem !important;
     }
+    
+    .wer-box {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+        color: #00ff88 !important;
+        padding: 1.5rem !important;
+        border-radius: 10px !important;
+        border-left: 5px solid #00ff88 !important;
+        box-shadow: 0 3px 10px rgba(0, 255, 136, 0.3) !important;
+        margin: 1rem 0 !important;
+    }
+    .wer-box h3 {
+        color: #00ff88 !important;
+        margin-top: 0 !important;
+    }
+    .wer-box p {
+        color: #e0ffe0 !important;
+        line-height: 1.6 !important;
+        font-size: 1rem !important;
+    }
+    
     hr {
         margin: 0.5rem 0 !important;
     }
@@ -104,12 +127,129 @@ st.markdown("""
 # Voice Conversion Section
 st.markdown('<h2 class="section-header">Voice Conversion</h2>', unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
+# Session state initialization
+if "recording" not in st.session_state:
+    st.session_state.recording = False
+if "audio_data" not in st.session_state:
+    st.session_state.audio_data = None
+if "ground_truth" not in st.session_state:
+    st.session_state.ground_truth = ""
+if "transcript" not in st.session_state:
+    st.session_state.transcript = ""
+if "wer_score" not in st.session_state:
+    st.session_state.wer_score = None
+
+# Ground Truth Input Box (ABOVE Start Recording)
+st.markdown("### 📝 Ground Truth Text")
+ground_truth_input = st.text_area(
+    "Type or paste the correct transcript here:",
+    value=st.session_state.ground_truth,
+    height=80,
+    placeholder="e.g., The quick brown fox jumps over the lazy dog.",
+    key="gt_input"
+)
+
+# Update ground truth when user types
+if ground_truth_input != st.session_state.ground_truth:
+    st.session_state.ground_truth = ground_truth_input
+
+# Recording buttons
+col1, col2, col3 = st.columns(3)
+
 with col1:
-    st.button("🎤 Start Recording", use_container_width=True, type="primary", key="start_btn")
+    if st.button("🎤 Start Recording", use_container_width=True, type="primary", key="start_btn"):
+        st.session_state.recording = True
+        st.session_state.audio_data = None
+        st.session_state.transcript = ""
+        st.session_state.wer_score = None
 
 with col2:
-    st.button("⏹️ Stop Recording", use_container_width=True, type="secondary", key="stop_btn")
+    if st.button("⏹️ Stop & Transcribe", use_container_width=True, type="secondary", key="stop_btn"):
+        st.session_state.recording = False
+        # Placeholder for transcription (replace with actual ASR call)
+        if st.session_state.audio_data:
+            st.session_state.transcript = "[Transcript will appear here after ASR processing]"
+
+with col3:
+    if st.button("🔄 Reset", use_container_width=True, key="reset_btn"):
+        st.session_state.recording = False
+        st.session_state.audio_data = None
+        st.session_state.ground_truth = ""
+        st.session_state.transcript = ""
+        st.session_state.wer_score = None
+        st.rerun()
+
+# Audio recorder (only shows when recording)
+if st.session_state.recording:
+    st.markdown("### 🔴 Recording in progress... Speak clearly...")
+    audio_bytes = audio_recorder(
+        text="",
+        recording_color="#e74c3c",
+        neutral_color="#3498db",
+        icon_size="2x",
+        pause_threshold=60.0,
+        sample_rate=16000,
+    )
+    if audio_bytes:
+        st.session_state.audio_data = audio_bytes
+        st.session_state.recording = False
+        st.rerun()
+
+# Show recorded audio
+if st.session_state.audio_data:
+    st.audio(st.session_state.audio_data, format="audio/wav")
+    st.success(f"✅ Recording saved ({len(st.session_state.audio_data)/1000:.1f} KB)")
+
+# ============================================================
+# VOICE TO TEXT CONVERSION AREA
+# ============================================================
+st.markdown("---")
+st.markdown("## 📊 Voice-to-Text Conversion")
+
+gt_col, trans_col = st.columns(2)
+
+with gt_col:
+    st.markdown("### Ground Truth Text")
+    if st.session_state.ground_truth:
+        st.info(st.session_state.ground_truth)
+    else:
+        st.warning("No ground truth entered. Type it above.")
+
+with trans_col:
+    st.markdown("### Transcript")
+    if st.session_state.transcript:
+        st.success(st.session_state.transcript)
+        
+        # Calculate WER
+        if st.session_state.ground_truth:
+            # Clean texts for WER calculation
+            ref_clean = re.sub(r'[^a-zA-Z0-9\s]', '', st.session_state.ground_truth.lower())
+            hyp_clean = re.sub(r'[^a-zA-Z0-9\s]', '', st.session_state.transcript.lower())
+            
+            if ref_clean and hyp_clean:
+                try:
+                    wer = jiwer.wer(ref_clean, hyp_clean)
+                    st.session_state.wer_score = wer
+                except:
+                    st.session_state.wer_score = None
+    else:
+        st.warning("No transcript yet. Record audio and click 'Stop & Transcribe'.")
+
+# WER Display
+if st.session_state.wer_score is not None:
+    st.markdown(f"""
+    <div class="wer-box">
+        <h3>📈 Word Error Rate (WER)</h3>
+        <p style="font-size: 2rem; font-weight: bold; text-align: center; margin: 1rem 0;">
+            {st.session_state.wer_score:.2%}
+        </p>
+        <p style="text-align: center; color: #aaa;">
+            Lower WER = Better Accuracy
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+elif st.session_state.transcript and st.session_state.ground_truth:
+    st.error("Unable to calculate WER. Ensure both texts contain recognizable words.")
 
 # Contact
 st.markdown("---")
