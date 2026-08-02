@@ -1,29 +1,30 @@
 import streamlit as st
-import datetime
 import os
+from datetime import datetime
 
 SAVE_DIR = r"D:\ufl_test_data\Will_Real_Data\tv_medium_high"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 st.title("Voice Recorder")
-st.write("Record your voice and save as WAV.")
 
-audio = st.audio_input("Press the microphone to start recording")
+audio = st.audio_input("Press microphone to record")
 
+# Store audio bytes in session state when a new recording is present
 if audio is not None:
-    st.audio(audio, format="audio/wav")
+    st.session_state["current_audio_bytes"] = audio.getvalue()
+
+# Show save controls if audio is stored
+if "current_audio_bytes" in st.session_state:
+    st.audio(st.session_state["current_audio_bytes"])
+    
     if st.button("Save Recording"):
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"sample_{timestamp}.wav"
+        filename = f"sample_{datetime.now().strftime('%Y%m%d_%H%M%S')}.wav"
         filepath = os.path.join(SAVE_DIR, filename)
         
-        # Save
         with open(filepath, "wb") as f:
-            f.write(audio.getvalue())
+            f.write(st.session_state["current_audio_bytes"])
+            
+        st.success(f"✅ Saved {filename}")
         
-        st.success(f"✅ Saved as {filename}")
-        st.info(f"Full path: {filepath}")
-
-st.write("---")
-st.write("Files are saved to:")
-st.code(SAVE_DIR)
+        # Clear state so it's ready for next clip
+        del st.session_state["current_audio_bytes"]
