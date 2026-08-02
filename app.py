@@ -1,66 +1,40 @@
 import streamlit as st
-from datetime import datetime
-from pathlib import Path
-import base64
-import hashlib
+import datetime
+import os
+import time
 
-st.set_page_config(page_title="Classi AI Voice Recorder")
-st.title("🎙️ Voice Sample Recorder")
-st.markdown("""
-**Important:** Keep this page open while recording.  
-Switching to another app will **stop** the recording (mobile browser limitation).
-""")
+SAVE_DIR = r"D:\ufl_test_data\Will_Real_Data\street_medium"
+os.makedirs(SAVE_DIR, exist_ok=True)
 
-# Initialize session state
-if "recordings" not in st.session_state:
-    st.session_state.recordings = []
-if "last_audio_hash" not in st.session_state:
-    st.session_state.last_audio_hash = None
+st.title("Voice Recorder")
+st.write("Record your voice and save as WAV.")
 
-# Record audio (mobile‑compatible)
-audio = st.audio_input("Record a voice sample")
-
+audio = st.audio_input("Press the microphone to start recording")
 if audio is not None:
-    # Compute a hash of the audio bytes to detect if it's a new recording
-    audio_bytes = audio.getbuffer()
-    audio_hash = hashlib.md5(audio_bytes).hexdigest()
-
-    # Only save if this is a new recording (not the same as last saved)
-    if audio_hash != st.session_state.last_audio_hash:
-        out_dir = Path("recordings")
-        out_dir.mkdir(exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    st.audio(audio, format="audio/wav")
+    if st.button("Save Recording"):
+        # Generate unique filename
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"sample_{timestamp}.wav"
-        filepath = out_dir / filename
+        filepath = os.path.join(SAVE_DIR, filename)
+        
+        # Avoid duplicates
+        counter = 1
+        while os.path.exists(filepath):
+            filename = f"sample_{timestamp}_{counter}.wav"
+            filepath = os.path.join(SAVE_DIR, filename)
+            counter += 1
+        
+        # Save the file
+        with open(filepath, "wb") as f:
+            f.write(audio.getvalue())
+        
+        st.success(f"Saved as {filename}")
+        
+        # ★★★ FIX: Clear the audio input state to prevent duplicate background saves ★★★
+        if "audio_input" in st.session_state:
+            st.session_state.audio_input = None
 
-        # Optional: avoid overwriting if file exists
-        if not filepath.exists():
-            with open(filepath, "wb") as f:
-                f.write(audio_bytes)
-
-            st.session_state.recordings.append(str(filepath))
-            st.session_state.last_audio_hash = audio_hash
-            st.success(f"Saved {filename}")
-        else:
-            st.info(f"File {filename} already exists – skipping duplicate.")
-    else:
-        st.info("Same audio detected – not saving duplicate.")
-
-# Show all recordings and download buttons
-if st.session_state.recordings:
-    st.subheader("Your recorded clips")
-    for filepath in st.session_state.recordings:
-        fname = Path(filepath).name
-        with open(filepath, "rb") as f:
-            st.download_button(
-                label=f"Download {fname}",
-                data=f,
-                file_name=fname
-            )
-    # Clear all button
-    if st.button("Clear all recordings"):
-        for fp in st.session_state.recordings:
-            Path(fp).unlink(missing_ok=True)
-        st.session_state.recordings = []
-        st.session_state.last_audio_hash = None  # reset to allow new recordings
-        st.rerun()
+st.write("---")
+st.write("Recorded files are saved to:")
+st.code(SAVE_DIR)
