@@ -36,7 +36,7 @@ if audio is not None:
         st.session_state.audio_input = None
         
         # Force page refresh to show updated file list
-        st.rerun()
+        st.experimental_rerun()
 
 st.write("---")
 st.write("Recorded files are saved to:")
