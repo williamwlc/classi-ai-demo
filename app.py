@@ -2,7 +2,7 @@ import streamlit as st
 import datetime
 import os
 
-SAVE_DIR = r"D:\ufl_test_data\Will_Real_Data\tv_mediumhigh"
+SAVE_DIR = r"D:\ufl_test_data\Will_Real_Data\tv_medium_high"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 st.title("Voice Recorder")
@@ -16,21 +16,13 @@ if audio is not None:
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"sample_{timestamp}.wav"
         filepath = os.path.join(SAVE_DIR, filename)
-
-        counter = 1
-        while os.path.exists(filepath):
-            filename = f"sample_{timestamp}_{counter}.wav"
-            filepath = os.path.join(SAVE_DIR, filename)
-            counter += 1
-
+        
+        # Save
         with open(filepath, "wb") as f:
             f.write(audio.getvalue())
-
+        
         st.success(f"✅ Saved as {filename}")
-        st.info(f"Location: {SAVE_DIR}")
-
-        # Clear audio state
-        st.session_state.audio_input = None
+        st.info(f"Full path: {filepath}")
 
 st.write("---")
 st.write("Files are saved to:")
