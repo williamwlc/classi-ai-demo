@@ -2,7 +2,7 @@ import streamlit as st
 import os
 from datetime import datetime
 
-SAVE_DIR = r"D:\ufl_test_data\Will_Real_Data\tv_medium_high"
+SAVE_DIR = r"D:\ufl_test_data\Will_Real_Data\tv_medium_high\"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 st.title("Voice Recorder")
