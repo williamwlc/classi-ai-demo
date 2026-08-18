@@ -1,14 +1,15 @@
-from flask import Flask, request, jsonify, render_template_string
+import streamlit as st
+import streamlit.components.v1 as components
 
-app = Flask(__name__)
+st.set_page_config(page_title="Classi AI | Universal Fluency Layer", layout="wide")
 
-HTML = r"""
+html_code = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classi AI | Universal Fluency Layer</title>
+    <title>Classi AI</title>
     <style>
         :root {
             --bg: #050816;
@@ -17,11 +18,7 @@ HTML = r"""
             --text: #f2f4ff;
             --muted: #aab3d0;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: var(--bg);
             color: var(--text);
@@ -192,9 +189,7 @@ HTML = r"""
 </html>
 """
 
-@app.route("/")
-def index():
-    return render_template_string(HTML)
+st.title("Classi AI | Universal Fluency Layer")
+st.markdown("A deep-tech AI infrastructure company delivering a proprietary Universal Fluency Layer for voice-to-text and LLM systems.")
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=7860)
+components.html(html_code, height=900, scrolling=True)
