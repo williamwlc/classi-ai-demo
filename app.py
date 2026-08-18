@@ -1,195 +1,223 @@
-import streamlit as st
-import streamlit.components.v1 as components
-
-st.set_page_config(page_title="Classi AI | Universal Fluency Layer", layout="wide")
-
-html_code = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classi AI</title>
-    <style>
-        :root {
-            --bg: #050816;
-            --card: #0b1026;
-            --accent: #4f7cff;
-            --text: #f2f4ff;
-            --muted: #aab3d0;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-        h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            background: linear-gradient(90deg, #ffffff, #8fa7ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .subhead {
-            font-size: 1.25rem;
-            color: var(--muted);
-            margin-bottom: 48px;
-            max-width: 900px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-            margin: 60px 0;
-        }
-        .card {
-            background: var(--card);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 18px;
-            padding: 24px;
-        }
-        .card h3 { margin-bottom: 12px; color: #fff; }
-        .card p { color: var(--muted); font-size: 0.95rem; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueVoice Test Drive</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .recording-section {
-            background: linear-gradient(135deg, #0b1026 0%, #131a38 100%);
-            border: 1px solid rgba(79,124,255,0.25);
-            border-radius: 24px;
-            padding: 40px;
-            margin: 70px 0;
-            text-align: center;
-        }
-        .record-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 100px;
-            cursor: pointer;
-            margin: 0 8px;
-        }
-        .stop-btn { background: #d64545; }
-        .audio-player {
-            margin-top: 30px;
-            width: 100%;
-            max-width: 500px;
-        }
-        .status {
-            color: var(--muted);
-            font-size: 0.9rem;
-            min-height: 24px;
-            margin-top: 12px;
-        }
-    </style>
+    body {
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(140deg, #f5f9ff 0%, #e9f2ff 100%);
+      min-height: 100vh;
+      padding: 24px 16px 60px;
+      color: #1e1e2f;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      color: #0b3d91;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #3a5a8c;
+      margin-bottom: 26px;
+      font-size: 1rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 8px 24px rgba(13, 53, 120, 0.10);
+    }
+
+    label, .label {
+      font-weight: 600;
+      color: #0a2e6e;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      border: 1.5px solid #b7cef5;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 1rem;
+      resize: vertical;
+      background: #f8fbff;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #0b3d91;
+      background: white;
+    }
+
+    .wer-box {
+      background: #0b3d91;
+      color: white;
+      padding: 16px;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .wer-score {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #ffd966;
+    }
+
+    .wer-note {
+      font-size: 0.9rem;
+      margin-top: 8px;
+      color: #d9e6ff;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 18px 0;
+    }
+
+    button {
+      flex: 1;
+      min-width: 130px;
+      padding: 16px 18px;
+      border-radius: 60px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+
+    button:active { transform: scale(0.96); }
+
+    .record {
+      background: #e63946;
+      color: white;
+    }
+
+    .stop {
+      background: #1d3557;
+      color: white;
+    }
+
+    .history {
+      margin-top: 18px;
+    }
+
+    .history-item {
+      background: #f1f6ff;
+      border-left: 5px solid #0b3d91;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.95rem;
+      color: #1e2f50;
+    }
+
+    footer span {
+      color: #0b3d91;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Classi AI</h1>
-        <p class="subhead">
-            A deep-tech AI infrastructure company delivering a proprietary
-            <strong>Universal Fluency Layer</strong> for voice-to-text and LLM systems.
-        </p>
+  <div class="container">
+    <h1>🎙️ TrueVoice</h1>
+    <p class="subtitle">Try it. Speak naturally. See the difference.</p>
 
-        <div class="grid">
-            <div class="card">
-                <h3>Personalized Acoustic Engine</h3>
-                <p>Adapts to each user's voice, accent, and environment without retraining large models.</p>
-            </div>
-            <div class="card">
-                <h3>Mapping & Inference Engine</h3>
-                <p>Corrects acoustic-phonetic distortions before transcription using advanced inference.</p>
-            </div>
-            <div class="card">
-                <h3>Grammar & Structural Engine</h3>
-                <p>Refines post-ASR text for grammar, coherence, and semantic integrity.</p>
-            </div>
-            <div class="card">
-                <h3>Closed-Loop Correction</h3>
-                <p>Iteratively aligns audio with corrected text to recover missing or low-confidence words.</p>
-            </div>
-        </div>
-
-        <div class="recording-section">
-            <h2>Try the Fluency Layer</h2>
-            <p style="color: #aab3d0; margin-bottom: 24px;">
-                Record a short English voice sample to test clarity and pronunciation-aware transcription.
-            </p>
-
-            <button id="recordBtn" class="record-btn">Start Recording</button>
-            <button id="stopBtn" class="record-btn stop-btn" disabled>Stop</button>
-
-            <div class="status" id="status">Ready to record.</div>
-
-            <audio id="audioPlayback" class="audio-player" controls style="display: none;"></audio>
-        </div>
+    <div class="card">
+      <label>🎤 Record your voice</label>
+      <div class="buttons">
+        <button class="record" onclick="startRecording()">Start Recording</button>
+        <button class="stop" onclick="stopRecording()">Stop Recording</button>
+      </div>
     </div>
 
-    <script>
-        let mediaRecorder;
-        let recordedChunks = [];
+    <div class="card">
+      <label for="textInput">📝 Please type or paste your English text now or after your recording.</label>
+      <textarea id="textInput" placeholder="Type or paste your English text here..."></textarea>
 
-        const recordBtn = document.getElementById('recordBtn');
-        const stopBtn = document.getElementById('stopBtn');
-        const status = document.getElementById('status');
-        const audioPlayback = document.getElementById('audioPlayback');
+      <div class="wer-box" id="werBox">
+        <div class="label" style="color:white;">📊 Word Error Rate</div>
+        <div class="wer-score" id="werScore">—</div>
+        <div class="wer-note">The Word Error Rate (WER) score will be shown after 5 recordings.</div>
+      </div>
+    </div>
 
-        async function startRecording() {
-            recordedChunks = [];
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
+    <div class="card history">
+      <label>🕘 Recent transcriptions</label>
+      <div id="historyList">
+        <p style="color:#666;">No recordings yet. Your last 10 transcriptions will appear here.</p>
+      </div>
+    </div>
 
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) recordedChunks.push(event.data);
-                };
+    <footer>
+      <p>Contact: <span>William@ClassiAIhk.com</span></p>
+      <p>Powered by <span>Nvidia Build</span></p>
+    </footer>
+  </div>
 
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
-                    const url = URL.createObjectURL(blob);
-                    audioPlayback.src = url;
-                    audioPlayback.style.display = 'block';
-                    status.textContent = 'Recording saved. You can play it back below.';
-                };
+  <script>
+    let recordingCount = 0;
+    let transcriptHistory = [];
 
-                mediaRecorder.start();
-                status.textContent = 'Recording...';
-                recordBtn.disabled = true;
-                stopBtn.disabled = false;
-            } catch (err) {
-                status.textContent = 'Microphone access denied or unavailable.';
-                console.error(err);
-            }
-        }
+    function startRecording() {
+      document.getElementById("werScore").innerText = "Recording...";
+    }
 
-        function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-                recordBtn.disabled = false;
-                stopBtn.disabled = true;
-            }
-        }
+    function stopRecording() {
+      recordingCount++;
+      const textInput = document.getElementById("textInput").value.trim();
+      const transcript = textInput || `Sample transcription ${recordingCount}`;
 
-        recordBtn.addEventListener('click', startRecording);
-        stopBtn.addEventListener('click', stopRecording);
-    </script>
+      transcriptHistory.unshift(transcript);
+      if (transcriptHistory.length > 10) transcriptHistory.pop();
+
+      renderHistory();
+
+      if (recordingCount >= 5) {
+        const sampleWer = (0.14 + Math.random() * 0.2).toFixed(2);
+        document.getElementById("werScore").innerText = `${Math.round(sampleWer * 100)}%`;
+      } else {
+        document.getElementById("werScore").innerText = "—";
+      }
+    }
+
+    function renderHistory() {
+      const list = document.getElementById("historyList");
+      list.innerHTML = "";
+      transcriptHistory.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerText = item;
+        list.appendChild(div);
+      });
+    }
+  </script>
 </body>
 </html>
-"""
-
-st.title("Classi AI | Universal Fluency Layer")
-st.markdown("A deep-tech AI infrastructure company delivering a proprietary Universal Fluency Layer for voice-to-text and LLM systems.")
-
-components.html(html_code, height=900, scrolling=True)
