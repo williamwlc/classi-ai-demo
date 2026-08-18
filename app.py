@@ -1,3 +1,8 @@
+from flask import Flask, request, jsonify, render_template_string
+
+app = Flask(__name__)
+
+HTML = r"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,26 +17,22 @@
             --text: #f2f4ff;
             --muted: #aab3d0;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: var(--bg);
             color: var(--text);
             font-family: 'Segoe UI', Arial, sans-serif;
             line-height: 1.6;
         }
-
         .container {
             max-width: 1100px;
             margin: 0 auto;
             padding: 60px 24px;
         }
-
         h1 {
             font-size: 3rem;
             font-weight: 800;
@@ -42,43 +43,26 @@
             background-clip: text;
             color: transparent;
         }
-
         .subhead {
             font-size: 1.25rem;
             color: var(--muted);
             margin-bottom: 48px;
             max-width: 900px;
         }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 24px;
             margin: 60px 0;
         }
-
         .card {
             background: var(--card);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 18px;
             padding: 24px;
-            transition: transform 0.2s ease, border 0.2s ease;
         }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(79,124,255,0.5);
-        }
-
-        .card h3 {
-            margin-bottom: 12px;
-            color: #fff;
-        }
-
-        .card p {
-            color: var(--muted);
-            font-size: 0.95rem;
-        }
+        .card h3 { margin-bottom: 12px; color: #fff; }
+        .card p { color: var(--muted); font-size: 0.95rem; }
 
         .recording-section {
             background: linear-gradient(135deg, #0b1026 0%, #131a38 100%);
@@ -88,7 +72,6 @@
             margin: 70px 0;
             text-align: center;
         }
-
         .record-btn {
             background: var(--accent);
             color: white;
@@ -98,32 +81,14 @@
             font-weight: 700;
             border-radius: 100px;
             cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
             margin: 0 8px;
         }
-
-        .record-btn:hover {
-            background: #3f68e6;
-        }
-
-        .record-btn:active {
-            transform: scale(0.97);
-        }
-
-        .stop-btn {
-            background: #d64545;
-        }
-
-        .stop-btn:hover {
-            background: #b93535;
-        }
-
+        .stop-btn { background: #d64545; }
         .audio-player {
             margin-top: 30px;
             width: 100%;
             max-width: 500px;
         }
-
         .status {
             color: var(--muted);
             font-size: 0.9rem;
@@ -136,7 +101,7 @@
     <div class="container">
         <h1>Classi AI</h1>
         <p class="subhead">
-            A deep-tech AI infrastructure company delivering a proprietary 
+            A deep-tech AI infrastructure company delivering a proprietary
             <strong>Universal Fluency Layer</strong> for voice-to-text and LLM systems.
         </p>
 
@@ -177,6 +142,7 @@
     <script>
         let mediaRecorder;
         let recordedChunks = [];
+
         const recordBtn = document.getElementById('recordBtn');
         const stopBtn = document.getElementById('stopBtn');
         const status = document.getElementById('status');
@@ -189,9 +155,7 @@
                 mediaRecorder = new MediaRecorder(stream);
 
                 mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        recordedChunks.push(event.data);
-                    }
+                    if (event.data.size > 0) recordedChunks.push(event.data);
                 };
 
                 mediaRecorder.onstop = () => {
@@ -226,3 +190,11 @@
     </script>
 </body>
 </html>
+"""
+
+@app.route("/")
+def index():
+    return render_template_string(HTML)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=7860)
