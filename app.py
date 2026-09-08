@@ -31,8 +31,47 @@ else:
         st.session_state.auth_start = None
         st.rerun()
 
-    st.markdown('<h1 style="text-align:center;">Classi AI – Voice to Text</h1>', unsafe_allow_html=True)
-
+    st.markdown('<h1 style="text-align:center;">Classi AI</h1>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
+        padding: 2rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        border: 2px solid #00ffff;
+        box-shadow: 0 0 25px rgba(0,255,255,0.3);
+        color: #ffffff;
+        font-family: 'Segoe UI', sans-serif;
+    ">
+        <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">🌟 Classi AI — Deep-Tech AI Infrastructure</h2>
+        <p style="font-size:1.2rem; line-height:1.8;">
+            <strong style="color:#00ffff;">Classi AI</strong> is a deep-tech AI infrastructure company.
+            Our core technology is a proprietary 
+            <strong style="color:#00ffff;">Universal Fluency Layer</strong> —
+            powered by advanced <em>computational linguistics</em> and proprietary 
+            <em>acoustic modeling</em> — designed to enhance and complement 
+            voice-to-text and LLM systems across multiple verticals, including 
+            <strong style="color:#ffd966;">EdTech</strong>, 
+            <strong style="color:#ffd966;">B2B</strong>, and 
+            <strong style="color:#ffd966;">enterprise</strong> applications.
+        </p>
+        <p style="font-size:1.2rem; line-height:1.8;">
+            Beyond enterprise infrastructure, Classi’s consumer SaaS platform is equally disruptive. 
+            Engineered to serve the over <strong style="color:#ffd966;">1 billion non-native English learners</strong> globally, 
+            it delivers a comprehensive suite of advanced features—some first-to-market—including our flagship 
+            <strong style="color:#00ffff;">“Let’s Talk,”</strong> a highly anticipated learning solution offering 
+            configurable topics, conversation types, and more. Coupled with 
+            <strong style="color:#00ffff;">pronunciation guidance and articulatory diagnostics</strong>, 
+            and a robust suite of tools designed to master all four core language skills, 
+            our platform squarely fulfills the genuine needs of global students and standardized exam candidates.
+        </p>
+        <p style="font-size:1.2rem; line-height:1.8;">
+            By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, 
+            our ecosystem doesn’t just compete with legacy EdTech tools—it renders 
+            <strong style="color:#ffd966;">dictionaries, translation apps, and conventional language learning platforms</strong> obsolete.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     # Initialize session state for history and recording count
     if "history" not in st.session_state:
         st.session_state.history = []  # list of dicts: {gt, raw, zinc, carbon, wer, time}
