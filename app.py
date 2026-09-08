@@ -44,7 +44,7 @@ else:
         font-family: 'Segoe UI', sans-serif;
     ">
         <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">🌟 Classi AI — Deep-Tech AI Infrastructure</h2>
-        <p style="font-size:1.2rem; line-height:1.8;">
+        <p style="font-size:1rem; line-height:1.4;">
             <strong style="color:#00ffff;">Classi AI</strong> is a deep-tech AI infrastructure company.
             Our core technology is a proprietary 
             <strong style="color:#00ffff;">Universal Fluency Layer</strong> —
