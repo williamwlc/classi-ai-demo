@@ -35,9 +35,9 @@ else:
     st.markdown("""
     <div style="
         background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
-        padding: 2rem;
+        padding: 1.7rem;
         border-radius: 20px;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         border: 2px solid #00ffff;
         box-shadow: 0 0 25px rgba(0,255,255,0.3);
         color: #ffffff;
