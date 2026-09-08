@@ -3,9 +3,6 @@ import time
 import requests
 from datetime import datetime, timedelta
 import numpy as np
-import io
-import soundfile as sf
-import librosa
 
 st.set_page_config(page_title="Classi AI", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
 
@@ -106,11 +103,6 @@ BACKEND_URL = "https://your-backend-api.com/process"
 if st.button("Submit & Analyze", type="primary", disabled=audio_bytes is None or not gt_text):
     audio_bytes.seek(0)
     audio_data = audio_bytes.read()
-    try:
-        audio, sr = librosa.load(io.BytesIO(audio_data), sr=16000, mono=True)
-    except Exception as e:
-        st.error(f"Audio loading failed: {e}")
-        st.stop()
 
     try:
         files = {"file": ("audio.wav", audio_bytes, "audio/wav")}
