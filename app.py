@@ -44,7 +44,7 @@ else:
         font-family: 'Segoe UI', sans-serif;
     ">
         <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">🌟 Classi AI — Deep-Tech AI Infrastructure</h2>
-        <p style="font-size:1rem; line-height:1.4;">
+        <p style="font-size:1rem; line-height:1.3;">
             <strong style="color:#00ffff;">Classi AI</strong> is a deep-tech AI infrastructure company.
             Our core technology is a proprietary 
             <strong style="color:#00ffff;">Universal Fluency Layer</strong> —
@@ -55,7 +55,7 @@ else:
             <strong style="color:#ffd966;">B2B</strong>, and 
             <strong style="color:#ffd966;">enterprise</strong> applications.
         </p>
-        <p style="font-size:1.2rem; line-height:1.8;">
+        <p style="font-size:1rem; line-height:1.3;">
             Beyond enterprise infrastructure, Classi’s consumer SaaS platform is equally disruptive. 
             Engineered to serve the over <strong style="color:#ffd966;">1 billion non-native English learners</strong> globally, 
             it delivers a comprehensive suite of advanced features—some first-to-market—including our flagship 
@@ -65,7 +65,7 @@ else:
             and a robust suite of tools designed to master all four core language skills, 
             our platform squarely fulfills the genuine needs of global students and standardized exam candidates.
         </p>
-        <p style="font-size:1.2rem; line-height:1.8;">
+        <p style="font-size:1rem; line-height:1.3;">
             By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, 
             our ecosystem doesn’t just compete with legacy EdTech tools—it renders 
             <strong style="color:#ffd966;">dictionaries, translation apps, and conventional language learning platforms</strong> obsolete.
