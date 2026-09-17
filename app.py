@@ -25,10 +25,9 @@ st.markdown("""
         <strong style="color:#00ffff;">Classi AI</strong> is a deep-tech AI infrastructure company.
         Our core technology is a proprietary 
         <strong style="color:#00ffff;">Universal Fluency Layer</strong> —
-        powered by advanced <em>computational linguistics</em> and proprietary 
-        <em>acoustic modeling</em> — designed to enhance and complement 
-        voice-to-text and LLM systems across multiple verticals, including 
-        <strong style="color:#ffd966;">EdTech</strong>, 
+        powered by high-precision semantic architecture and real-time signal optimization —
+        engineered to enhance and complement voice-to-text and LLM systems
+        across <strong style="color:#ffd966;">EdTech</strong>, 
         <strong style="color:#ffd966;">B2B</strong>, and 
         <strong style="color:#ffd966;">enterprise</strong> applications.
     </p>
@@ -43,7 +42,7 @@ st.markdown("""
         our platform squarely fulfills the genuine needs of global students and standardized exam candidates.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
-        By leveraging our Universal Fluency Layer in these highly demanding consumer scenarios, 
+        By deploying our Universal Fluency Layer in these highly demanding consumer scenarios, 
         our ecosystem doesn’t just compete with legacy EdTech tools—it renders 
         <strong style="color:#ffd966;">dictionaries, translation apps, and conventional language learning platforms</strong> obsolete.
     </p>
