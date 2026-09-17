@@ -26,8 +26,9 @@ st.markdown("""
         Our core technology is a proprietary 
         <strong style="color:#00ffff;">Universal Fluency Layer</strong> —
         powered by high-precision semantic architecture and real-time signal optimization —
-        engineered to enhance voice-to-text accuracy, eliminate hallucination risks,
-        and optimize downstream model outputs across 
+        engineered to <strong style="color:#ffd966;">substantially improve</strong> voice-to-text accuracy,
+        <strong style="color:#ffd966;">reduce</strong> hallucination risks,
+        and improve downstream model outputs across 
         <strong style="color:#ffd966;">enterprise</strong>, 
         <strong style="color:#ffd966;">B2B</strong>, and 
         <strong style="color:#ffd966;">high-consequence consumer applications</strong>.
@@ -42,9 +43,9 @@ st.markdown("""
         <strong style="color:#00ffff;">structural mastery tools</strong> for standardized exam candidates.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
-        By deploying our Universal Fluency Layer directly into these demanding consumer environments, 
-        Classi consolidates fragmented legacy learning tools into a unified, 
-        <strong style="color:#ffd966;">enterprise-grade fluency platform</strong>.
+        By deploying our Universal Fluency Layer in these demanding consumer environments, 
+        Classi <strong style="color:#ffd966;">aims to unify</strong> fragmented legacy learning tools 
+        into an enterprise-grade fluency platform.
     </p>
 </div>
 """, unsafe_allow_html=True)
