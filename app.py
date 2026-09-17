@@ -44,9 +44,8 @@ st.markdown("""
     </p>
     <p style="font-size:1rem; line-height:1.3;">
         By deploying our Universal Fluency Layer in these demanding consumer environments, 
-        Classi aims to unify fragmented legacy learning tools into an enterprise-grade fluency platform. 
-        <strong style="color:#ffd966;">Our mission: to retire the patchwork of dictionaries, 
-        translation apps, and conventional language platforms.</strong>
+        Classi doesn't just compete with legacy EdTech tools—
+        <strong style="color:#ffd966;">it renders dictionaries, translation apps, and conventional language learning platforms obsolete.</strong>
     </p>
 </div>
 """, unsafe_allow_html=True)
