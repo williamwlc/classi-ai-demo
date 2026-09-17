@@ -22,29 +22,29 @@ st.markdown("""
 ">
     <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">Classi AI — Deep-Tech AI Infrastructure</h2>
     <p style="font-size:1rem; line-height:1.3;">
-        <strong style="color:#00ffff;">Classi AI</strong> is a deep-tech AI infrastructure company.
+        <strong style="color:#00ffff;">Classi AI</strong> is a deep-tech infrastructure company.
         Our core technology is a proprietary 
         <strong style="color:#00ffff;">Universal Fluency Layer</strong> —
         powered by high-precision semantic architecture and real-time signal optimization —
-        engineered to enhance and complement voice-to-text and LLM systems
-        across <strong style="color:#ffd966;">EdTech</strong>, 
+        engineered to enhance voice-to-text accuracy, eliminate hallucination risks,
+        and optimize downstream model outputs across 
+        <strong style="color:#ffd966;">enterprise</strong>, 
         <strong style="color:#ffd966;">B2B</strong>, and 
-        <strong style="color:#ffd966;">enterprise</strong> applications.
+        <strong style="color:#ffd966;">high-consequence consumer applications</strong>.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
-        Beyond enterprise infrastructure, Classi’s consumer SaaS platform is equally disruptive. 
-        Engineered to serve the over <strong style="color:#ffd966;">1 billion non-native English learners</strong> globally, 
-        it delivers a comprehensive suite of advanced features—some first-to-market—including our flagship 
-        <strong style="color:#00ffff;">“Let’s Talk,”</strong> a highly anticipated learning solution offering 
-        configurable topics, conversation types, and more. Coupled with 
-        <strong style="color:#00ffff;">pronunciation guidance and articulatory diagnostics</strong>, 
-        and a robust suite of tools designed to master all four core language skills, 
-        our platform squarely fulfills the genuine needs of global students and standardized exam candidates.
+        Leveraging this infrastructure, Classi's consumer platform serves the global market of over 
+        <strong style="color:#ffd966;">1 billion non-native English learners</strong>. 
+        Built for <strong style="color:#00ffff;">root-cause diagnostic precision</strong>, 
+        the platform delivers a comprehensive suite of learning solutions—including our flagship 
+        <strong style="color:#00ffff;">"Let's Talk"</strong> conversational engine, 
+        real-time <strong style="color:#00ffff;">articulatory diagnostics</strong>, and 
+        <strong style="color:#00ffff;">structural mastery tools</strong> for standardized exam candidates.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
-        By deploying our Universal Fluency Layer in these highly demanding consumer scenarios, 
-        our ecosystem doesn’t just compete with legacy EdTech tools—it renders 
-        <strong style="color:#ffd966;">dictionaries, translation apps, and conventional language learning platforms</strong> obsolete.
+        By deploying our Universal Fluency Layer directly into these demanding consumer environments, 
+        Classi consolidates fragmented legacy learning tools into a unified, 
+        <strong style="color:#ffd966;">enterprise-grade fluency platform</strong>.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -68,7 +68,7 @@ if not st.session_state.authenticated:
             st.rerun()
         else:
             st.error("Invalid password")
-    st.stop()   # Stop here; do not show the rest until authenticated
+    st.stop()
 
 # ============================================================
 # AUTHENTICATED AREA
@@ -80,7 +80,6 @@ if time.time() - st.session_state.auth_start > 3600:
 
 st.markdown('<h1 style="text-align:center;">Classi AI</h1>', unsafe_allow_html=True)
 
-# Initialize session state for history and recording count
 if "history" not in st.session_state:
     st.session_state.history = []
 if "recording_count" not in st.session_state:
@@ -96,13 +95,11 @@ with col2:
     st.markdown("**📝 Ground truth (what you said)**  \n<small>*Type or paste before/after recording*</small>", unsafe_allow_html=True)
     gt_text = st.text_area("Ground truth", placeholder="e.g., I like to read books", height=100, label_visibility="collapsed")
 
-# Backend API placeholder – replace with your actual endpoint
 BACKEND_URL = "https://your-backend-api.com/process"
 
 if st.button("Submit & Analyze", type="primary", disabled=audio_bytes is None or not gt_text):
     audio_bytes.seek(0)
     audio_data = audio_bytes.read()
-
     try:
         files = {"file": ("audio.wav", audio_bytes, "audio/wav")}
         data = {"ground_truth": gt_text}
@@ -137,17 +134,16 @@ if st.button("Submit & Analyze", type="primary", disabled=audio_bytes is None or
         st.session_state.history = st.session_state.history[-10:]
     st.session_state.recording_count += 1
 
-# ---- Display History and Average WER ----
 if st.session_state.history:
     st.markdown("### 📜 Recent Recordings (Ground Truth vs Corrected Transcript)")
     for entry in st.session_state.history[::-1]:
         with st.expander(f"{entry['time']} | WER: {entry['carbon_wer']:.4f}" if entry['carbon_wer'] else entry['time']):
             st.write(f"**Ground Truth:** {entry['gt']}")
             st.write(f"**Raw ASR:** {entry['raw']}")
-            st.write(f"**Zinc ASR:** {entry['zinc']}")
-            st.write(f"**Carbon ASR:** {entry['carbon']}")
+            st.write(f"**Enhanced ASR:** {entry['zinc']}")
+            st.write(f"**Classi Output:** {entry['carbon']}")
             if entry['raw_wer'] is not None:
-                st.write(f"**WER:** Raw {entry['raw_wer']:.4f} → Zinc {entry['zinc_wer']:.4f} → Carbon {entry['carbon_wer']:.4f}")
+                st.write(f"**WER:** Raw {entry['raw_wer']:.4f} → Enhanced {entry['zinc_wer']:.4f} → Classi {entry['carbon_wer']:.4f}")
 
     if st.session_state.recording_count >= 5:
         carbon_wers = [e['carbon_wer'] for e in st.session_state.history if e['carbon_wer'] is not None]
