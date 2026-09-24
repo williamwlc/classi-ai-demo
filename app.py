@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import numpy as np
 
 st.set_page_config(page_title="Classi AI: Universal Voice Filter & Correction", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
-
+<h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:1.7rem; letter-spacing:1px;">Classi AI — Universal Voice Filter &amp; Correction</h2>
 # ============================================================
 # COMPANY INTRO (PUBLICLY VISIBLE, BEFORE PASSWORD)
 # ============================================================
