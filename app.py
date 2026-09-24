@@ -1,4 +1,4 @@
-import streamlt as st
+import streamlit as st
 st.markdown("""
 <div style="
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
