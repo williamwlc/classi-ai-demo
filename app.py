@@ -35,7 +35,7 @@ st.markdown("""
     </p>
     <p style="font-size:1rem; line-height:1.3;">
         The same filter works on <strong style="color:#00ffff;">any pair of languages</strong>. 
-        Today we handle Chinese speakers learning English. More pairs follow as we grow.
+        Today we handle Chinese-accented English. More pairs follow as we grow.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
         Leveraging this engine, Classi's consumer platform serves the global market of over 
