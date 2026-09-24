@@ -26,7 +26,7 @@ st.markdown("""
         Adaptive to Heavy Accents and Noise.
     </p>
     <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#ffd966;">
-        Block Major Hallucination.
+        Suppress Major Hallucination.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
         <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
