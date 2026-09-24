@@ -29,10 +29,10 @@ st.markdown("""
         Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
-        <strong style="color:#00ffff;">A pioneer</strong> in the Acoustic Layer for voice-to-text applications — specifically  
+        <strong style="color:#00ffff;">Classi AI</strong> is a pioneer in the Acoustic Layer for voice-to-text applications — specifically  
         engineered to <strong style="color:#ffd966;">improve</strong> 
-        voice-to-text accuracy under real-world noise, 
-        <strong style="color:#ffd966;">reduce</strong> hallucination risk, and stabilize 
+        transcription accuracy under real-world noise, 
+        <strong style="color:#ffd966;">reduce</strong> major hallucination risk, and stabilize 
         downstream model outputs across 
         <strong style="color:#ffd966;">enterprise</strong>, 
         <strong style="color:#ffd966;">B2B</strong>, and 
