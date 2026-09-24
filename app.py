@@ -22,10 +22,10 @@ st.markdown("""
     text-align: center;
 ">
     <h2 style="color:#ffd966; text-align:center; margin-bottom:0.4rem; font-size:1.4rem; letter-spacing:0.5px;">Classi AI &mdash; Universal Voice Filter &amp; Correction Engine</h2>
-    <p style="font-size:1.4rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
+    <p style="font-size:1.3rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
         Adapts to Heavy Accents &amp; Street Noise.
     </p>
-    <p style="font-size:1.4rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
+    <p style="font-size:1.3rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
         Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
