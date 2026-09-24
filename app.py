@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, timedelta
 import numpy as np
 
-st.set_page_config(page_title="Classi AI", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Classi AI: Universal Voice Filter & Correction", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
 
 # ============================================================
 # COMPANY INTRO (PUBLICLY VISIBLE, BEFORE PASSWORD)
@@ -29,9 +29,9 @@ st.markdown("""
         Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
-        <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
+        A proprietary 
         <strong style="color:#00ffff;">Universal Fluency Layer</strong> — 
-        a <strong style="color:#00ffff;">speech filter</strong> 
+        a <strong style="color:#00ffff;">Voice Filter</strong> 
         engineered to <strong style="color:#ffd966;">improve</strong> 
         voice-to-text accuracy under real-world noise, 
         <strong style="color:#ffd966;">reduce</strong> hallucination risk, and stabilize 
