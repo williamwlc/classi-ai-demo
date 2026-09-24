@@ -4,7 +4,11 @@ import requests
 from datetime import datetime, timedelta
 import numpy as np
 
-st.set_page_config(page_title="Classi AI: Universal Voice Filter & Correction", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Classi AI — Universal Voice Filter & Correction", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
+
+# ============================================================
+# COMPANY INTRO (PUBLICLY VISIBLE)
+# ============================================================
 st.markdown("""
 <div style="
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
@@ -17,41 +21,17 @@ st.markdown("""
     font-family: 'Segoe UI', sans-serif;
     text-align: center;
 ">
-    <h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:1.6rem; letter-spacing:1px;">Classi AI &mdash; Universal Voice Filter &amp; Correction</h2>
-    <p style="font-size:1.5rem; line-height:1.4; margin:0.4rem 0; font-weight:600; color:#00ffff;">
+    <h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:1.5rem; letter-spacing:0.5px;">Classi AI &mdash; Universal Voice Filter &amp; Correction</h2>
+    <p style="font-size:1.4rem; line-height:1.4; margin:0.4rem 0; font-weight:600; color:#00ffff;">
         Adapts to Heavy Accents &amp; Street Noise.
     </p>
-    <p style="font-size:1.5rem; line-height:1.4; margin:0.4rem 0; font-weight:600; color:#ffd966;">
-        Suppresses Major Hallucinations.
-    </p>
-</div>
-""", unsafe_allow_html=True)
-# ============================================================
-# COMPANY INTRO (PUBLICLY VISIBLE, BEFORE PASSWORD)
-# ============================================================
-st.markdown("""
-<div style="
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
-    padding: 1.5rem 1rem;
-    border-radius: 20px;
-    margin-bottom: 0.7rem;
-    border: 2px solid #00ffff;
-    box-shadow: 0 0 25px rgba(0,255,255,0.3);
-    color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-    text-align: center;
-">
-    <h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:2rem; letter-spacing:1px;">Classi AI</h2>
-    <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#00ffff;">
-        Adapts to Heavy Accents & Street Noise.
-    </p>
-    <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#ffd966;">
+    <p style="font-size:1.4rem; line-height:1.4; margin:0.4rem 0; font-weight:600; color:#ffd966;">
         Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
-        A proprietary 
-        <strong style="color:#00ffff;">Universal Voice Filter</strong>
-        engineered to <strong style="color:#ffd966;">improve</strong> 
+        <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
+        <strong style="color:#00ffff;">Universal Voice Filter &amp; Correction</strong> &mdash; 
+        a speech layer engineered to <strong style="color:#ffd966;">improve</strong> 
         voice-to-text accuracy under real-world noise, 
         <strong style="color:#ffd966;">reduce</strong> hallucination risk, and stabilize 
         downstream model outputs across 
@@ -63,52 +43,8 @@ st.markdown("""
         The same filter works on <strong style="color:#00ffff;">any pair of languages</strong>. 
         Today we handle Chinese-accented English. More pairs follow as we grow.
     </p>
-    <p style="font-size:1rem; line-height:1.3; text-align:left;">
-        Leveraging this engine, Classi's consumer platform serves the global market of over 
-        <strong style="color:#ffd966;">1 billion non-native English speakers</strong>. 
-        Built for <strong style="color:#00ffff;">root-cause diagnostic precision</strong>, 
-        the platform delivers a comprehensive suite of learning tools — including our flagship 
-        <strong style="color:#00ffff;">"Let's Talk"</strong> conversational engine, 
-        real-time <strong style="color:#00ffff;">articulatory diagnostics</strong>, and 
-        <strong style="color:#00ffff;">structural mastery tools</strong> for standardized exam candidates.
-    </p>
-    <p style="font-size:1rem; line-height:1.3; text-align:left;">
-        By deploying our Universal Fluency Layer in these demanding consumer environments, 
-        Classi raises the accuracy bar for voice-driven tools — 
-        <strong style="color:#ffd966;">outperforming conventional language learning platforms</strong> 
-        on the acoustic challenges that matter most.
-    </p>
 </div>
 """, unsafe_allow_html=True)
-
-# ============================================================
-# PASSWORD GATE (BELOW INTRO)
-# ============================================================
-if "auth_start" not in st.session_state:
-    st.session_state.auth_start = None
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
-if not st.session_state.authenticated:
-    st.markdown("### 🔑 Enter Password to Test Drive")
-    pwd = st.text_input("Password", type="password")
-    if st.button("Unlock"):
-        valid_passwords = ["friend2026", "ClassiFriend1"]
-        if pwd in valid_passwords:
-            st.session_state.authenticated = True
-            st.session_state.auth_start = time.time()
-            st.rerun()
-        else:
-            st.error("Invalid password")
-    st.stop()
-
-# ============================================================
-# AUTHENTICATED AREA
-# ============================================================
-if time.time() - st.session_state.auth_start > 3600:
-    st.session_state.authenticated = False
-    st.session_state.auth_start = None
-    st.rerun()
 
 st.markdown('<h1 style="text-align:center;">Classi AI</h1>', unsafe_allow_html=True)
 
@@ -191,5 +127,3 @@ if st.session_state.history:
             st.info("Complete at least 5 valid recordings to see average WER.")
     else:
         st.info(f"Record at least 5 sentences to see average WER. Currently: {st.session_state.recording_count}")
-
-st.caption("Session expires 1 hour after login.")
