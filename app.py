@@ -6,9 +6,24 @@ import numpy as np
 
 st.set_page_config(page_title="Classi AI: Universal Voice Filter & Correction", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
 st.markdown("""
-<div style="...">
-    <h2 style="...">Classi AI — Universal Voice Filter &amp; Correction</h2>
-    <p style="...">...</p>
+<div style="
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
+    margin-bottom: 0.7rem;
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 25px rgba(0,255,255,0.3);
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+">
+    <h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:1.6rem; letter-spacing:1px;">Classi AI &mdash; Universal Voice Filter &amp; Correction</h2>
+    <p style="font-size:1.5rem; line-height:1.4; margin:0.4rem 0; font-weight:600; color:#00ffff;">
+        Adapts to Heavy Accents &amp; Street Noise.
+    </p>
+    <p style="font-size:1.5rem; line-height:1.4; margin:0.4rem 0; font-weight:600; color:#ffd966;">
+        Suppresses Major Hallucinations.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 # ============================================================
