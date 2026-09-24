@@ -43,10 +43,23 @@ st.markdown("""
         The same filter works on <strong style="color:#00ffff;">any pair of languages</strong>. 
         Today we handle Chinese-accented English. More pairs follow as we grow.
     </p>
+    <p style="font-size:1rem; line-height:1.3; text-align:left;">
+        Leveraging this engine, Classi's consumer platform serves the global market of over 
+        <strong style="color:#ffd966;">1 billion non-native English speakers</strong>. 
+        Built for <strong style="color:#00ffff;">root-cause diagnostic precision</strong>, 
+        the platform delivers a comprehensive suite of learning tools &mdash; including our flagship 
+        <strong style="color:#00ffff;">"Let's Talk"</strong> conversational engine, 
+        real-time <strong style="color:#00ffff;">articulatory diagnostics</strong>, and 
+        <strong style="color:#00ffff;">structural mastery tools</strong> for standardized exam candidates.
+    </p>
+    <p style="font-size:1rem; line-height:1.3; text-align:left;">
+        By deploying our Universal Voice Filter in these demanding consumer environments, 
+        Classi raises the accuracy bar for voice-driven tools &mdash; 
+        <strong style="color:#ffd966;">outperforming conventional language learning platforms</strong> 
+        on the acoustic challenges that matter most.
+    </p>
 </div>
 """, unsafe_allow_html=True)
-
-st.markdown('<h1 style="text-align:center;">Classi AI</h1>', unsafe_allow_html=True)
 
 if "history" not in st.session_state:
     st.session_state.history = []
