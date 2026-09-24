@@ -30,8 +30,7 @@ st.markdown("""
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
         A proprietary 
-        <strong style="color:#00ffff;">Universal Fluency Layer</strong> — 
-        a <strong style="color:#00ffff;">Voice Filter</strong> 
+        <strong style="color:#00ffff;">Universal Voice Filter</strong>
         engineered to <strong style="color:#ffd966;">improve</strong> 
         voice-to-text accuracy under real-world noise, 
         <strong style="color:#ffd966;">reduce</strong> hallucination risk, and stabilize 
