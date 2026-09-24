@@ -29,8 +29,7 @@ st.markdown("""
         Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
-        <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
-        <strong style="color:#00ffff;">Universal Voice Filter &amp; Correction Engine</strong> &mdash; 
+        <strong style="color:#00ffff;">A pioneer</strong> in the acosutic layer — specifically  
         engineered to <strong style="color:#ffd966;">improve</strong> 
         voice-to-text accuracy under real-world noise, 
         <strong style="color:#ffd966;">reduce</strong> hallucination risk, and stabilize 
