@@ -12,16 +12,23 @@ st.set_page_config(page_title="Classi AI", page_icon="🎯", layout="wide", init
 st.markdown("""
 <div style="
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     border-radius: 20px;
     margin-bottom: 0.7rem;
     border: 2px solid #00ffff;
     box-shadow: 0 0 25px rgba(0,255,255,0.3);
     color: #ffffff;
     font-family: 'Segoe UI', sans-serif;
+    text-align: center;
 ">
-    <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">Classi AI — Adaptive to Heavy Accents and Noise. Block Major Hallucination.</h2>
-    <p style="font-size:1rem; line-height:1.3;">
+    <h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:2rem; letter-spacing:1px;">Classi AI</h2>
+    <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#00ffff;">
+        Adaptive to Heavy Accents and Noise.
+    </p>
+    <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#ffd966;">
+        Block Major Hallucination.
+    </p>
+    <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
         <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
         <strong style="color:#00ffff;">Universal Fluency Layer</strong> — 
         a <strong style="color:#00ffff;">speech filter</strong> 
@@ -33,20 +40,20 @@ st.markdown("""
         <strong style="color:#ffd966;">B2B</strong>, and 
         <strong style="color:#ffd966;">high-consequence consumer applications</strong>.
     </p>
-    <p style="font-size:1rem; line-height:1.3;">
+    <p style="font-size:1rem; line-height:1.3; text-align:left;">
         The same filter works on <strong style="color:#00ffff;">any pair of languages</strong>. 
         Today we handle Chinese-accented English. More pairs follow as we grow.
     </p>
-    <p style="font-size:1rem; line-height:1.3;">
+    <p style="font-size:1rem; line-height:1.3; text-align:left;">
         Leveraging this engine, Classi's consumer platform serves the global market of over 
-        <strong style="color:#ffd966;">1 billion non-native English learners</strong>. 
+        <strong style="color:#ffd966;">1 billion non-native English speakers</strong>. 
         Built for <strong style="color:#00ffff;">root-cause diagnostic precision</strong>, 
-        the platform delivers a comprehensive suite of learning solutions — including our flagship 
+        the platform delivers a comprehensive suite of learning tools — including our flagship 
         <strong style="color:#00ffff;">"Let's Talk"</strong> conversational engine, 
         real-time <strong style="color:#00ffff;">articulatory diagnostics</strong>, and 
         <strong style="color:#00ffff;">structural mastery tools</strong> for standardized exam candidates.
     </p>
-    <p style="font-size:1rem; line-height:1.3;">
+    <p style="font-size:1rem; line-height:1.3; text-align:left;">
         By deploying our Universal Fluency Layer in these demanding consumer environments, 
         Classi raises the accuracy bar for voice-driven tools — 
         <strong style="color:#ffd966;">outperforming conventional language learning platforms</strong> 
