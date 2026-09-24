@@ -23,10 +23,10 @@ st.markdown("""
 ">
     <h2 style="color:#ffd966; text-align:center; margin-bottom:1.2rem; font-size:2rem; letter-spacing:1px;">Classi AI</h2>
     <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#00ffff;">
-        Adaptive to Heavy Accents & Street Noise.
+        Adapts to Heavy Accents & Street Noise.
     </p>
     <p style="font-size:1.4rem; line-height:1.4; margin:0.3rem 0; font-weight:600; color:#ffd966;">
-        Suppress Major Hallucinations.
+        Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
         <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
