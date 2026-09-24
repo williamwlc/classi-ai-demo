@@ -20,33 +20,29 @@ st.markdown("""
     color: #ffffff;
     font-family: 'Segoe UI', sans-serif;
 ">
-    <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">Classi AI — Hybrid AI &amp; DSP Speech Engine</h2>
+    <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">Classi AI — Accents and Noise Adaptive Language Filter</h2>
     <p style="font-size:1rem; line-height:1.3;">
-        <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
-        <strong style="color:#00ffff;">Universal Fluency Layer</strong> — 
-        a <strong style="color:#00ffff;">speech middleware</strong> 
-        engineered to <strong style="color:#ffd966;">improve</strong> 
-        voice-to-text accuracy under real-world noise, 
-        <strong style="color:#ffd966;">reduce</strong> hallucination risk, and stabilize 
-        downstream model outputs across 
-        <strong style="color:#ffd966;">enterprise</strong>, 
-        <strong style="color:#ffd966;">B2B</strong>, and 
-        <strong style="color:#ffd966;">high-consequence consumer applications</strong>.
+        <strong style="color:#00ffff;">Classi AI</strong> builds a filter that 
+        understands <strong style="color:#ffd966;">accented speech in noisy places — 
+        and corrects it</strong>. The filter adapts to the speaker's accent and the 
+        surrounding noise, so any voice comes through clean.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
-        Leveraging this engine, Classi's consumer platform serves the global market of over 
-        <strong style="color:#ffd966;">1 billion non-native English learners</strong>. 
-        Built for <strong style="color:#00ffff;">root-cause diagnostic precision</strong>, 
-        the platform delivers a comprehensive suite of learning solutions — including our flagship 
-        <strong style="color:#00ffff;">"Let's Talk"</strong> conversational engine, 
-        real-time <strong style="color:#00ffff;">articulatory diagnostics</strong>, and 
-        <strong style="color:#00ffff;">structural mastery tools</strong> for standardized exam candidates.
+        The same filter works on <strong style="color:#00ffff;">any pair of languages</strong>. 
+        Today we handle Chinese speakers learning English. With the right research and data — 
+        funded by the country or partner that needs it — we can build any pair: 
+        <strong style="color:#ffd966;">Thai and English, Korean and Chinese, Hindi and English</strong>, 
+        and more. The engine is ready; the language data is the work.
     </p>
     <p style="font-size:1rem; line-height:1.3;">
-        By deploying our Universal Fluency Layer in these demanding consumer environments, 
-        Classi raises the accuracy bar for voice-driven tools — 
-        <strong style="color:#ffd966;">outperforming conventional language learning platforms</strong> 
-        on the acoustic challenges that matter most.
+        We're built for where cross-border communication already happens: 
+        <strong style="color:#ffd966;">social platforms, language learning apps, 
+        call centers, commercial chat</strong> — real streets, real noise, real conversation. 
+        Any pair with data is a new market.
+    </p>
+    <p style="font-size:1rem; line-height:1.3;">
+        Classi AI is <strong style="color:#00ffff;">the filter</strong>. 
+        The world brings the languages.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -63,7 +59,7 @@ if not st.session_state.authenticated:
     st.markdown("### 🔑 Enter Password to Test Drive")
     pwd = st.text_input("Password", type="password")
     if st.button("Unlock"):
-        valid_passwords = ["friend2026", "ClassiFriend1"]   # change these
+        valid_passwords = ["friend2026", "ClassiFriend1"]
         if pwd in valid_passwords:
             st.session_state.authenticated = True
             st.session_state.auth_start = time.time()
