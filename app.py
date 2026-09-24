@@ -20,7 +20,7 @@ st.markdown("""
     color: #ffffff;
     font-family: 'Segoe UI', sans-serif;
 ">
-    <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">Classi AI — Accents and Noise Adaptive Language Filter</h2>
+    <h2 style="color:#ffd966; text-align:center; margin-bottom:1rem;">Classi AI — Adaptive to Heavy Accents and Noise. Block Major Hallucination.</h2>
     <p style="font-size:1rem; line-height:1.3;">
         <strong style="color:#00ffff;">Classi AI</strong> builds a proprietary 
         <strong style="color:#00ffff;">Universal Fluency Layer</strong> — 
