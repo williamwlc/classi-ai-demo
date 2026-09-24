@@ -4,7 +4,7 @@ import requests
 from datetime import datetime, timedelta
 import numpy as np
 
-st.set_page_config(page_title="Classi AI — Universal Voice Filter & Correction", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Classi AI — Universal Voice Filter & Correction Engine", page_icon="🎯", layout="wide", initial_sidebar_state="collapsed")
 
 # ============================================================
 # COMPANY INTRO (PUBLICLY VISIBLE)
