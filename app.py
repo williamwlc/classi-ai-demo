@@ -12,7 +12,7 @@ st.set_page_config(page_title="Classi AI — Universal Voice Filter & Correction
 st.markdown("""
 <div style="
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
-    padding: 1.2rem 1rem;
+    padding: 1.5rem 1rem;
     border-radius: 20px;
     margin-bottom: 0.7rem;
     border: 2px solid #00ffff;
@@ -21,7 +21,7 @@ st.markdown("""
     font-family: 'Segoe UI', sans-serif;
     text-align: center;
 ">
-    <h2 style="color:#ffd966; text-align:center; margin-bottom:0.4rem; font-size:1.5rem; letter-spacing:0.5px;">Classi AI &mdash; Universal Voice Filter &amp; Correction</h2>
+    <h2 style="color:#ffd966; text-align:center; margin-bottom:0.4rem; font-size:1.2rem; letter-spacing:0.5px;">Classi AI &mdash; Universal Voice Filter &amp; Correction</h2>
     <p style="font-size:1.4rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
         Adapts to Heavy Accents &amp; Street Noise.
     </p>
