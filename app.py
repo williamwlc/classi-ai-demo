@@ -12,9 +12,9 @@ st.set_page_config(page_title="Classi AI — Universal Voice Filter & Correction
 st.markdown("""
 <div style="
     background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #00d4ff 100%);
-    padding: 1..0rem 0.7rem;
+    padding: 1.30rem 1.0rem;
     border-radius: 20px;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.7rem;
     border: 2px solid #00ffff;
     box-shadow: 0 0 25px rgba(0,255,255,0.3);
     color: #ffffff;
