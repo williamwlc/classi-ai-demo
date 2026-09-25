@@ -22,18 +22,20 @@ st.markdown("""
     text-align: center;
 ">
     <h2 style="color:#ffd966; text-align:center; margin-bottom:0.4rem; font-size:1.4rem; letter-spacing:0.5px;">Classi AI &mdash; Universal Voice Filter &amp; Correction Engine</h2>
-    <p style="font-size:1.3rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
+    <p style="font-size:1.4rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
         Adapts to Heavy Accents &amp; Street Noise.
     </p>
-    <p style="font-size:1.3rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
+    <p style="font-size:1.4rem; line-height:1.4; margin:0.2rem 0; font-weight:600; color:#00ffff;">
         Suppresses Major Hallucinations.
     </p>
     <p style="font-size:1rem; line-height:1.3; margin-top:1.5rem; text-align:left;">
-        <strong style="color:#00ffff;">Classi AI</strong> is a pioneer in the Acoustic Layer for voice-to-text applications.  It is specifically  
-        engineered to <strong style="color:#ffd966;">improve</strong> 
-        transcription accuracy under real-world noise, 
-        <strong style="color:#ffd966;">reduce</strong> major hallucination risk, and stabilize 
-        downstream model outputs across 
+        <strong style="color:#00ffff;">Classi AI</strong> is a pioneer in the 
+        <strong style="color:#00ffff;">Acoustic Layer</strong> for voice-to-text applications. 
+        It is specifically engineered to 
+        <strong style="color:#ffd966;">improve</strong> transcription accuracy 
+        <strong style="color:#00ffff;">under real-world noise</strong>, 
+        <strong style="color:#ffd966;">reduce</strong> major hallucination risk, and 
+        <strong style="color:#ffd966;">stabilize</strong> downstream model outputs across 
         <strong style="color:#ffd966;">enterprise</strong>, 
         <strong style="color:#ffd966;">B2B</strong>, and 
         <strong style="color:#ffd966;">high-consequence consumer applications</strong>.
